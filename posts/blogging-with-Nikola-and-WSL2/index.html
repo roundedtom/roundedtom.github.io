@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="如何使用 Nikola 搭建个人博客网站">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blogging with Nikola and WSL2 | RoundedTom</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/blogging-with-Nikola-and-WSL2/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../backtest-portfolio-optimization/" title="Backtesting portfolio optimization strategies" type="text/html">
+<link rel="next" href="../plotting-with-pandas/" title="Plotting with pandas" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="Blogging with Nikola and WSL2">
+<meta property="og:url" content="https://example.com/posts/blogging-with-Nikola-and-WSL2/">
+<meta property="og:description" content="如何使用 Nikola 搭建个人博客网站">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-04-29T13:28:09+08:00">
+<meta property="article:tag" content="Blog">
+<meta property="article:tag" content="Github">
+<meta property="article:tag" content="Jupyter-notebook">
+<meta property="article:tag" content="Nikola">
+<meta property="article:tag" content="WSL2">
+<style>
+        @media screen and (min-width: 1024px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 3fr 1fr;
+                column-gap: 30px;
+                position: relative;
+            }
+
+            .toc {
+                grid-column: 2 / 3;
+                grid-row: 1 / span 999;
+                align-self: start;
+                position: sticky;
+                top: 20px;
+                /* overflow: auto; */
+            }
+        
+            .toc::before {
+                /* font-family: var(--font-serif); */
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                /* display: inline-block; */
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+            
+            .toc {
+                grid-column: 1 / 2;
+                /* overflow: auto; */
+            }
+            
+            .toc::before {
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+
+        }
+        
+        code {
+            background-color: #DDDDDD;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
+<li class="nav-item">
+<a href="../../archive.html" class="nav-link">Archive</a>
+                </li>
+<li class="nav-item">
+<a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Blogging with Nikola and WSL2</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Tom
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-04-29T13:28:09+08:00" itemprop="datePublished" title="2022-04-29 13:28">2022-04-29 13:28</time></a>
+            </p>
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>一直希望搭建一个博客，一方面是希望能有一个地方记录整理自己学过的知识，另一方面也希望能交到一些志同道合的朋友（有人可以讨论真是太棒了！）在各种鼓捣之后，我选择了 <a href="https://getnikola.com/">Nikola</a>，因为它原生支持 Jupyter notebook。至于为什么选择静态博客，Nikola 官网这篇<a href="https://getnikola.com/handbook.html#why-static">文章</a>写的很好。</p>
+<!-- TEASER_END -->
+
+<div class="toc">
+<ul>
+<li>
+<a href="#1-nikola">1 Nikola 安装与博客搭建</a><ul>
+<li><a href="#11-nikola">1.1 Nikola 安装</a></li>
+<li><a href="#12">1.2 初始化博客</a></li>
+<li>
+<a href="#13">1.3 新建博客</a><ul>
+<li><a href="#131">1.3.1 添加第一篇博客</a></li>
+<li><a href="#132">1.3.2 生成静态文件</a></li>
+<li><a href="#133">1.3.3 本地调试</a></li>
+</ul>
+</li>
+<li><a href="#14-nikola-jupyter-notebook">1.4 让 Nikola 支持 Jupyter Notebook</a></li>
+<li><a href="#15-markdown">1.5 markdown 支持</a></li>
+<li><a href="#16">1.6 数学公式支持</a></li>
+</ul>
+</li>
+<li>
+<a href="#2">2 博客美化</a><ul>
+<li><a href="#21">2.1 更换主题</a></li>
+<li><a href="#22">2.2 导航栏配置</a></li>
+<li><a href="#23-logo">2.3 网页图标与 logo</a></li>
+<li><a href="#24">2.4 代码显示风格</a></li>
+<li><a href="#24_1">2.4 目录美化</a></li>
+<li><a href="#25">2.5 定制样式</a></li>
+<li><a href="#25_1">2.5 个性化首页</a></li>
+</ul>
+</li>
+<li><a href="#3-github">3 部署到 Github</a></li>
+</ul>
+</div>
+<p>关于如何使用 Nikola 搭建博客和个人网站，相关的中文资源比较少，这篇文章是我个人，来自一个非科班背景的踩坑经历。博客在 WSL2 上搭建，Windows 与 Mac 上搭建也类似，环境如下：</p>
+<div class="code"><pre class="code literal-block">WLS2 Ubuntu 20.04.3 LTS
+Nikola Version: 8.2.1
+Python 3.8.10
+pip 20.0.2
+</pre></div>
+
+<h2 id="1-nikola">1 Nikola 安装与博客搭建</h2>
+<p>这部分内容是对官方文档 <a href="https://getnikola.com/getting-started.html">getting started</a> 的一个梳理。其实官方文档写的非常清晰，强烈建议大家去瞅一瞅。</p>
+<h3 id="11-nikola">1.1 Nikola 安装</h3>
+<p>官方文档推荐使用虚拟环境来安装 Nikola，我们可以使用 Python 自带的 venv 模块来创建虚拟环境。</p>
+<div class="code"><pre class="code literal-block"><span class="c1"># 首先新建一个博客目录</span>
+mkdir myblog
+
+<span class="c1"># 然后进入到 myblog 目录下，创建虚拟环境</span>
+<span class="nb">cd</span> myblog
+python3 -m venv blog
+
+<span class="c1"># 进入到虚拟环境目录，激活虚拟环境</span>
+<span class="nb">cd</span> blog
+<span class="nb">source</span> ./bin/activate
+
+<span class="c1"># 使用 pip 安装 Nikola</span>
+pip install -U pip setuptools wheel
+pip install -U <span class="s2">"Nikola[extras]"</span>
+</pre></div>
+
+<p>官方文档推荐在安装时选择 Nikola[extras] 版本（可以体验一些额外的功能），但是你也可以选择安装 Nikola 版本。</p>
+<h3 id="12">1.2 初始化博客</h3>
+<p>在安装完 Nikola 之后，我们就可以使用 Nikola 提供的命令初始化博客了。</p>
+<div class="code"><pre class="code literal-block">nikola init --demo my_blog
+</pre></div>
+
+<p>这条命令会在当前目录下创建一个新的目录 <code>my_blog</code>，<code>--demo my_blog</code> 参数表示在初始化目录的时候创建一些 demo 文件（当然你也可以选择不创建 demo 文件，使用 <code>--quiet</code> 参数）。你会看到如下输出和提问：</p>
+<div class="code"><pre class="code literal-block">Creating Nikola <span class="nv">Site</span>
+<span class="o">====================</span>
+
+This is Nikola v8.2.1.  We will now ask you a few easy questions about your new site.
+If you <span class="k">do</span> not want to answer and want to go with the defaults instead, simply restart with the <span class="sb">`</span>-q<span class="sb">`</span> parameter.
+--- Questions about the site ---
+Site title <span class="o">[</span>My Nikola Site<span class="o">]</span>:
+</pre></div>
+
+<p>回答命令行中的提问：</p>
+<ul>
+<li>Site title：网站名</li>
+<li>Site author：网站作者</li>
+<li>Site author's e-mail：联系邮箱</li>
+<li>Site description：网站描述，生成网站的 <a href="https://moz.com/learn/seo/meta-description">meta description</a>
+</li>
+<li>Site URL：网页 URL</li>
+<li>Enable pretty URLs (/page/ instead of /page.html) that don't need web server configuration? [Y/n]：是否开启 <a href="https://en.wikipedia.org/wiki/Clean_URL">pretty URLs</a>
+</li>
+<li>Language(s) to use [en]：选择网站显示语言</li>
+<li>Time zone [Asia/Shanghai]：选择时区</li>
+<li>Comment system：选择评论系统</li>
+</ul>
+<p>当你看到以下提示时，就说明博客初始化成功了。</p>
+<div class="code"><pre class="code literal-block">That<span class="err">'</span>s it, Nikola is now configured.  Make sure to edit conf.py to your liking.
+If you are looking <span class="k">for</span> themes and addons, check out https://themes.getnikola.com/ and https://plugins.getnikola.com/.
+Have fun!
+<span class="o">[</span><span class="m">2022</span>-04-29 <span class="m">16</span>:09:00<span class="o">]</span> INFO: init: A new site with example data has been created at my_blog.
+<span class="o">[</span><span class="m">2022</span>-04-29 <span class="m">16</span>:09:00<span class="o">]</span> INFO: init: See README.txt <span class="k">in</span> that folder <span class="k">for</span> more information.
+</pre></div>
+
+<p>我们可以看一下 <code>my_blog</code> 目录，这是我们的博客根目录。</p>
+<div class="code"><pre class="code literal-block">.
+├── files
+├── galleries
+├── images  <span class="c1"># 图片存放目录</span>
+├── listings
+│   └── __pycache__
+├── pages  <span class="c1"># 页面存放目录</span>
+├── posts  <span class="c1"># 文章存放目录</span>
+└── templates  <span class="c1"># 生成站点的模板文件存放目录</span>
+</pre></div>
+
+<h3 id="13">1.3 新建博客</h3>
+<p>博客初始化完成之后，我们就可以添加第一篇博客了。</p>
+<h4 id="131">1.3.1 添加第一篇博客</h4>
+<p>如果你习惯使用命令行，可以使用命令 <code>nikola new_post -f markdown</code> 添加第一篇博客：</p>
+<div class="code"><pre class="code literal-block">Creating New Post
+-----------------
+
+Title: First post
+Scanning posts........done!
+<span class="o">[</span><span class="m">2022</span>-04-29 <span class="m">20</span>:50:04<span class="o">]</span> INFO: new_post: Your post<span class="err">'</span>s text is at: posts/first-post.md
+</pre></div>
+
+<p><code>-f</code> 参数指定文章格式，这里我们指定为 markdown 格式，该命令会在 posts 文件夹下新建一个 markdown 文件，你可以 <code>cd</code> 到 posts 目录下，继续编辑该博客。打开该博客，你会发现以下元信息：</p>
+<div class="code"><pre class="code literal-block">&lt;!--
+.. title: First post
+.. slug: first-post
+.. date: <span class="m">2022</span>-12-30 <span class="m">19</span>:30:43 UTC+08:00
+.. tags: 
+.. category: 
+.. link: 
+.. description: 
+.. type: text
+--&gt;
+</pre></div>
+
+<ul>
+<li>title：文章标题</li>
+<li>
+<a href="https://www.semrush.com/blog/what-is-a-url-slug/">slug</a>：固定链接地址，是 URL 最后一个反斜杠之后的那一部分。slug 如果不指定，Nikola 默认使用文章标题作为 slug。</li>
+<li>date：文章创建时间</li>
+<li>tags：文章标签</li>
+<li>category：文章分类</li>
+<li>link：Link to original source for content. May be displayed by some themes.（官方文档介绍，暂时没用过）</li>
+<li>description：页面描述</li>
+<li>type：文章类型</li>
+</ul>
+<p>除此之外，另一个常用的元信息字段是 <code>has_math</code>。如果文章中有 latex 公式，就需要添加该字段。一般常用的 metadata 字段就这些，如果你想深入了解，推荐<a href="https://getnikola.com/handbook.html#metadata-fields">官方文档</a>。</p>
+<p>如果你不习惯使用命令行，也可以直接在 posts 目录下新建 markdown 文件，然后利用你喜欢的编辑器进行编辑，但需要手动添加元信息。除了 markdown，Nikola 也支持如下格式：</p>
+<blockquote>
+<ul>
+<li>reStructuredText (default and pre-configured)</li>
+<li>
+<a href="https://getnikola.com/handbook.html#markdown">Markdown</a> (pre-configured since v7.8.7)</li>
+<li><a href="https://getnikola.com/handbook.html#jupyter-notebook">Jupyter Notebook</a></li>
+<li><a href="https://getnikola.com/handbook.html#html">HTML</a></li>
+<li><a href="https://getnikola.com/handbook.html#php">PHP</a></li>
+<li>anything <a href="https://getnikola.com/handbook.html#pandoc">Pandoc</a> supports (including Textile, DocBook, LaTeX, MediaWiki, TWiki, OPML, Emacs Org-Mode, txt2tags, Microsoft Word .docx, EPUB, Haddock markup)</li>
+</ul>
+</blockquote>
+<h4 id="132">1.3.2 生成静态文件</h4>
+<p>写完博客之后，下面我们使用命令 <code>nikola build</code> 生成静态文件。<code>nikola build</code> 会在博客根目录下新建一个 output 目录，这个目录就是你的站点资源目录，你的博客网站里所有显示的内容都来自于这个目录。我们来看下这个目录：</p>
+<div class="code"><pre class="code literal-block">.
+├── <span class="m">2012</span>  <span class="c1"># 博客归档目录，Nikola demo 文件中有一篇是 2012 年写的</span>
+├── archive.html  <span class="c1"># 显示博客归档页面</span>
+├── assets  <span class="c1"># css js fonts img 等资源目录</span>
+├── categories  <span class="c1"># 博客分类</span>
+├── favicon.ico
+├── galleries
+├── images
+├── index.html <span class="c1"># 博客首页</span>
+├── listings
+├── pages
+├── posts  <span class="c1"># 博客目录</span>
+├── robots.txt
+├── rss.xml
+├── sitemap.xml
+└── sitemapindex.xml
+</pre></div>
+
+<p>这里，我们需要关注 posts 目录，<code>nikola build</code> 命令会将我们写的 markdown 文件转化为 html 文件并保存在该目录下。</p>
+<h4 id="133">1.3.3 本地调试</h4>
+<p>使用命令 <code>nikola serve -b</code> 会打开默认浏览器，方便我们进行本地调试。这里，由于我是在 WSL2 中搭建博客，键入 <code>nikola serve -b</code> 命令之后，<code>http://0.0.0.0:8000/</code> 显示拒绝访问，Windows 和 Mac 应该不存在这个问题。</p>
+<p>解决方法是在 windows <code>C:\Users\Me</code> 目录下新建 <code>.wslconfig</code> 配置文件，并输入以下内容：</p>
+<div class="code"><pre class="code literal-block"><span class="o">[</span>wsl2<span class="o">]</span>
+<span class="nv">localhostForwarding</span><span class="o">=</span><span class="nb">true</span>
+</pre></div>
+
+<h3 id="14-nikola-jupyter-notebook">1.4 让 Nikola 支持 Jupyter Notebook</h3>
+<p>下面我们让 Nikola 支持 Jupyter Notebook，毕竟这是数据科学家的博客:)</p>
+<p>首先我们需要在 <code>COMPILERS</code> 中定义 <code>ipynb</code> 文件。打开站点配置文件 <code>conf.py</code>，搜索 <code>COMPILERS</code>，如下定义 <code>ipynb</code> 文件：</p>
+<div class="code"><pre class="code literal-block">COMPILERS = {                                                                               
+    "rest": ['.rst', '.txt'],
+    "markdown": ['.md', '.mdown', '.markdown'],
+    "textile": ['.textile'],
+    "txt2tags": ['.t2t'],
+    "bbcode": ['.bb'],
+    "wiki": ['.wiki'],
+    "ipynb": ['.ipynb'],
+    "html": ['.html', '.htm'],
+    "php": ['.php'],
+}
+</pre></div>
+
+<p>其次，我们需要在 <code>POSTS</code> 中定义 <code>.ipynb</code> 插件。编辑站点配置文件 <code>conf.py</code>，搜索 <code>POSTS</code>，如下定义 <code>.ipynb</code> 插件：</p>
+<div class="code"><pre class="code literal-block"> <span class="n">POSTS</span> <span class="o">=</span> <span class="p">(</span>                                                                              
+     <span class="p">(</span><span class="s2">"posts/*.rst"</span><span class="p">,</span> <span class="s2">"posts"</span><span class="p">,</span> <span class="s2">"post.tmpl"</span><span class="p">),</span>
+     <span class="p">(</span><span class="s2">"posts/*.md"</span><span class="p">,</span> <span class="s2">"posts"</span><span class="p">,</span> <span class="s2">"post.tmpl"</span><span class="p">),</span>
+     <span class="p">(</span><span class="s2">"posts/*.txt"</span><span class="p">,</span> <span class="s2">"posts"</span><span class="p">,</span> <span class="s2">"post.tmpl"</span><span class="p">),</span>
+     <span class="p">(</span><span class="s2">"posts/*.html"</span><span class="p">,</span> <span class="s2">"posts"</span><span class="p">,</span> <span class="s2">"post.tmpl"</span><span class="p">),</span>
+     <span class="p">(</span><span class="s2">"posts/*.ipynb"</span><span class="p">,</span> <span class="s2">"posts"</span><span class="p">,</span> <span class="s2">"post.tmpl"</span><span class="p">),</span>
+ <span class="p">)</span>
+</pre></div>
+
+<p>使用 Jupyter Notebook 写博客与 markdown 类似，你可以在 posts 文件下新建 ipynb 文件，然后用 Jupyter Notebook 打开编辑。</p>
+<p>我们可以使用字典向 Jupyter Notebook 中添加博客文章必需的元信息，方法为打开 Jupyter Notebook，菜单栏选择 <em>Edit -&gt; Edit Notebook Metadata</em>，添加如下格式信息：</p>
+<div class="code"><pre class="code literal-block"><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">"nikola"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example for Jupyter Notebook metadata configuration"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">"slug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example-for-jupyter-notebook-metadata-configuration"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-04-29 19:52:05 UTC"</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="15-markdown">1.5 markdown 支持</h3>
+<p>Nikola 默认使用 <a href="https://python-markdown.github.io/reference/">python-markdown</a> 解析 markdown，你也可以选择使用 pandoc，这篇<a href="https://www.brainsorting.com/posts/create-a-blog-with-nikola/#using-markdown-for-your-post">博客</a>讲的非常清楚。</p>
+<p>另外，如果你喜欢使用 Pelican-style 风格添加博客元信息，需要添加 <code>markdown.extensions.meta</code> 插件。此外，你也可以使用 <code>markdown.extensions.toc</code> 插件自动解析文章目录。打开站点配置文件，编辑 markdown 插件配置选项：</p>
+<div class="code"><pre class="code literal-block"> <span class="n">MARKDOWN_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span>
+     <span class="s1">'markdown.extensions.meta'</span><span class="p">,</span>
+     <span class="s1">'markdown.extensions.fenced_code'</span><span class="p">,</span>
+     <span class="s1">'markdown.extensions.codehilite'</span><span class="p">,</span>
+     <span class="s1">'markdown.extensions.extra'</span><span class="p">,</span>
+     <span class="s1">'markdown.extensions.toc'</span><span class="p">,</span>  <span class="c1"># 自动解析文章目录</span>
+ <span class="p">]</span>
+</pre></div>
+
+<h3 id="16">1.6 数学公式支持</h3>
+<p>Nikola 默认使用 MathJax 显示数学公式，你可以使用 Katex。编辑站点配置文件，修改 <code>USE_KATEX=True</code>。Nikola 默认使用 <code>\(...\)</code> 渲染行内公式，使用 <code>\[...\]</code> 和 <code>$$...$$</code> 渲染行间公式。如果你习惯使用 <code>$...$</code> 渲染行内公式，需要修改配置文件，搜索 <code>KATEX_AUTO_RENDER</code> ，如下编辑：</p>
+<div class="code"><pre class="code literal-block"><span class="n">KATEX_AUTO_RENDER</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">delimiters: [</span>
+<span class="s2">    {left: "$$", right: "$$", display: true},</span>
+<span class="s2">    {left: "</span><span class="se">\\\\</span><span class="s2">[", right: "</span><span class="se">\\\\</span><span class="s2">]", display: true},</span>
+<span class="s2">    {left: "</span><span class="se">\\\\</span><span class="s2">begin{equation*}", right: "</span><span class="se">\\\\</span><span class="s2">end{equation*}", display: true},</span>
+<span class="s2">    {left: "$", right: "$", display: false},</span>
+<span class="s2">    {left: "</span><span class="se">\\\\</span><span class="s2">(", right: "</span><span class="se">\\\\</span><span class="s2">)", display: false}</span>
+<span class="s2">]</span>
+<span class="s2">"""</span>
+</pre></div>
+
+<h2 id="2">2 博客美化</h2>
+<p>相比于 Jekyll、Hugo 和 Hexo，Nikola 的不足是好看的主题比较少。官方提供了一些<a href="https://themes.getnikola.com/">主题</a>，这里我们以 <a href="https://themes.getnikola.com/v8/bootstrap4/">bootstrap4</a> 来演示。</p>
+<h3 id="21">2.1 更换主题</h3>
+<p>首先，我们需要下载主题。利用 <code>nikola theme -i bootstrap4</code> 命令下载主题。然后我们编辑站点配置文件 <code>conf.py</code>，搜索 <code>THEME</code>，将主题修改为 <code>bootstrap4</code>。</p>
+<h3 id="22">2.2 导航栏配置</h3>
+<p>我们可以通过修改 <code>THEME_CONFIG</code> 来修改导航栏配色。bootstrap4 导航栏默认是暗底，也可以自定义背景颜色，配置文件如下：</p>
+<div class="code"><pre class="code literal-block"> <span class="n">THEME_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">DEFAULT_LANG</span><span class="p">:</span> <span class="p">{</span>
+          <span class="c1"># Use a light navbar with dark text. Defaults to False.                                   </span>
+          <span class="s1">'navbar_light'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+          <span class="c1"># Use a custom navbar color. If unset, 'navbar_light' sets text +</span>
+          <span class="c1"># background color. If set, navbar_light controls only background</span>
+          <span class="c1"># color. Supported values: bg-dark, bg-light, bg-primary, bg-secondary,</span>
+          <span class="c1"># bg-success, bg-danger, bg-warning, bg-info, bg-white, bg-transparent.</span>
+          <span class="s1">'navbar_custom_bg'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
+      <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+
+<p>导航栏默认有博客归档、分类和 RSS 订阅栏目，我们可以通过修改 <code>NAVIGATION_LINKS</code> 来自定义导航栏目。其默认配置如下：</p>
+<div class="code"><pre class="code literal-block"><span class="n">NAVIGATION_LINKS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">DEFAULT_LANG</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s2">"/archive.html"</span><span class="p">,</span> <span class="s2">"Archive"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"/categories/"</span><span class="p">,</span> <span class="s2">"Tags"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"/rss.xml"</span><span class="p">,</span> <span class="s2">"RSS feed"</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>这里 <code>/</code> 代表站点资源根目录，即 output 目录。我们可以通过指定资源目录，自定义导航栏。比如在 <code>categories/</code> 目录下，Nikola 生成了 <code>cat_nikola</code>、<code>cat_python</code> 等类别目录，我们可以指定这两个目录，新建一个多级 TECH 导航栏目。</p>
+<div class="code"><pre class="code literal-block"><span class="n">NAVIGATION_LINKS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">DEFAULT_LANG</span><span class="p">:</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s2">"/archive.html"</span><span class="p">,</span> <span class="s2">"Archive"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"/categories/"</span><span class="p">,</span> <span class="s2">"Tags"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"/rss.xml"</span><span class="p">,</span> <span class="s2">"RSS feed"</span><span class="p">),</span>
+        <span class="p">(</span>
+          <span class="p">(</span>
+            <span class="p">(</span><span class="s2">"/categories/cat_nikola/"</span><span class="p">,</span> <span class="s2">"Nikola"</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"/categories/cat_python/"</span><span class="p">,</span> <span class="s2">"Python"</span><span class="p">)</span>
+          <span class="p">),</span>
+          <span class="s2">"TECH"</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3 id="23-logo">2.3 网页图标与 logo</h3>
+<p>首先我们进入博客根目录中的 files 目录，新建 assets 目录，再新建 img 目录，然后将网页图标 favicon 和 logo 文件拷贝到 img 目录中。<code>nikola build</code> 在生成静态文件时会将 files 文件下的资源都复制到 output 目录。</p>
+<p>然后编辑站点配置文件 <code>conf.py</code> 搜索 <code>FAVICONS</code> 和 <code>LOGO</code>，如下配置：</p>
+<div class="code"><pre class="code literal-block"><span class="n">FAVICONS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s2">"icon"</span><span class="p">,</span> <span class="s2">"/assets/img/favicon.ico"</span><span class="p">,</span> <span class="s2">"16x16"</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">LOGO_URL</span> <span class="o">=</span> <span class="s1">'/assets/img/logo.jpg'</span>
+</pre></div>
+
+<h3 id="24">2.4 代码显示风格</h3>
+<p>Nikola 使用 <a href="https://pygments.org/">Pygments</a> 进行语法高亮，你可以在 <a href="https://pygments.org/styles/">Pygments styles</a> 选择自己喜欢的配色风格。我比较喜欢 <code>zenburn</code>，编辑站点配置文件 <code>conf.py</code> ，搜索 <code>CODE_COLOR_SCHEME</code> ，如下配置：</p>
+<div class="code"><pre class="code literal-block"><span class="n">CODE_COLOR_SCHEME</span> <span class="o">=</span> <span class="s1">'zenburn'</span>
+</pre></div>
+
+<h3 id="24_1">2.4 目录美化</h3>
+<p>如果你使用了 <code>markdown.extensions.toc</code> 插件解析文章目录，你会发现这个目录比较丑。Nikola 使用 <code>post.tmpl</code> 模板文件来生成博客文章页面，我们可以修改这个模板文件，从而美化目录（这需要你懂一点前端和 Mako 模板引擎的知识:)</p>
+<p>首先，我们将 <code>post.tmpl</code> 文件复制到博客根目录，命令行输入 <code>nikola theme -c post.tmpl</code>，该命令会将 <code>post.tmpl</code> 文件复制 templates 目录下，然后我们编辑这个文件。因为我们只是希望美化博客文章页面的目录，所以可以使用内部样式表，在 <code>&lt;style&gt;</code> 标签中定义样式。比如，我是这样美化的：</p>
+<div class="code"><pre class="code literal-block"><span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="nt">screen</span><span class="w"> </span><span class="nt">and</span><span class="w"> </span><span class="o">(</span><span class="nt">min-width</span><span class="o">:</span><span class="w"> </span><span class="nt">1024px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="nc">e-content</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="k">grid</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">grid-template-columns</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="n">fr</span><span class="w"> </span><span class="mi">1</span><span class="n">fr</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">column-gap</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">relative</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">.</span><span class="nc">toc</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">grid-column</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">grid-row</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">span</span><span class="w"> </span><span class="mi">999</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">align-self</span><span class="p">:</span><span class="w"> </span><span class="kc">start</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">sticky</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">.</span><span class="nc">toc</span><span class="p">::</span><span class="nd">before</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">content</span><span class="p">:</span><span class="w"> </span><span class="s2">"ON this page"</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#ffe70e</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#444</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="kc">bold</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">italic</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="kt">px</span><span class="w"> </span><span class="mi">5</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">margin-left</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="nt">screen</span><span class="w"> </span><span class="nt">and</span><span class="w"> </span><span class="o">(</span><span class="nt">max-width</span><span class="o">:</span><span class="w"> </span><span class="nt">767px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">.</span><span class="nc">e-content</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="k">grid</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">grid-template-columns</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="n">fr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">.</span><span class="nc">toc</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">grid-column</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">.</span><span class="nc">toc</span><span class="p">::</span><span class="nd">before</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">content</span><span class="p">:</span><span class="w"> </span><span class="s2">"ON this page"</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#ffe70e</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#444</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="kc">bold</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">italic</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="kt">px</span><span class="w"> </span><span class="mi">5</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="k">margin-left</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="25">2.5 定制样式</h3>
+<p>Nikola 支持定制样式，我们可以通过在 <code>files/assets/css/</code> 目录下，新建 <code>custom.css</code> 文件来定制全局字体，行距等样式。如果你觉得我的样式不错，也可以选择复制<a href="../../listings/custom.css.html">我的</a>:)</p>
+<h3 id="25_1">2.5 个性化首页</h3>
+<p>Nikola 默认的首页是博客文章列表，并且是显示文章全部内容。我们可以通过修改配置文件 <code>INDEX_TEASERS=True</code>，然后在文章源文件中加入 <code>&lt;!--- TEASER_END ---&gt;</code> 来选择显示部分内容。</p>
+<p>首页默认显示 10 篇文章，我们可以通过编辑站点配置文件中的 <code>INDEX_DISPLAY_POST_COUNT</code> 来选择首页显示的文章数量。</p>
+<p>此外，如果你希望定制首页，比如首页是一个 Greeting 页面，显示个人信息等等（像我这样:) 我强烈建议修改 <code>index.tmpl</code> 模板文件。如果你懂一点前端，可以在这里大显身手。使用命令 <code>nikola theme -c index.tmpl</code> 将模板文件复制到 templates 目录下，进行修改。</p>
+<h2 id="3-github">3 部署到 Github</h2>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/blog/" rel="tag">Blog</a></li>
+            <li><a class="tag p-category" href="../../categories/github/" rel="tag">Github</a></li>
+            <li><a class="tag p-category" href="../../categories/jupyter-notebook/" rel="tag">Jupyter-notebook</a></li>
+            <li><a class="tag p-category" href="../../categories/nikola/" rel="tag">Nikola</a></li>
+            <li><a class="tag p-category" href="../../categories/wsl2/" rel="tag">WSL2</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../backtest-portfolio-optimization/" rel="prev" title="Backtesting portfolio optimization strategies">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../plotting-with-pandas/" rel="next" title="Plotting with pandas">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2022         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>See Theory | RoundedTom</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/see-theory/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../ubuntu18.04-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" title="Ubuntu 18.04 安装与配置" type="text/html">
+<link rel="next" href="../%E4%BB%8E0%E5%88%B01%E7%9A%84%E7%88%AC%E8%99%AB%E6%95%99%E7%A8%8B/" title="从0到1的爬虫教程" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="See Theory">
+<meta property="og:url" content="https://example.com/posts/see-theory/">
+<meta property="og:description" content="Here are some notes from see-theory on probability theory.
+
+
+
+
+1 Basic Probability
+Sample space
+Events
+Probability measure
+Independence
+Expectation
+Variance
+Markov's Inequality
+Chebyschev's Inequality">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-04-19T20:41:53+08:00">
+<meta property="article:tag" content="Probabilities">
+<style>
+        @media screen and (min-width: 1024px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 3fr 1fr;
+                column-gap: 30px;
+                position: relative;
+            }
+
+            .toc {
+                grid-column: 2 / 3;
+                grid-row: 1 / span 999;
+                align-self: start;
+                position: sticky;
+                top: 20px;
+                /* overflow: auto; */
+            }
+        
+            .toc::before {
+                /* font-family: var(--font-serif); */
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                /* display: inline-block; */
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+            
+            .toc {
+                grid-column: 1 / 2;
+                /* overflow: auto; */
+            }
+            
+            .toc::before {
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+
+        }
+        
+        code {
+            background-color: #DDDDDD;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
+<li class="nav-item">
+<a href="../../archive.html" class="nav-link">Archive</a>
+                </li>
+<li class="nav-item">
+<a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li>
+</ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">See Theory</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Tom
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-04-19T20:41:53+08:00" itemprop="datePublished" title="2020-04-19 20:41">2020-04-19 20:41</time></a>
+            </p>
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>Here are some notes from <a href="https://seeing-theory.brown.edu/">see-theory</a> on probability theory.</p>
+<!-- TEASER_END -->
+
+<div class="toc">
+<ul>
+<li>
+<a href="#1-basic-probability">1 Basic Probability</a><ul>
+<li><a href="#sample-space">Sample space</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#probability-measure">Probability measure</a></li>
+<li><a href="#independence">Independence</a></li>
+<li><a href="#expectation">Expectation</a></li>
+<li><a href="#variance">Variance</a></li>
+<li><a href="#markovs-inequality">Markov's Inequality</a></li>
+<li><a href="#chebyschevs-inequality">Chebyschev's Inequality</a></li>
+<li>
+<a href="#estimation">Estimation</a><ul>
+<li><a href="#consistency-of-estimators">Consistency of Estimators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#2-compound-probability">2 Compound Probability</a><ul>
+<li>
+<a href="#set-theory">Set Theory</a><ul>
+<li><a href="#basic-definitions">Basic Definitions</a></li>
+<li><a href="#intersection-union-and-complementation">Intersection, Union and Complementation</a></li>
+<li><a href="#disjointness">Disjointness</a></li>
+</ul>
+</li>
+<li>
+<a href="#frequentist-inference">Frequentist inference</a><ul>
+<li><a href="#point-estimation">Point Estimation</a></li>
+<li><a href="#confidence-interval">Confidence Interval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#bayesian-inference">Bayesian Inference</a></li>
+</ul>
+</div>
+<h2 id="1-basic-probability">1 Basic Probability</h2>
+<h3 id="sample-space">Sample space</h3>
+<p>A <strong>probabilistic experiment</strong> has severval components. The <strong>sample space</strong> is the set of all possible <strong>outcomes</strong> in the experiment. We usually denote the sample space by $\Omega$ .</p>
+<h3 id="events">Events</h3>
+<p>Collections of outcomes in the sample space $\Omega$ are called <strong>events</strong>.</p>
+<h3 id="probability-measure">Probability measure</h3>
+<p>A <strong>probability measure</strong> P is a <strong>function</strong> that maps subsets of the <strong>state space</strong> $\Omega$ to numbers in the interval $[0,1]$ . </p>
+<p>The probabilities in a probabilistic experiment are not arbitrary, the must satisfy a set of rules or <strong>axioms</strong> :</p>
+<ul>
+<li>All probabilities must be nonnegative.</li>
+<li>The sum of the probabilisties of all the outcomes in $\Omega$ must be 1.</li>
+<li>The probability of an event is the sum of the probabilities of the outcomes it comprises.</li>
+</ul>
+<h3 id="independence">Independence</h3>
+<p>If two events A and B do not influence or give any information about the other, we say A and B are <strong>independent</strong>.</p>
+<p>Let A and B both be subsets of our sample space $\Omega$. Then we say A and B are independent if 
+$$
+P(A \cap B)=P(A)P(B)
+$$</p>
+<h3 id="expectation">Expectation</h3>
+<p>The expected value, or <strong>expectation</strong> of X, denoted by $E(X)$, is defined to be 
+$$
+E(X) = \sum_{x \in X(\Omega)}{xP(X=x)}
+$$</p>
+<p>Properties of expectation:</p>
+<ul>
+<li>If X and Y are two random variables, then 
+$$
+E(X+Y) = E(X)+E(Y)
+$$</li>
+<li>If X is a random variable and c is a constant, then 
+$$
+E(cX) = cE(X)
+$$</li>
+<li>If X and Y are independent random variables, then 
+$$
+E(XY) = E(X)E(Y)
+$$</li>
+</ul>
+<h3 id="variance">Variance</h3>
+<p>The variance of a random variable X is a nonnegative number that summarizes on average how much X differs from its mean, or expectation.</p>
+<p>The variance of X, denoted by $Var(X)$ is defined to be 
+$$
+Var(X)=E[(x-EX)^2]
+$$</p>
+<p>Properties of variance:</p>
+<ul>
+<li>If X is a random variable with mean $EX$ and $c$ is a real number,</li>
+<li>$Var(X) \ge 0$.</li>
+<li>$Var(cX) = c^2Var(X)$.</li>
+<li>$Var(X) = E(X^2)-E(X)^2$.</li>
+<li>If $X$ and $Y$ are independent random variables, then 
+  $$
+  Var(X+Y) = Var(X) + Var(Y)
+  $$</li>
+</ul>
+<h3 id="markovs-inequality">Markov's Inequality</h3>
+<p>Suppose $X$ is a nonnegative random variable and $a$ is a positive constant. Then
+$$
+P(X \ge a) \le \frac{EX}{a}
+$$</p>
+<h3 id="chebyschevs-inequality">Chebyschev's Inequality</h3>
+<p>Let $X$ be a random variable. Then
+$$
+P(|X-EX|\ge \epsilon) \le \frac{Var(X)}{\epsilon^2}
+$$</p>
+<p>切比雪夫不等式阐释了这样一个事实，随机变量大幅偏离期望的概率较小。</p>
+<h3 id="estimation">Estimation</h3>
+<p><strong>Estimator</strong> is a function or expression to <strong>make inferences</strong> about a population given data from a subset of that population.</p>
+<h4 id="consistency-of-estimators">Consistency of Estimators</h4>
+<p>We say an estimator $\hat{p}$ is  a <strong>consistent</strong> estimator of $p$ if for any $\epsilon &gt;0$, 
+$$
+lim_{n \to \infty}P(|\hat{p}-p|&gt;\epsilon)=0.
+$$</p>
+<h2 id="2-compound-probability">2 Compound Probability</h2>
+<h3 id="set-theory">Set Theory</h3>
+<h4 id="basic-definitions">Basic Definitions</h4>
+<p>A <strong>set</strong> is a collections of items, or elements, with no repeats. Usually we write a set $A$ using curly brackets and commas to distinguish elements, shown below
+$$
+A = {a_0, a_1, a_2}
+$$
+The size of the set $A$ is denoted $|A|$ and is called the <strong>cardinality</strong> of $A$. The <strong>empty set</strong> is denoted $\emptyset$.</p>
+<h4 id="intersection-union-and-complementation">Intersection, Union and Complementation</h4>
+<ul>
+<li>$A \cap B = {x \in \Omega : x \in A \ and \  x \in B }$</li>
+<li>$A \cup B = {x \in \Omega : x \in A \ or \ x \in B }$</li>
+<li>$A^c = {x \in \Omega : x \notin A }$</li>
+</ul>
+<h4 id="disjointness">Disjointness</h4>
+<p>For two sets to be disjoint, they must share no common elements. We say two sets $A$ and $B$ are <strong>disjoint</strong> if 
+$$
+A \cap B = \emptyset
+$$</p>
+<h3 id="frequentist-inference">Frequentist inference</h3>
+<p>Frequentist inference is the process of determining properties of an underlying distribution via the observation of data.</p>
+<h4 id="point-estimation">Point Estimation</h4>
+<p>One of the main goals of statistics is to estimate unknown parameters. To approximate these parameters, we choose an estimator, which is simply any function of randomly sampled observations.</p>
+<h4 id="confidence-interval">Confidence Interval</h4>
+<p>In contrast to point estimators, confidence intervals estimate a parameter by specifying a range of possible values. Such an interval is associated with a confidence level, which is the probability that the procedure used to generate the interval will produce an interval containing the true parameter.</p>
+<h2 id="bayesian-inference">Bayesian Inference</h2>
+<p>Bayesian inference techniques specify how one should update one’s beliefs upon observing data.</p>
+<p>极大似然估计：模型已定，参数未知，采样独立同分布</p>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/probabilities/" rel="tag">Probabilities</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../ubuntu18.04-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" rel="prev" title="Ubuntu 18.04 安装与配置">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../%E4%BB%8E0%E5%88%B01%E7%9A%84%E7%88%AC%E8%99%AB%E6%95%99%E7%A8%8B/" rel="next" title="从0到1的爬虫教程">Next post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$latex ','$'], ['\\(','\\)']]}});
+        </script></article><!--End of body content--><footer id="footer">
+            Contents © 2022         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
