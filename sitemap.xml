@@ -35,22 +35,14 @@
  </url>
  <url>
   <loc>https://example.com/categories/</loc>
-  <lastmod>2022-12-31T14:41:00Z</lastmod>
+  <lastmod>2022-12-31T15:20:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/blog/</loc>
   <lastmod>2022-12-31T13:55:00Z</lastmod>
  </url>
  <url>
-  <loc>https://example.com/categories/cat_linux/</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
- </url>
- <url>
   <loc>https://example.com/categories/cat_mathematics/</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
- </url>
- <url>
-  <loc>https://example.com/categories/cat_python/</loc>
   <lastmod>2022-12-31T13:55:00Z</lastmod>
  </url>
  <url>
@@ -79,10 +71,6 @@
  </url>
  <url>
   <loc>https://example.com/categories/linux/</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
- </url>
- <url>
-  <loc>https://example.com/categories/math/</loc>
   <lastmod>2022-12-31T13:55:00Z</lastmod>
  </url>
  <url>
