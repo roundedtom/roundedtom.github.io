@@ -107,16 +107,11 @@ bg-white
         </button>
 
         <div class="collapse navbar-collapse" id="bs-navbar">
-            <ul class="navbar-nav mr-auto">
-<li class="nav-item">
-<a href="../../archive.html" class="nav-link">Archive</a>
-                </li>
-<li class="nav-item">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
 <a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
 
                 
-            </li>
-</ul>
+            </li></ul>
 <!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
 <div class="form-group">
 <input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
@@ -188,6 +183,7 @@ bg-white
 </ul>
 </li>
 <li><a href="#3-github">3 部署到 Github</a></li>
+<li><a href="#_1">参考资料</a></li>
 </ul>
 </div>
 <p>关于如何使用 Nikola 搭建博客和个人网站，相关的中文资源比较少，这篇文章是我个人，来自一个非科班背景的踩坑经历。博客在 WSL2 上搭建，Windows 与 Mac 上搭建也类似，环境如下：</p>
@@ -529,7 +525,43 @@ Scanning posts........done!
 <p>首页默认显示 10 篇文章，我们可以通过编辑站点配置文件中的 <code>INDEX_DISPLAY_POST_COUNT</code> 来选择首页显示的文章数量。</p>
 <p>此外，如果你希望定制首页，比如首页是一个 Greeting 页面，显示个人信息等等（像我这样:) 我强烈建议修改 <code>index.tmpl</code> 模板文件。如果你懂一点前端，可以在这里大显身手。使用命令 <code>nikola theme -c index.tmpl</code> 将模板文件复制到 templates 目录下，进行修改。</p>
 <h2 id="3-github">3 部署到 Github</h2>
-    </div>
+<ul>
+<li>在 Github 新建一个仓库，命名为 <code>[username].github.io</code>，username 就是你的 Github 账户名</li>
+<li>在博客根目录 <code>git init</code> 创建版本仓库</li>
+<li>添加远程仓库 <code>git remote add origin https://github.com/[username]/[username].github.io.git</code>
+</li>
+<li>创建 <code>.gitignore</code> 文件</li>
+</ul>
+<div class="code"><pre class="code literal-block">cache
+.doit.db*
+__pycache__
+output
+.ipynb_checkpoints
+.DS_Store
+</pre></div>
+
+<ul>
+<li>使用 <code>nikola github_deploy</code> 一键部署到 Github</li>
+</ul>
+<p>解释一下 <code>nikola github_deploy</code>，这个<a href="https://getnikola.com/handbook.html#deploying-to-github">命令</a>会创建一个 <code>src</code> 分支，用来保存博客目录的源文件，而 <code>master</code> 分支用来保存站点资源目录（即 output 目录）下的那些静态资源文件。这些配置也可以在站点配置文件 <code>conf.py</code> 中进行修改：</p>
+<div class="code"><pre class="code literal-block"><span class="n">GITHUB_SOURCE_BRANCH</span> <span class="o">=</span> <span class="s1">'src'</span>
+<span class="n">GITHUB_DEPLOY_BRANCH</span> <span class="o">=</span> <span class="s1">'master'</span>
+
+<span class="c1"># The name of the remote where you wish to push to, using github_deploy.</span>
+<span class="n">GITHUB_REMOTE_NAME</span> <span class="o">=</span> <span class="s1">'origin'</span>
+
+<span class="c1"># Whether or not github_deploy should commit to the source branch automatically</span>
+<span class="c1"># before deploying.</span>
+<span class="n">GITHUB_COMMIT_SOURCE</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+
+<h2 id="_1">参考资料</h2>
+<ul>
+<li><a href="https://getnikola.com/handbook.html#">The Nikola Handbook</a></li>
+<li>https://randlow.github.io/posts/python/create-nikola-coding-blog/</li>
+<li>https://www.brainsorting.com/posts/create-a-blog-with-nikola/</li>
+</ul>
+</div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
 <li><a class="tag p-category" href="../../categories/blog/" rel="tag">Blog</a></li>
             <li><a class="tag p-category" href="../../categories/github/" rel="tag">Github</a></li>
@@ -545,7 +577,7 @@ Scanning posts........done!
                 <a href="../plotting-with-pandas/" rel="next" title="Plotting with pandas">Next post</a>
             </li>
         </ul></nav></aside></article><!--End of body content--><footer id="footer">
-            Contents © 2022         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
             
         </footer>

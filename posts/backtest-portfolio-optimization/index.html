@@ -14,7 +14,7 @@
 <link rel="canonical" href="https://example.com/posts/backtest-portfolio-optimization/">
 <link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
 <!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
-<link rel="prev" href="../matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="matplotlib 绘图工作流" type="text/html">
+<link rel="prev" href="../matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="Matplotlib 绘图工作流" type="text/html">
 <link rel="next" href="../blogging-with-Nikola-and-WSL2/" title="Blogging with Nikola and WSL2" type="text/html">
 <meta property="og:site_name" content="RoundedTom">
 <meta property="og:title" content="Backtesting portfolio optimization strategies">
@@ -59,6 +59,9 @@ print(boston.DESCR)
 ">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2022-02-19T00:00:00+08:00">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Sklearn">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <style>
         
     </style>
@@ -81,16 +84,11 @@ bg-white
         </button>
 
         <div class="collapse navbar-collapse" id="bs-navbar">
-            <ul class="navbar-nav mr-auto">
-<li class="nav-item">
-<a href="../../archive.html" class="nav-link">Archive</a>
-                </li>
-<li class="nav-item">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
 <a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
 
                 
-            </li>
-</ul>
+            </li></ul>
 <!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
 <div class="form-group">
 <input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
@@ -403,17 +401,33 @@ The mean squared error of uniform-weighted KNeighborRegression:  21.703073090490
 
 </div>
     </div>
-    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/python/" rel="tag">Python</a></li>
+            <li><a class="tag p-category" href="../../categories/sklearn/" rel="tag">Sklearn</a></li>
+        </ul>
+<ul class="pager hidden-print">
 <li class="previous">
-                <a href="../matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="prev" title="matplotlib 绘图工作流">Previous post</a>
+                <a href="../matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="prev" title="Matplotlib 绘图工作流">Previous post</a>
             </li>
             <li class="next">
                 <a href="../blogging-with-Nikola-and-WSL2/" rel="next" title="Blogging with Nikola and WSL2">Next post</a>
             </li>
-        </ul></nav></aside><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha384-3lJUsx1TJHt7BA4udB5KPnDrlkO8T6J6v/op7ui0BbCjvZ9WqV4Xm6DTP6kQ/iBH" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
-        MathJax.Hub.Config({tex2jax: {inlineMath: [['$latex ','$'], ['\\(','\\)']]}});
-        </script></article><!--End of body content--><footer id="footer">
-            Contents © 2022         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+        </ul></nav></aside><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
+                renderMathInElement(document.body,
+                    {
+                        
+delimiters: [
+    {left: "$$", right: "$$", display: true},
+    {left: "\\[", right: "\\]", display: true},
+    {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+    {left: "$", right: "$", display: false},
+    {left: "\\(", right: "\\)", display: false}
+]
+
+                    }
+                );
+            </script></article><!--End of body content--><footer id="footer">
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
             
         </footer>
