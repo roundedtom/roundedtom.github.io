@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://example.com/categories/blog.xml</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <lastmod>2023-01-01T02:55:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_mathematics.xml</loc>
@@ -15,7 +15,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_tech.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-14T13:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/data-analysis.xml</loc>
@@ -23,7 +23,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/github.xml</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <lastmod>2023-01-01T02:55:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/http.xml</loc>
@@ -31,11 +31,11 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/hui-tu.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-14T13:11:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/jupyter-notebook.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-14T13:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/linux.xml</loc>
@@ -43,15 +43,15 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/matplotlib.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-14T13:11:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/nikola.xml</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <lastmod>2023-01-01T02:55:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pa-chong.xml</loc>
-  <lastmod>2022-12-31T14:38:00Z</lastmod>
+  <lastmod>2023-01-14T13:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pandas.xml</loc>
@@ -63,7 +63,11 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/python.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-14T13:24:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/selenium.xml</loc>
+  <lastmod>2023-01-14T13:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/sklearn.xml</loc>
@@ -75,7 +79,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/wsl2.xml</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <lastmod>2023-01-01T02:55:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/galleries/demo/rss.xml</loc>
@@ -87,10 +91,10 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/rss.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-14T13:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/sitemap.xml</loc>
-  <lastmod>2023-01-01T01:35:00Z</lastmod>
+  <lastmod>2023-01-14T13:24:00Z</lastmod>
  </sitemap>
 </sitemapindex>
