@@ -15,7 +15,7 @@
 <link rel="canonical" href="https://example.com/">
 <link rel="icon" href="assets/img/favicon.ico" sizes="16x16">
 <link rel="next" href="index-3.html" type="text/html">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/%E7%88%AC%E5%8F%96%E6%96%B0%E6%B5%AA%E8%B4%A2%E7%BB%8FESG%E6%8C%87%E6%95%B0/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/using-else-statement-in-a-loop/" type="text/html">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <style>
         .index_bg_picture {
@@ -127,7 +127,146 @@ bg-white
 
    <main role="main" class="container"><div class="row">
         <div class="col-md-8 blog-main">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/%E7%88%AC%E5%8F%96%E6%96%B0%E6%B5%AA%E8%B4%A2%E7%BB%8FESG%E6%8C%87%E6%95%B0/" class="u-url">爬取新浪财经 ESG 评级指数</a></h1>
+            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/using-else-statement-in-a-loop/" class="u-url">Using else statement in a loop</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Tom
+                    </span></p>
+                    <p class="dateline">
+                    <a href="posts/using-else-statement-in-a-loop/" rel="bookmark">
+                    <time class="published dt-published" datetime="2023-01-15T12:21:36+08:00" itemprop="datePublished" title="2023-01-15 12:21">2023-01-15 12:21</time></a>
+                    </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+            <div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>for/else</code> 和 <code>while/else</code> 中的 <code>else</code> 语句后的内容，在循环正常结束时，才会执行。换一句话说，当 <code>for</code> 循环或者 <code>While</code> 循环遇到 <code>break</code> 跳出循环时，<code>else</code> 语句后的内容则不执行。这个特性可以让某些行为变得更优雅，比如搜索过程。一般我们可能会利用一个标识变量（flag varable），当条件满足时，改变标识变量的值，然后跳出循环。比如下面这个例子，判断 John 是不是我们的顾客：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">customers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom'</span><span class="p">,</span> <span class="s1">'Mike'</span><span class="p">,</span> <span class="s1">'Jeff'</span><span class="p">,</span> <span class="s1">'Tony'</span><span class="p">]</span>
+<span class="n">is_John</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">'John'</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+        <span class="n">is_John</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">break</span>
+    
+<span class="k">if</span> <span class="n">is_John</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'John is our customer.'</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'John is not our customer.'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>John is not our customer.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>利用 <code>else</code> 语句，则不需要设置标识变量，当循环正常结束时，则表明 John 不是我们的顾客。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">customers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom'</span><span class="p">,</span> <span class="s1">'Mike'</span><span class="p">,</span> <span class="s1">'Jeff'</span><span class="p">,</span> <span class="s1">'Tony'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">'John'</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'John is our customer.'</span><span class="p">)</span>
+        <span class="k">break</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'John is not our customer.'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>John is not our customer.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>利用 <code>else</code> 语句也可以执行一些必要内容。比如使用 selenium 爬虫结束后，我们需要 <code>driver.close()</code> 和 <code>driver.quit()</code> 释放内存资源。那么在循环解析页面时，我们也可以把这两个语句放到 <code>else</code> 后面。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pseudocode</span>
+<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">url_list</span><span class="p">:</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+            </div>
+            </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/%E7%88%AC%E5%8F%96%E6%96%B0%E6%B5%AA%E8%B4%A2%E7%BB%8FESG%E6%8C%87%E6%95%B0/" class="u-url">爬取新浪财经 ESG 评级指数</a></h1>
                 <div class="metadata">
                     <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                         Tom
@@ -1180,23 +1319,6 @@ bg-white
 </div>
 </div>
 
-</div>
-            </div>
-            </article><hr style="border: 0; border-top: 1px solid #eee;">
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/blogging-with-Nikola-and-WSL2/" class="u-url">Blogging with Nikola and WSL2</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Tom
-                    </span></p>
-                    <p class="dateline">
-                    <a href="posts/blogging-with-Nikola-and-WSL2/" rel="bookmark">
-                    <time class="published dt-published" datetime="2022-04-29T13:28:09+08:00" itemprop="datePublished" title="2022-04-29 13:28">2022-04-29 13:28</time></a>
-                    </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-            <div>
-<p>一直希望搭建一个博客，一方面是希望能有一个地方记录整理自己学过的知识，另一方面也希望能交到一些志同道合的朋友（有人可以讨论真是太棒了！）在各种鼓捣之后，我选择了 <a href="https://getnikola.com/">Nikola</a>，因为它原生支持 Jupyter notebook。至于为什么选择静态博客，Nikola 官网这篇<a href="https://getnikola.com/handbook.html#why-static">文章</a>写的很好。</p>
-<p class="more"><a href="posts/blogging-with-Nikola-and-WSL2/">Read more…</a></p>
 </div>
             </div>
             </article><hr style="border: 0; border-top: 1px solid #eee;">
