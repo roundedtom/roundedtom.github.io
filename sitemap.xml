@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://example.com/</loc>
-  <lastmod>2023-01-14T13:24:00Z</lastmod>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/2019/</loc>
@@ -31,11 +31,11 @@
  </url>
  <url>
   <loc>https://example.com/archive.html</loc>
-  <lastmod>2023-01-15T05:52:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/</loc>
-  <lastmod>2023-01-14T13:24:00Z</lastmod>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/blog/</loc>
@@ -54,8 +54,20 @@
   <lastmod>2022-12-31T14:41:00Z</lastmod>
  </url>
  <url>
+  <loc>https://example.com/categories/docker/</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/categories/fabric/</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://example.com/categories/github/</loc>
   <lastmod>2022-12-31T13:55:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/categories/golang/</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/http/</loc>
@@ -80,6 +92,10 @@
  <url>
   <loc>https://example.com/categories/nikola/</loc>
   <lastmod>2022-12-31T13:55:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/categories/notes/</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/pa-chong/</loc>
@@ -123,15 +139,19 @@
  </url>
  <url>
   <loc>https://example.com/index-1.html</loc>
-  <lastmod>2023-01-14T13:11:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/index-2.html</loc>
-  <lastmod>2023-01-14T13:24:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/index-3.html</loc>
-  <lastmod>2023-01-15T05:52:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/index-4.html</loc>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/listings/</loc>
@@ -139,7 +159,7 @@
  </url>
  <url>
   <loc>https://example.com/listings/custom.css.html</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/posts/backtest-portfolio-optimization/</loc>
@@ -148,6 +168,14 @@
  <url>
   <loc>https://example.com/posts/blogging-with-Nikola-and-WSL2/</loc>
   <lastmod>2022-12-31T13:55:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/posts/golang-learning-notes/</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/posts/hyperledger-fabric-install/</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/posts/matplotlib-%E5%B8%B8%E7%94%A8%E7%BB%98%E5%9B%BE/</loc>

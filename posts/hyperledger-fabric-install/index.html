@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="hyperledger fabric 安装笔记">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hyperledger fabric (v2.0) 安装过程记录 | RoundedTom</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/hyperledger-fabric-install/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="Matplotlib 绘图工作流" type="text/html">
+<link rel="next" href="../backtest-portfolio-optimization/" title="Backtesting portfolio optimization strategies" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="hyperledger fabric (v2.0) 安装过程记录">
+<meta property="og:url" content="https://example.com/posts/hyperledger-fabric-install/">
+<meta property="og:description" content="hyperledger fabric 安装笔记">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-02-09T13:27:01+08:00">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Fabric">
+<meta property="article:tag" content="Golang">
+<style>
+        @media screen and (min-width: 1024px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 3fr 1fr;
+                column-gap: 30px;
+                position: relative;
+            }
+
+            .toc {
+                grid-column: 2 / 3;
+                grid-row: 1 / span 999;
+                align-self: start;
+                position: sticky;
+                top: 20px;
+                /* overflow: auto; */
+            }
+        
+            .toc::before {
+                /* font-family: var(--font-serif); */
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                /* display: inline-block; */
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+            
+            .toc {
+                grid-column: 1 / 2;
+                /* overflow: auto; */
+            }
+            
+            .toc::before {
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+
+        }
+        
+        code {
+            background-color: #DDDDDD;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
+<a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li></ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">hyperledger fabric (v2.0) 安装过程记录</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Tom
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2022-02-09T13:27:01+08:00" itemprop="datePublished" title="2022-02-09 13:27">2022-02-09 13:27</time></a>
+            </p>
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>这篇文章记录安装 fabric(v2.0) 的过程。</p>
+<!-- TEASER_END -->
+
+<div class="toc">
+<ul>
+<li><a href="#1-go">1 Go</a></li>
+<li>
+<a href="#11">1.1 下载安装</a><ul>
+<li>
+<a href="#12">1.2 配置环境变量</a><ul>
+<li><a href="#121-vim">1.2.1 安装 vim</a></li>
+<li><a href="#122-homeprofile">1.2.2 编辑 home/.profile 文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<a href="#2-docker">2 docker</a><ul>
+<li>
+<a href="#21-docker">2.1 安装 docker</a><ul>
+<li><a href="#211">2.1.1 下载安装</a></li>
+<li><a href="#212">2.1.2 配置用户组</a></li>
+<li><a href="#213">2.1.3 配置阿里云镜像加速服务</a></li>
+</ul>
+</li>
+<li><a href="#22-docker-compose">2.2 安装 docker-compose</a></li>
+</ul>
+</li>
+<li><a href="#3-fabric">3 fabric</a></li>
+<li><a href="#4">4 参考资料</a></li>
+</ul>
+</div>
+<h2 id="1-go">1 Go</h2>
+<h2 id="11">1.1 下载安装</h2>
+<p>在 Golang <a href="https://golang.google.cn/dl/">官网</a>下载 linux 版本的压缩文件，在终端切换目录至压缩文件所在目录（这里是 Downloads)，然后将压缩文件解压缩至 <code>usr/local</code> 目录下。命令如下:</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span> Downloads
+sudo tar -xzf go1.12.1.linux-amd64.tar.gz -C /usr/local
+</pre></div>
+
+<p>此时在 <code>usr/local</code> 下会生成一个 <code>go</code> 目录，可以通过 <code>ls</code> 命令查看：</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span> /usr/local/go
+ls
+</pre></div>
+
+<p>也可以用以下命令安装（ubuntu 系统）</p>
+<div class="code"><pre class="code literal-block">mkdir /usr/local/go
+<span class="nb">cd</span> /usr/local/go
+wget https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
+</pre></div>
+
+<h3 id="12">1.2 配置环境变量</h3>
+<h4 id="121-vim">1.2.1 安装 vim</h4>
+<p>在终端输入以下命令</p>
+<div class="code"><pre class="code literal-block">sudo apt-get install vim
+</pre></div>
+
+<h4 id="122-homeprofile">1.2.2 编辑 home/.profile 文件</h4>
+<p>先配置 GOROOT，即 go 的安装目录，编辑 <code>$HOME/.profile</code> 文件。利用 vim 打开文件，按 i 进入编辑，加入如下命令，保存并退出。</p>
+<div class="code"><pre class="code literal-block"><span class="nb">export</span> <span class="nv">GOROOT</span><span class="o">=</span><span class="s2">"usr/local/go"</span>
+</pre></div>
+
+<p>然后配置 GOPAHT，GOPATH 是 go 项目代码存放的地方，是我们自己定义的目录。对于 Ubuntu 系统，默认使用 <code>Home/go</code> 目录作为 GOPATH。该目录下有三个子目录：src，pkg，bin。</p>
+<div class="code"><pre class="code literal-block"><span class="nb">export</span> <span class="nv">GOPATH</span><span class="o">=</span><span class="nv">$HOME</span>/go
+</pre></div>
+
+<p>配置 GOBIN，并将 GOBIN 添加至环境变量中。</p>
+<div class="code"><pre class="code literal-block"><span class="nb">export</span> <span class="nv">GOBIN</span><span class="o">=</span><span class="nv">$GOROOT</span>/bin
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$GOBIN</span>
+</pre></div>
+
+<p>最后在终端中输入如下命令，使环境变量生效：</p>
+<div class="code"><pre class="code literal-block"><span class="nb">source</span> .profile
+</pre></div>
+
+<h2 id="2-docker">2 docker</h2>
+<h3 id="21-docker">2.1 安装 docker</h3>
+<h4 id="211">2.1.1 下载安装</h4>
+<p>使用 docker 官网教程下载太慢，这里使用清华大学开源镜像，首先安装安装所需的依赖，在终端输入以下命令：</p>
+<div class="code"><pre class="code literal-block">sudo apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common
+</pre></div>
+
+<p>然后添加信任 docker 的 GPG 公钥：</p>
+<div class="code"><pre class="code literal-block">curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class="p">|</span> sudo apt-key add -
+</pre></div>
+
+<p>然后添加软件仓库：</p>
+<div class="code"><pre class="code literal-block">sudo add-apt-repository <span class="se">\</span>
+ <span class="s2">"deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \</span>
+<span class="s2"> </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> \</span>
+<span class="s2"> stable"</span>
+</pre></div>
+
+<p>最后安装最新版本的 Docker Engine-Community 和 containerd：</p>
+<div class="code"><pre class="code literal-block">sudo apt-get install docker-ce docker-ce-cli containerd.io
+</pre></div>
+
+<h4 id="212">2.1.2 配置用户组</h4>
+<p>添加$user 到 docker 用户组，免除每次运行 docker 都需要使用 sudo root 权限，在终端输入以下命令：</p>
+<div class="code"><pre class="code literal-block">sudo groupadd docker
+sudo usermod -aG docker <span class="si">${</span><span class="nv">USER</span><span class="si">}</span>
+newgrp docker
+</pre></div>
+
+<h4 id="213">2.1.3 配置阿里云镜像加速服务</h4>
+<p>由于 Docker 镜像服务器在国外，所以下载速度非常缓慢甚至失败，因此我们需要配置阿里云镜像加速服务。进入阿里云官网注册登录，在搜索框中搜索容器镜像服务，选择镜像加速器，获取自己的加速器地址，根据提示，在终端输入以下命令：</p>
+<div class="code"><pre class="code literal-block">sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <span class="s">&lt;&lt;-'EOF'</span>
+<span class="s">{</span>
+<span class="s">"registry-mirrors": ["你的加速器地址"]</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+</pre></div>
+
+<p>使用以下命令测试 docker 是否安装成功：</p>
+<div class="code"><pre class="code literal-block">docker run hello-world
+</pre></div>
+
+<h3 id="22-docker-compose">2.2 安装 docker-compose</h3>
+<p>在终端输入以下命令，安装 1.25.4 版本 docker-compose:</p>
+<div class="code"><pre class="code literal-block">sudo curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-<span class="sb">`</span>uname -s<span class="sb">`</span>-<span class="sb">`</span>uname -m<span class="sb">`</span> -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+</pre></div>
+
+<p>使用以下命令测试 docker-compose 是否安装成功：</p>
+<div class="code"><pre class="code literal-block">docker-compose --version
+</pre></div>
+
+<h2 id="3-fabric">3 fabric</h2>
+<p>首先下载 fabric 源码（fabirc v2.0），在终端输入以下命令：</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span> /home/go/src/github.com/hyperledger/
+git clone https://github.com/hyperledger/fabric.git
+</pre></div>
+
+<p>然后切换目录至 fabric/scripts 下，运行 bootstrap.sh 脚本，此脚本有两个作用：</p>
+<ul>
+<li>克隆 hyperledger/fabric-samples 仓库</li>
+<li>下载一些必要的二进制文件（hyperledger-fabric-linux-amd64-2.0.0.tar.gz)</li>
+</ul>
+<p>命令如下：</p>
+<div class="code"><pre class="code literal-block"><span class="nb">cd</span> /home/go/src/github.com/hyperledger/fabric/scripts
+./bootstrap.sh
+</pre></div>
+
+<p>由于墙的原因，可能导致如下报错，说明二进制文件下载失败（但一般 fabric-samples 可以下载成功）</p>
+<div class="code"><pre class="code literal-block"><span class="o">==</span>&gt; There was an error downloading the binary file.
+------&gt; <span class="m">2</span>.0.0 platform specific fabric binary is not available to download &lt;----
+</pre></div>
+
+<p>此时我们改为手动下载二进制文件，可以从我的百度云分享下载（https://pan.baidu.com/s/1ri8azrHUl1KNgxHon384jg，提取码：fhu2）。将hyperledger-fabric-linux-amd64-2.0.0.tar.gz（二进制文件）解压，将其中的config和bin文件夹拷贝至fabric根目录与fabric samples（在/fabric/scripts 目录下）根目录下。切换到/fabric samples/first network 目录，输入以下命令：</p>
+<div class="code"><pre class="code literal-block">./byfn.sh up
+</pre></div>
+
+<p>当看到命令行如下显示时，表明 fabric 安装完成：</p>
+<div class="code"><pre class="code literal-block">---
+
+/ **_<span class="p">|</span> <span class="p">|</span>_ _<span class="p">|</span> / <span class="se">\ </span><span class="p">|</span> _ <span class="se">\ </span><span class="p">|</span><span class="se">\_</span> <span class="se">\_</span><span class="p">|</span>
+<span class="se">\_</span>** <span class="se">\ </span><span class="p">|</span> <span class="p">|</span> / _ <span class="se">\ </span><span class="p">|</span> <span class="p">|</span>_<span class="o">)</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span>
+ **_<span class="o">)</span> <span class="p">|</span> <span class="p">|</span> <span class="p">|</span> / _** <span class="se">\ </span><span class="p">|</span> _ &lt; <span class="p">|</span> <span class="p">|</span>
+<span class="p">|</span><span class="se">\_\_\_\_</span>/ <span class="p">|</span>_<span class="p">|</span> /_/ <span class="se">\_\ </span><span class="p">|</span>_<span class="p">|</span> <span class="se">\_\ </span><span class="p">|</span><span class="se">\_</span><span class="p">|</span>
+
+Build your first network <span class="o">(</span>BYFN<span class="o">)</span> end-to-end <span class="nb">test</span>
+
+Channel name : mychannel
+Creating channel...
+</pre></div>
+
+<p>注意，若运行 byfn.sh 脚本报错，错误信息如下：</p>
+<div class="code"><pre class="code literal-block">ERROR! Fabric Docker image version of <span class="m">1</span>.4.4 does not match this newer version of BYFN and is unsupported. Either move to a later version of Fabric or checkout an earlier version of fabric-samples.
+</pre></div>
+
+<p>这表明 fabric-samples 版本与 fabric docker 镜像版本不匹配，可以将 fabric-samples 替换为 1.4 版本（百度云文件中有），再次运行 byfn.sh 脚本。</p>
+<h2 id="4">4 参考资料</h2>
+<ul>
+<li>https://golang.google.cn/doc/install</li>
+<li>https://mirrors.tuna.tsinghua.edu.cn/help/docker-ce</li>
+<li>https://www.runoob.com/docker/ubuntu-docker-install.html</li>
+<li>https://hlf.readthedocs.io/en/latest/prereqs.html</li>
+</ul>
+</div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/docker/" rel="tag">Docker</a></li>
+            <li><a class="tag p-category" href="../../categories/fabric/" rel="tag">Fabric</a></li>
+            <li><a class="tag p-category" href="../../categories/golang/" rel="tag">Golang</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="prev" title="Matplotlib 绘图工作流">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../backtest-portfolio-optimization/" rel="next" title="Backtesting portfolio optimization strategies">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

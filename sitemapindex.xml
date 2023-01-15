@@ -15,15 +15,27 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_tech.xml</loc>
-  <lastmod>2023-01-15T05:52:00Z</lastmod>
+  <lastmod>2023-01-15T11:59:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/data-analysis.xml</loc>
   <lastmod>2022-12-31T14:41:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://example.com/categories/docker.xml</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/fabric.xml</loc>
+  <lastmod>2023-01-15T11:52:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://example.com/categories/github.xml</loc>
   <lastmod>2023-01-01T02:55:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/golang.xml</loc>
+  <lastmod>2023-01-15T11:59:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/http.xml</loc>
@@ -48,6 +60,10 @@
  <sitemap>
   <loc>https://example.com/categories/nikola.xml</loc>
   <lastmod>2023-01-01T02:55:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/notes.xml</loc>
+  <lastmod>2023-01-15T11:59:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pa-chong.xml</loc>
@@ -83,18 +99,18 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/galleries/demo/rss.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/galleries/rss.xml</loc>
-  <lastmod>2023-01-01T01:33:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/rss.xml</loc>
-  <lastmod>2023-01-15T05:52:00Z</lastmod>
+  <lastmod>2023-01-15T11:59:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/sitemap.xml</loc>
-  <lastmod>2023-01-15T05:52:00Z</lastmod>
+  <lastmod>2023-01-15T12:03:00Z</lastmod>
  </sitemap>
 </sitemapindex>

@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Golang 学习笔记">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golang 学习笔记 | RoundedTom</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/golang-learning-notes/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../ubuntu18.04-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" title="Ubuntu 18.04 安装与配置" type="text/html">
+<link rel="next" href="../see-theory/" title="See Theory" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="Golang 学习笔记">
+<meta property="og:url" content="https://example.com/posts/golang-learning-notes/">
+<meta property="og:description" content="Golang 学习笔记">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-02-03T09:49:24+08:00">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="Notes">
+<style>
+        @media screen and (min-width: 1024px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 3fr 1fr;
+                column-gap: 30px;
+                position: relative;
+            }
+
+            .toc {
+                grid-column: 2 / 3;
+                grid-row: 1 / span 999;
+                align-self: start;
+                position: sticky;
+                top: 20px;
+                /* overflow: auto; */
+            }
+        
+            .toc::before {
+                /* font-family: var(--font-serif); */
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                /* display: inline-block; */
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+        }
+        @media screen and (max-width: 767px) {
+            .e-content {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+            
+            .toc {
+                grid-column: 1 / 2;
+                /* overflow: auto; */
+            }
+            
+            .toc::before {
+                content: "ON this page";
+                background-color: #ffe70e;
+                color: #444;
+                font-size: 16px;
+                font-weight: bold;
+                font-style: italic;
+                padding: 5px 5px;
+                margin-left: 20px;
+            }
+
+        }
+        
+        code {
+            background-color: #DDDDDD;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
+<a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li></ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Golang 学习笔记</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Tom
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2020-02-03T09:49:24+08:00" itemprop="datePublished" title="2020-02-03 09:49">2020-02-03 09:49</time></a>
+            </p>
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <p>这篇博客记录 Golang 的学习笔记。</p>
+<!-- TEASER_END -->
+
+<div class="toc">
+<ul>
+<li>
+<a href="#1-array">1 数组（array）</a><ul>
+<li><a href="#11">1.1 数组的定义</a></li>
+<li><a href="#12">1.2 数组的访问</a></li>
+<li><a href="#13">1.3 数组的遍历</a></li>
+<li><a href="#14">1.4 多维数组</a></li>
+</ul>
+</li>
+<li>
+<a href="#2-slice">2 切片（slice）</a><ul>
+<li><a href="#21">2.1 切片的定义</a></li>
+<li><a href="#22">2.2 切片的访问</a></li>
+</ul>
+</li>
+<li>
+<a href="#3-map">3 map</a><ul>
+<li><a href="#31-map">3.1 map 的定义</a></li>
+<li><a href="#32-map">3.2 map 的访问</a></li>
+<li><a href="#33-map">3.3 map 的遍历</a></li>
+</ul>
+</li>
+<li>
+<a href="#4-pointer">4 指针（pointer)</a><ul>
+<li><a href="#41">4.1 指针的定义</a></li>
+<li><a href="#42">4.2 指针的访问</a></li>
+<li><a href="#43">4.3 指针的指针</a></li>
+</ul>
+</li>
+<li>
+<a href="#5">5 函数</a><ul>
+<li><a href="#51">5.1 函数的定义</a></li>
+<li>
+<a href="#52">5.2 函数的参数</a><ul>
+<li><a href="#521">5.2.1 可变参数</a></li>
+<li><a href="#522">5.2.2 参数传递</a></li>
+</ul>
+</li>
+<li><a href="#53">5.3 递归函数</a></li>
+<li><a href="#54-defer">5.4 defer 语句</a></li>
+<li><a href="#55">5.5 匿名函数</a></li>
+</ul>
+</li>
+<li>
+<a href="#6">6 结构体</a><ul>
+<li><a href="#61">6.1 结构体的定义</a></li>
+<li><a href="#62">6.2 结构体的初始化与访问</a></li>
+<li><a href="#63">6.3 结构体指针</a></li>
+<li><a href="#64">6.4 匿名结构体与匿名字段</a></li>
+<li><a href="#65">6.5 结构体嵌套</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="1-array">1 数组（array）</h2>
+<ul>
+<li>数组是一组具有相同类型且长度固定的数据项序列</li>
+<li>数组是值类型</li>
+</ul>
+<h3 id="11">1.1 数组的定义</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 使用var关键字定义</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">a1</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [0 0 0 0]</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">a2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">{}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [0 0 0 0]</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 使用{}传入值</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">a3</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a3</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [9 5 2 7]</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 使用...，编译器会自动推断数组的长度</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a4</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a4</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">a4</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">a4</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [9 5 2 7] 4 4</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 使用：指明传入值的索引位置</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a5</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s">"Luffy"</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">:</span><span class="s">"Hancock"</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a5</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [ Luffy   Hancock]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">a5</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Nami"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a5</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [Nami Luffy   Hancock]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="12">1.2 数组的访问</h3>
+<p>数组通过下标索引来访问，语法与 python 类似。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a5</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">a5</span><span class="p">,</span><span class="w"> </span><span class="nx">a5</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc0000ae000, [9 5 2 7]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">a5</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">a5</span><span class="p">,</span><span class="w"> </span><span class="nx">a5</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc0000ae000, [100 5 2 7]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="13">1.3 数组的遍历</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a6</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="o">...</span><span class="p">]</span><span class="kt">string</span><span class="w"> </span><span class="p">{</span><span class="s">"Luffy"</span><span class="p">,</span><span class="w"> </span><span class="s">"Zoro"</span><span class="p">,</span><span class="w"> </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"> </span><span class="s">"Nami"</span><span class="p">,</span><span class="w"> </span><span class="s">"Robin"</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="o">:=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="p">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="nx">a6</span><span class="p">);</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a6</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Luffy</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Zoro</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Hancock</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Nami</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Robin</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 使用range</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="nx">v</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">a6</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0 Luffy</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 1 Zoro</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 2 Hancock</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3 Nami</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 4 Robin</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="14">1.4 多维数组</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a7</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">}}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a7</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [[1 2 3 4] [5 6 7 8] [9 10 11 12]]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">a8</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">}},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{{</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">17</span><span class="p">,</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">}},</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a8</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [[[1 2 3 4] [5 6 7 8] [9 10 11 12]]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [[13 14 15 16] [17 18 19 20] [21 22 23 24]]]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h2 id="2-slice">2 切片（slice）</h2>
+<ul>
+<li>切片是数组的抽象，本身不存储数据，而是存储底层数组的地址</li>
+<li>切片是引用类型</li>
+<li>切片是可变的</li>
+</ul>
+<h3 id="21">2.1 切片的定义</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">s1</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">s1</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s1</span><span class="p">))</span><span class="w"> </span><span class="c1">// 打印长度和容量</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; []int, []</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0 0</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">s2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">s2</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s2</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; []int, [1 2 3 4 5]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 5 5</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s3</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s3</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">s3</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s3</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [0 0 0] 3 5</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="22">2.2 切片的访问</h3>
+<ul>
+<li>当向切片中添加数据时，若添加的数量总和超过切片的容量，切片会自动扩容，且容量成倍增加</li>
+<li>切片扩容本质是指向了一个新的数组，原来的数组被系统自动回收</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%v, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"length:%d, capacity:%d\n"</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">s1</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [], 0xc0000b2000</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; length:0, capacity:4</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%v, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"length:%d, capacity:%d\n"</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">s1</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2], 0xc0000b2000</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; length:2, capacity:4</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 添加元素未超过容量，内存地址不变，依然是原来的数组</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%v, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"length:%d, capacity:%d\n"</span><span class="p">,</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">s1</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s1</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2 3 4 5], 0xc0000b6000</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; length:5, capacity:8</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 添加元素超过容量，切片指向新的数组，容量成倍增加</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>从数组创建切片类似 python 的切片操作，使用 <code>[a:b]</code>，前闭后开。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">s2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s1</span><span class="p">[:]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%v, %p， %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">s2</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s2</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2 3 4 5 6 7 8], 0xc0000ae000， 0xc0000ae000</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 8 8</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s3</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%v, %p, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s3</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">s3</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s3</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2 3], 0xc0000ae000, 0xc0000ae000</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3 8</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s4</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s1</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%v, %p, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">s4</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s4</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">s4</span><span class="p">),</span><span class="w"> </span><span class="nb">cap</span><span class="p">(</span><span class="nx">s4</span><span class="p">))</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [4 5 6], 0xc0000ae000, 0xc0000ae018</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3 5</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 切片的长度即为截取的数组的长度，容量是从截取起始位置到数组末尾的长度</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 数组的地址是数组中首个元素的地址，s4由于截取的起始索引为3，所以s4的地址与s1不同</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>切片本质上是一种特殊的指针，存储的是底层数组的地址。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">s2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s1</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc00001e140, 0xc00001e140</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [100 2 3 4 5 6 7 8] [100 2 3 4 5 6]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 切片指向底层数组，底层数组改变，切片相应改变</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">50</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc00001e140, 0xc00001e140</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [100 2 3 50 5 6 7 8] [100 2 3 50 5 6]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 切片改变，也会导致底层数组改变</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">s2</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc00001e140, 0xc00001e140</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [100 2 3 50 5 6 25 8] [100 2 3 50 5 6 25]</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>切片是引用类型。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">s2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">s1</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"s1底层数组的地址:%p, s1的地址:%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"s2底层数组的地址:%p, s2的地址:%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s2</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2 3 4] [1 2 3 4]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; s1底层数组的地址:0xc00000c060, s1的地址:0xc0000144a0</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; s2底层数组的地址:0xc00000c080, s2的地址:0xc0000144a0</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// s1，s2指向同一个底层数组</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"s1底层数组的地址:%p, s1的地址:%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"s2底层数组的地址:%p, s2的地址:%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s2</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [100 2 3 4] [100 2 3 4]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; s1底层数组的地址:0xc00000c060, s1的地址:0xc0000144a0</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; s2底层数组的地址:0xc00000c080, s2的地址:0xc0000144a0</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 改变s1，s2同时也会改变</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">50</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"s1底层数组的地址:%p, s1的地址:%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span><span class="w"> </span><span class="nx">s1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"s2底层数组的地址:%p, s2的地址:%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">s2</span><span class="p">,</span><span class="w"> </span><span class="nx">s2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [100 2 3 50] [100 2 3 50]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; s1底层数组的地址:0xc00000c060, s1的地址:0xc0000144a0</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; s2底层数组的地址:0xc00000c080, s2的地址:0xc0000144a0</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 改变s2，s1同时也会改变</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h2 id="3-map">3 map</h2>
+<ul>
+<li>map 类似于 python 中的字典，也是以键值对的方式存储数据</li>
+<li>map 是引用类型</li>
+<li>map 是可变的</li>
+</ul>
+<h3 id="31-map">3.1 map 的定义</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">m1</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">m1</span><span class="p">,</span><span class="w"> </span><span class="nx">m1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; map[string]int, map[]</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 这种定义方式，m1并未初始化，是nil类型，不能直接赋值</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m1</span><span class="p">[</span><span class="s">"Jay"</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; panic: assignment to entry in nil map</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">m2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="s">"Jay"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">"Edison"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">"Luffy"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">m2</span><span class="p">,</span><span class="w"> </span><span class="nx">m2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; map[string]int, map[Edison:2 Jay:1 Luffy:3]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">m3</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="s">"Jay"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">"Edison"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">"Luffy"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">m3</span><span class="p">,</span><span class="w"> </span><span class="nx">m3</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; map[string]int, map[Edison:2 Jay:1 Luffy:3]</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 使用make函数</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m4</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">m4</span><span class="p">,</span><span class="w"> </span><span class="nx">m4</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; map[string]int, map[]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="32-map">3.2 map 的访问</h3>
+<p>map 使用 key 进行访问与赋值</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m5</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m5</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Jay"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m5</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Edison"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m5</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Luffy"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m5</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Perl"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m5</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Mads"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m5</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Joker"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">m5</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// map[1:Jay 2:Edison 3:Luffy 4:Perl 5:Mads 6:Joker]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">m5</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Luffy</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="33-map">3.3 map 的遍历</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">m6</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span><span class="s">"name"</span><span class="p">:</span><span class="s">"Luffy"</span><span class="p">,</span><span class="w"> </span><span class="s">"sex"</span><span class="p">:</span><span class="s">"male"</span><span class="p">,</span><span class="w"> </span><span class="s">"age"</span><span class="p">:</span><span class="s">"18"</span><span class="p">,</span><span class="w"> </span><span class="s">"address"</span><span class="p">:</span><span class="s">"East blue"</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">k</span><span class="p">,</span><span class="nx">v</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">m6</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%s : %s\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">k</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="c1">// ---&gt; name : Luffy</span><span class="w"></span>
+<span class="c1">// ---&gt; sex : male</span><span class="w"></span>
+<span class="c1">// ---&gt; age : 18</span><span class="w"></span>
+<span class="c1">// ---&gt; address : East blue</span><span class="w"></span>
+</pre></div>
+
+<h2 id="4-pointer">4 指针（pointer)</h2>
+<p>指针是一种特殊的变量，用于保存另一变量的内存地址。</p>
+<h3 id="41">4.1 指针的定义</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">p1</span><span class="w"> </span><span class="o">*</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &lt;nil&gt; // &lt;nil&gt;表示空指针</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">a</span><span class="w"> </span><span class="c1">// &amp;为取地址符</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;[1 2 3 4]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">p1</span><span class="p">)</span><span class="w"> </span><span class="c1">// 第一个占位符表示p1保存的地址，第二个占位符表示p1自身的地址</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc0000b0000, 0xc0000a8018</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="42">4.2 指针的访问</h3>
+<p>go 语言中使用 * 来取指针所保存的内存地址指向的变量值。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">p2</span><span class="w"> </span><span class="o">*</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">string</span><span class="w"> </span><span class="p">{</span><span class="s">"Luffy"</span><span class="p">,</span><span class="w"> </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"> </span><span class="s">"Zoro"</span><span class="p">,</span><span class="w"> </span><span class="s">"Nami"</span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">p2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">a2</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="o">*</span><span class="nx">p2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [Luffy Hancock Zoro Nami]</span><span class="w"></span>
+
+<span class="w">    </span><span class="p">(</span><span class="o">*</span><span class="nx">p2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Robin"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;[Robin Hancock Zoro Nami]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [Robin Hancock Zoro Nami]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">p2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Shanks"</span><span class="w"> </span><span class="c1">// 简化写法</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;[Robin Hancock Shanks Nami]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [Robin Hancock Shanks Nami]</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="43">4.3 指针的指针</h3>
+<p>指针的指针，顾名思义，该指针中保存的是另一个指针的地址。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">ptr</span><span class="w"> </span><span class="o">*</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">pptr</span><span class="w"> </span><span class="o">**</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">a</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">ptr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">a</span><span class="w"></span>
+<span class="w">    </span><span class="nx">pptr</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">ptr</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2 3 4]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">ptr</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="nx">ptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;[1 2 3 4] [1 2 3 4]</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">pptr</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="nx">pptr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc0000a8018 &amp;[1 2 3 4]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h2 id="5">5 函数</h2>
+<ul>
+<li>函数是一种特殊的指针变量</li>
+<li>函数名指向函数体的内存地址</li>
+<li>函数名加 <code>()</code> 调用函数，执行函数体内的全部代码，并通过 <code>return</code> 语句将执行结果返回给函数调用处</li>
+</ul>
+<h3 id="51">5.1 函数的定义</h3>
+<div class="code"><pre class="code literal-block"><span class="kd">func</span><span class="w"> </span><span class="nx">funcName</span><span class="p">(</span><span class="nx">p1</span><span class="w"> </span><span class="kd">type</span><span class="p">,</span><span class="w"> </span><span class="nx">p2</span><span class="w"> </span><span class="kd">type</span><span class="p">)(</span><span class="nx">v1</span><span class="w"> </span><span class="kd">type</span><span class="p">,</span><span class="w"> </span><span class="nx">v2</span><span class="w"> </span><span class="kd">type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 函数体</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">v1</span><span class="p">,</span><span class="w"> </span><span class="nx">v2</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// eg:</span><span class="w"></span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">add</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span><span class="w"> </span><span class="nx">num2</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">num1</span><span class="o">+</span><span class="nx">num2</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">print</span><span class="p">,</span><span class="w"> </span><span class="nx">print</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; func(), 0x48eb50 // 函数体的地址</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="nx">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">print</span><span class="w"> </span><span class="c1">// 将print的值（函数体的地址）赋值给x</span><span class="w"></span>
+<span class="w">    </span><span class="nx">x</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Nami is alse good!</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nb">print</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">"Nami is alse good!"</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="52">5.2 函数的参数</h3>
+<h4 id="521">5.2.1 可变参数</h4>
+<ul>
+<li>可变参数本质上是一个切片</li>
+<li>在参数列表中，可变参数应放在最后</li>
+<li>可变参数至多只能有一个</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">add1</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; []int</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 可变参数实质上是一个slice</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">s</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">x</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">add2</span><span class="p">(</span><span class="nx">s</span><span class="o">...</span><span class="p">)</span><span class="w"> </span><span class="c1">// 使用...提取slice中的元素</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 21</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">add1</span><span class="p">(</span><span class="nx">num</span><span class="w"> </span><span class="o">...</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">num</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">add2</span><span class="p">(</span><span class="nx">num</span><span class="w"> </span><span class="o">...</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">sum</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">v</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">num</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">sum</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">sum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">v</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">sum</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h4 id="522">5.2.2 参数传递</h4>
+<p><strong>值传递</strong>，值传递传递的是参数的副本。值类型的数据默认都是值传递：基本数据类型、array、struct。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">arr</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %v\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">arr</span><span class="p">,</span><span class="w"> </span><span class="nx">arr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc0000ae000, [1 2 3 4]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">change</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc0000ae060</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [10000 2 3 4]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2 3 4]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">change</span><span class="p">(</span><span class="nx">a</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">a</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p><strong>引用传递</strong>，引用传递传递的是参数的地址。引用类型的数据默认都是引用传递：slice、map、chan。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">slice</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">slice</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [1 2 3 4]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">change</span><span class="p">(</span><span class="nx">slice</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [10000 2 3 4]</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">slice</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; [10000 2 3 4]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">change</span><span class="p">(</span><span class="nx">s</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="53">5.3 递归函数</h3>
+<div class="code"><pre class="code literal-block"><span class="kd">func</span><span class="w"> </span><span class="nx">fibonacci</span><span class="p">(</span><span class="nx">n</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fibonacci</span><span class="p">(</span><span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">fibonacci</span><span class="p">(</span><span class="nx">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="54-defer">5.4 defer 语句</h3>
+<p><code>defer</code> 语句可以用来延迟一个函数或者方法的执行。当存在多个延迟调用时，它们被添加到一个堆栈中，遵循后进先出的原则执行。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nb">print</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nx">print2</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">"Hancock is good!"</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Hancock is good!</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Robin is good! // LIFO</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Nami is also good!</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nb">print</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">"Nami is also good!"</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">print2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">"Robin is good!"</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="55">5.5 匿名函数</h3>
+<ul>
+<li>匿名函数可以作为另一个函数的参数，也叫回调函数</li>
+<li>匿名函数可以作为另一个函数的返回值，也叫闭包结构</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">"Hancock!"</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}()</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Hancock!</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fun1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">"Nami!"</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fun1</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Nami!</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 带参数与返回值的匿名函数</span><span class="w"></span>
+<span class="w">    </span><span class="nx">res</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="o">+</span><span class="nx">b</span><span class="w"></span>
+<span class="w">    </span><span class="p">}(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>作为一个函数参数的函数就叫做回调函数。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">res</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">opr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nx">add</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">opr</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="nx">fun</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">)</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fun</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>使用匿名函数作为回调函数。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="s">"fmt"</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">add</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">res</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">opr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nx">add</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">res2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">opr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">b</span><span class="w"></span>
+<span class="w">    </span><span class="p">})</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">opr</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="nx">fun</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">fun</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>一个外层函数有内层函数，内层函数会操作外层函数的局部变量（外层函数的参数，或者外层函数定义的局部变量），并且该外层函数的返回值就是这个内层函数，那么这个内层函数和外层函数的局部变量就统称为闭包结构。</p>
+<p>闭包中局部变量的生命周期会发生改变。正常的局部变量会随着外层函数的调用而创建，随着外层函数的结束而销毁。但是闭包结构中外层函数的局部变量不会随着外层函数的结束而销毁，因为内层函数还要继续使用。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">increment</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0x48f0f0 // 函数名所指向的函数体的地址</span><span class="w"></span>
+<span class="w">    </span><span class="nx">res1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">increment</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">res1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">res1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0x48f190, 0xc00000e030 // 内层函数体的地址， res1变量的地址</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res1</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 1</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res1</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 2</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res1</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 3</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">res2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">increment</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res2</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 1</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res2</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 2</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">res1</span><span class="p">())</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 4</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">fun</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fun</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">increment</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">fun</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0x48f0f0</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">fun</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc00000e038</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fun2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">increment</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">fun2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0x48f0f0</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p\n"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">fun2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc00000e040</span><span class="w"></span>
+
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">increment</span><span class="p">()</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c1">//这个外层函数的局部变量，是内层函数的全局变量</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">i</span><span class="o">++</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">i</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h2 id="6">6 结构体</h2>
+<ul>
+<li>结构体是一系列相同类型或不同类型的数据构成的集合</li>
+<li>结构体是由一个个成员变量构成的，这些成员变量也叫做结构体的字段</li>
+<li>结构体是可变的</li>
+<li>结构体是值类型</li>
+</ul>
+<h3 id="61">6.1 结构体的定义</h3>
+<div class="code"><pre class="code literal-block"><span class="c1">// 结构体使用type和struct关键字来进行声明</span><span class="w"></span>
+<span class="kd">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">sex</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">age</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">address</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="62">6.2 结构体的初始化与访问</h3>
+<div class="code"><pre class="code literal-block"><span class="c1">// 结构体使用.操作符来进行访问</span><span class="w"></span>
+<span class="c1">// 使用var关键字初始化</span><span class="w"></span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">P1</span><span class="w"> </span><span class="nx">Person</span><span class="w"></span>
+<span class="nx">p1</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Jay"</span><span class="w"></span>
+<span class="nx">p1</span><span class="p">.</span><span class="nx">sex</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"male"</span><span class="w"></span>
+<span class="nx">p1</span><span class="p">.</span><span class="nx">age</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"41"</span><span class="w"></span>
+<span class="nx">p1</span><span class="p">.</span><span class="nx">address</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Taibei"</span><span class="w"></span>
+
+<span class="c1">// 类似简短声明</span><span class="w"></span>
+<span class="nx">p2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="p">{}</span><span class="w"></span>
+<span class="nx">p2</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Zoro"</span><span class="w"></span>
+<span class="nx">p2</span><span class="p">.</span><span class="nx">sex</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"male"</span><span class="w"></span>
+<span class="nx">p2</span><span class="p">.</span><span class="nx">age</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"20"</span><span class="w"></span>
+<span class="nx">p2</span><span class="p">.</span><span class="nx">address</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"East Blue"</span><span class="w"></span>
+
+<span class="c1">// 按照field:value的方式提供初始化的值</span><span class="w"></span>
+<span class="nx">p3</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">name</span><span class="w"> </span><span class="err">：</span><span class="w"> </span><span class="s">"Luffy"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nx">sex</span><span class="w"> </span><span class="err">：</span><span class="w"> </span><span class="s">"male"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nx">age</span><span class="w"> </span><span class="err">：</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nx">address</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"East Blue"</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// 按照顺序提供初始化的值</span><span class="w"></span>
+<span class="nx">p4</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="p">{</span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"> </span><span class="s">"female"</span><span class="p">,</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w"> </span><span class="s">"East Blue"</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">name</span><span class="p">:</span><span class="w">    </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">sex</span><span class="p">:</span><span class="w">     </span><span class="s">"female"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">age</span><span class="p">:</span><span class="w">     </span><span class="mi">29</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">address</span><span class="p">:</span><span class="w"> </span><span class="s">"East Blue"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; {Hancock female 29 East Blue}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 结构体使用.操作符来进行访问</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p1</span><span class="p">.</span><span class="nx">age</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">31</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; {Hancock female 31 East Blue}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">name</span><span class="w">    </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">sex</span><span class="w">     </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">age</span><span class="w">     </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">address</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="63">6.3 结构体指针</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">sex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"female"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">age</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">address</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"East Blue"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">pp1</span><span class="w"> </span><span class="o">*</span><span class="nx">Person</span><span class="w"></span>
+<span class="w">    </span><span class="nx">pp1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">p1</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%p, %T\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">pp1</span><span class="p">,</span><span class="w"> </span><span class="nx">pp1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 0xc0000240c0, *main.Person</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="o">*</span><span class="nx">pp1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; {Hancock female 29 East Blue}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 使用指针修改数据</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="o">*</span><span class="nx">pp1</span><span class="p">).</span><span class="nx">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Nami"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">pp1</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;{Nami female 29 East Blue} {Nami female 29 East Blue}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 简写</span><span class="w"></span>
+<span class="w">    </span><span class="nx">pp1</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Robin"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">pp1</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;{Robin female 29 East Blue} {Robin female 29 East Blue}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 使用new函数创建指针</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// new函数指向了新开辟的内存空间，里面存储的是0值</span><span class="w"></span>
+<span class="w">    </span><span class="nx">pp2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">new</span><span class="p">(</span><span class="nx">Person</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"%T\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">pp2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; *main.Person</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">pp2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;{  0 }</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">pp2</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Luffy"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">pp2</span><span class="p">.</span><span class="nx">sex</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"male"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">pp2</span><span class="p">.</span><span class="nx">age</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">18</span><span class="w"></span>
+<span class="w">    </span><span class="nx">pp2</span><span class="p">.</span><span class="nx">address</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"East Blue"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">pp2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; &amp;{Luffy male 18 East Blue}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">sex</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">age</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">address</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="64">6.4 匿名结构体与匿名字段</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 匿名结构体</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">name</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">        </span><span class="nx">sex</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">        </span><span class="nx">age</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="w">        </span><span class="nx">address</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">sex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"female"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">age</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">address</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"East Blue"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; {Hancock female 29 East Blue}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 结构体使用匿名字段时，默认使用字段类型作为field，因此字段类型不能重复</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p2</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="p">{</span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"> </span><span class="mi">29</span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; {Hancock 29}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="kt">string</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Hancock</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 同时使用匿名结构体和匿名字段</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p3</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">string</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="mi">29</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p3</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; {Hancock 29}</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">p3</span><span class="p">.</span><span class="kt">string</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; Hancock</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<h3 id="65">6.5 结构体嵌套</h3>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">p1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nx">Name</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nx">firstName</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nx">lastName</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"Boa"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="nx">sex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"female"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">age</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">address</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"East Blue"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"姓：%s，名：%s，性别：%s，年龄：%d，地址：%s\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">lastName</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">firstName</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">sex</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">age</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">address</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 姓：Boa，名：Hancock，性别：female，年龄：29，地址：East Blue</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Name</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">firstName</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">lastName</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">name</span><span class="w"> </span><span class="nx">Name</span><span class="w"></span>
+<span class="w">    </span><span class="nx">sex</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">age</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">address</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>由于结构体是值类型，因此在嵌套时也可以选择嵌套结构体指针，可以保持数据的一致性，同时节省内存。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">n1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Name</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">firstName</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">lastName</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"Boa"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">p1</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">n1</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">sex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"female"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">age</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">address</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">"East Blue"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">"姓：%s，名：%s，性别：%s，年龄：%d，地址：%s\n"</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">lastName</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">firstName</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">sex</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">age</span><span class="p">,</span><span class="w"> </span><span class="nx">p1</span><span class="p">.</span><span class="nx">address</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; 姓：Boa，名：Hancock，性别：female，年龄：29，地址：East Blue</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">p1</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">lastName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">"Monkey D"</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">n1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 修改p1，n1同时改变，数据保持一致</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ---&gt; {Hancock Monkey D}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Name</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">firstName</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">lastName</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">name</span><span class="w"> </span><span class="o">*</span><span class="nx">Name</span><span class="w"> </span><span class="c1">// 传入指针</span><span class="w"></span>
+<span class="w">    </span><span class="nx">sex</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">age</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">address</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>假如说结构体中同时包含匿名字段与非匿名字段，特别的，当匿名字段为指针时，在实例化结构体时要给匿名字段加上字段名，且该字段名就是指针对应的类型，否则会报错 <code>mixture of field:value and value initializers</code> 。</p>
+<div class="code"><pre class="code literal-block"><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">"fmt"</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">hancock</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Person</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">name</span><span class="p">:</span><span class="w">   </span><span class="s">"Hancock"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">age</span><span class="p">:</span><span class="w">    </span><span class="mi">29</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">gender</span><span class="p">:</span><span class="w"> </span><span class="s">"female"</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">han</span><span class="w"> </span><span class="o">*</span><span class="nx">Person</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">hancock</span><span class="w"></span>
+<span class="w">    </span><span class="nx">hanworker</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">Worker</span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">Person</span><span class="p">:</span><span class="w"> </span><span class="nx">han</span><span class="p">,</span><span class="w"> </span><span class="c1">// 要用指针对应的类型作为字段名</span><span class="w"></span>
+<span class="w">        </span><span class="nx">skill</span><span class="p">:</span><span class="w">  </span><span class="s">"bj"</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nx">salary</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">hanworker</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Person</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">name</span><span class="w">   </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">age</span><span class="w">    </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="nx">gender</span><span class="w"> </span><span class="kt">string</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kd">type</span><span class="w"> </span><span class="nx">Worker</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="o">*</span><span class="nx">Person</span><span class="w"></span>
+<span class="w">    </span><span class="nx">skill</span><span class="w">  </span><span class="kt">string</span><span class="w"></span>
+<span class="w">    </span><span class="nx">salary</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/golang/" rel="tag">Golang</a></li>
+            <li><a class="tag p-category" href="../../categories/notes/" rel="tag">Notes</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../ubuntu18.04-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/" rel="prev" title="Ubuntu 18.04 安装与配置">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../see-theory/" rel="next" title="See Theory">Next post</a>
+            </li>
+        </ul></nav></aside></article><!--End of body content--><footer id="footer">
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
