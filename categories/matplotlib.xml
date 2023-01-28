@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RoundedTom (Posts about Matplotlib)</title><link>https://example.com/</link><description></description><atom:link href="https://example.com/categories/matplotlib.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:roundedtom@qq.com"&gt;Tom&lt;/a&gt; </copyright><lastBuildDate>Sat, 14 Jan 2023 13:11:25 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Matplotlib 绘图工作流</title><link>https://example.com/posts/matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/</link><dc:creator>Tom</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RoundedTom (Posts about Matplotlib)</title><link>https://example.com/</link><description></description><atom:link href="https://example.com/categories/matplotlib.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:roundedtom@qq.com"&gt;Tom&lt;/a&gt; </copyright><lastBuildDate>Sat, 28 Jan 2023 06:43:18 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Matplotlib 绘图工作流</title><link>https://example.com/posts/plotting-workflow-with-matplotlib/</link><dc:creator>Tom</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;日常工作中经常要用到 matplotlib 来绘图，每次绘图碰到一些细节问题都得谷歌，下次遇到继续谷歌 :) 不知道你是否跟我一样。一方面是自己太懒了，没总结；另一方面，是 matplotlib 实现同一个目标的方式太多了。比如设置图片标题，可以使用 &lt;code&gt;plt.title()&lt;/code&gt;，也可以使用 &lt;code&gt;ax.set_title()&lt;/code&gt;。出现这种情况的原因是 matplotlib 提供了两套接口来实现相同的功能：一套是类 MATLAB 工作风格的接口（方便 MATLAB 党丝滑迁移过来），一套是面向对象风格的接口（面向程序员）。这就造成了很多 matplotlib 初学者两种风格代码混用的情况，比如我 :)&lt;/p&gt;
@@ -10,7 +10,7 @@
 &lt;li&gt;绘图细节与如何画出精美的图&lt;/li&gt;
 &lt;li&gt;总结数据分析中常用图表的绘图模板代码&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="1-matplotlib-%E6%98%AF%E5%A6%82%E4%BD%95%E7%BB%98%E5%9B%BE%E7%9A%84%EF%BC%9F"&gt;1 matplotlib 是如何绘图的？&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/#1-matplotlib-%E6%98%AF%E5%A6%82%E4%BD%95%E7%BB%98%E5%9B%BE%E7%9A%84%EF%BC%9F"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;matplotlib 内部封装了三层 API：&lt;/p&gt;
+&lt;h3 id="1-matplotlib-%E6%98%AF%E5%A6%82%E4%BD%95%E7%BB%98%E5%9B%BE%E7%9A%84%EF%BC%9F"&gt;1 matplotlib 是如何绘图的？&lt;a class="anchor-link" href="https://example.com/posts/plotting-workflow-with-matplotlib/#1-matplotlib-%E6%98%AF%E5%A6%82%E4%BD%95%E7%BB%98%E5%9B%BE%E7%9A%84%EF%BC%9F"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;matplotlib 内部封装了三层 API：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;FigureCanvas&lt;/code&gt;：绘图区域；&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Renderer&lt;/code&gt;：可以理解为画笔，控制绘图行为；&lt;/li&gt;
@@ -231,7 +231,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h3 id="2-OO-style-vs-Pyplot-style"&gt;2 OO-style vs Pyplot-style&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/#2-OO-style-vs-Pyplot-style"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在上面的代码中，我们使用了面向对象的风格来使用 matplotlib，即首先显示地创建了图和坐标系实例，再调用它们的方法实现绘图。除此之外，matplotlib 还提供了另一套模仿 MATLAB 的接口，即 Pyplot-style interface。比如下面的代码：&lt;/p&gt;
+&lt;h3 id="2-OO-style-vs-Pyplot-style"&gt;2 OO-style vs Pyplot-style&lt;a class="anchor-link" href="https://example.com/posts/plotting-workflow-with-matplotlib/#2-OO-style-vs-Pyplot-style"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在上面的代码中，我们使用了面向对象的风格来使用 matplotlib，即首先显示地创建了图和坐标系实例，再调用它们的方法实现绘图。除此之外，matplotlib 还提供了另一套模仿 MATLAB 的接口，即 Pyplot-style interface。比如下面的代码：&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
@@ -278,7 +278,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Pyplot-style 接口是基于状态的接口（state-based interface）。我的理解是每调用一次 &lt;code&gt;pyplot&lt;/code&gt; 中的命令就会改变一下当前的状态（也就是图像），并将改变之后的状态保存下来，&lt;code&gt;plt.show()&lt;/code&gt; 展示最终的状态。而 OO-style 是每次新建一个对象，调用该对象的方法从而在画布上创建新的内容。&lt;/p&gt;
 &lt;p&gt;两者相比，Pyplot-style 接口简洁，方便我们快速的生成各类图像，但是功能不够强大。OO-style 是官方文档推荐我们使用的方式，功能更加强大，我们可以更自由的控制画布中的元素，从而实现图形的定制。因此，在接下来的内容里，我们都使用 OO-style 的方式来绘图。&lt;/p&gt;
-&lt;h3 id="3-%E7%94%BB%E4%B8%80%E5%BC%A0%E7%B2%BE%E7%BE%8E%E7%9A%84%E5%9B%BE"&gt;3 画一张精美的图&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/#3-%E7%94%BB%E4%B8%80%E5%BC%A0%E7%B2%BE%E7%BE%8E%E7%9A%84%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;要画一张精美的图，就需要对 &lt;code&gt;Artist&lt;/code&gt; 对象进行定制。首先附上官方文档里的这张图。&lt;/p&gt;
+&lt;h3 id="3-%E7%94%BB%E4%B8%80%E5%BC%A0%E7%B2%BE%E7%BE%8E%E7%9A%84%E5%9B%BE"&gt;3 画一张精美的图&lt;a class="anchor-link" href="https://example.com/posts/plotting-workflow-with-matplotlib/#3-%E7%94%BB%E4%B8%80%E5%BC%A0%E7%B2%BE%E7%BE%8E%E7%9A%84%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;要画一张精美的图，就需要对 &lt;code&gt;Artist&lt;/code&gt; 对象进行定制。首先附上官方文档里的这张图。&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://example.com/images/matplotlib%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/parts_of_a_figure.png" alt="Artist" title="Artist"&gt;&lt;/p&gt;
 &lt;p&gt;我们可以对各种 &lt;code&gt;Aritst&lt;/code&gt; 类型对象进行定制，包括：&lt;/p&gt;
 &lt;ul&gt;
@@ -297,7 +297,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h3 id="4-%E7%BA%BF"&gt;4 线&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/#4-%E7%BA%BF"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;matplotlib 中的线是一个 &lt;a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D"&gt;&lt;code&gt;line2D&lt;/code&gt;&lt;/a&gt; 对象，它有很多属性，我们可以通过对属性进行修改实现对线的美化和定制。这里，列出一些比较常用的属性：&lt;/p&gt;
+&lt;h3 id="4-%E7%BA%BF"&gt;4 线&lt;a class="anchor-link" href="https://example.com/posts/plotting-workflow-with-matplotlib/#4-%E7%BA%BF"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;matplotlib 中的线是一个 &lt;a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D"&gt;&lt;code&gt;line2D&lt;/code&gt;&lt;/a&gt; 对象，它有很多属性，我们可以通过对属性进行修改实现对线的美化和定制。这里，列出一些比较常用的属性：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;color&lt;/code&gt; 或者 &lt;code&gt;c&lt;/code&gt;：线的颜色；&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;alpha&lt;/code&gt;：透明度；&lt;/li&gt;
@@ -578,7 +578,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h3 id="References"&gt;References&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/#References"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;h3 id="References"&gt;References&lt;a class="anchor-link" href="https://example.com/posts/plotting-workflow-with-matplotlib/#References"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://matplotlib.org/matplotblog/posts/pyplot-vs-object-oriented-interface/"&gt;https://matplotlib.org/matplotblog/posts/pyplot-vs-object-oriented-interface/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://stackoverflow.com/questions/52816131/matplotlib-pyplot-documentation-says-it-is-state-based-interface-to-matplotlib"&gt;https://stackoverflow.com/questions/52816131/matplotlib-pyplot-documentation-says-it-is-state-based-interface-to-matplotlib&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://matplotlib.org/stable/tutorials/introductory/usage.html#styling-artists"&gt;https://matplotlib.org/stable/tutorials/introductory/usage.html#styling-artists&lt;/a&gt;&lt;/li&gt;
@@ -586,7 +586,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description><category>Jupyter-notebook</category><category>Matplotlib</category><category>Python</category><category>绘图</category><guid>https://example.com/posts/matplotlib-%E7%BB%98%E5%9B%BE%E5%B7%A5%E4%BD%9C%E6%B5%81/</guid><pubDate>Sat, 15 Jan 2022 19:12:05 GMT</pubDate></item><item><title>Matplotlib 常用绘图</title><link>https://example.com/posts/matplotlib-%E5%B8%B8%E7%94%A8%E7%BB%98%E5%9B%BE/</link><dc:creator>Tom</dc:creator><description>&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;/div&gt;</description><category>Jupyter-notebook</category><category>Matplotlib</category><category>Python</category><category>绘图</category><guid>https://example.com/posts/plotting-workflow-with-matplotlib/</guid><pubDate>Sat, 15 Jan 2022 19:12:05 GMT</pubDate></item><item><title>Matplotlib 常用绘图</title><link>https://example.com/posts/most-useful-matplotlib-plots/</link><dc:creator>Tom</dc:creator><description>&lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
@@ -603,7 +603,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="%E6%9D%A1%E5%BD%A2%E5%9B%BE"&gt;条形图&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E5%B8%B8%E7%94%A8%E7%BB%98%E5%9B%BE/#%E6%9D%A1%E5%BD%A2%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="%E6%9D%A1%E5%BD%A2%E5%9B%BE"&gt;条形图&lt;a class="anchor-link" href="https://example.com/posts/most-useful-matplotlib-plots/#%E6%9D%A1%E5%BD%A2%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -671,7 +671,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="%E7%9B%B4%E6%96%B9%E5%9B%BE"&gt;直方图&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E5%B8%B8%E7%94%A8%E7%BB%98%E5%9B%BE/#%E7%9B%B4%E6%96%B9%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="%E7%9B%B4%E6%96%B9%E5%9B%BE"&gt;直方图&lt;a class="anchor-link" href="https://example.com/posts/most-useful-matplotlib-plots/#%E7%9B%B4%E6%96%B9%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -740,7 +740,7 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;&lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="%E6%8A%98%E7%BA%BF%E5%9B%BE"&gt;折线图&lt;a class="anchor-link" href="https://example.com/posts/matplotlib-%E5%B8%B8%E7%94%A8%E7%BB%98%E5%9B%BE/#%E6%8A%98%E7%BA%BF%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h2&gt;
+&lt;h2 id="%E6%8A%98%E7%BA%BF%E5%9B%BE"&gt;折线图&lt;a class="anchor-link" href="https://example.com/posts/most-useful-matplotlib-plots/#%E6%8A%98%E7%BA%BF%E5%9B%BE"&gt;¶&lt;/a&gt;&lt;/h2&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -817,4 +817,4 @@ ax2.yaxis:  YAxis(62.5,50.00000000000004)
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;/div&gt;</description><category>Matplotlib</category><category>绘图</category><guid>https://example.com/posts/matplotlib-%E5%B8%B8%E7%94%A8%E7%BB%98%E5%9B%BE/</guid><pubDate>Tue, 15 Sep 2020 19:52:05 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>Matplotlib</category><category>绘图</category><guid>https://example.com/posts/most-useful-matplotlib-plots/</guid><pubDate>Tue, 15 Sep 2020 19:52:05 GMT</pubDate></item></channel></rss>

@@ -15,7 +15,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_tech.xml</loc>
-  <lastmod>2023-01-15T11:59:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/data-analysis.xml</loc>
@@ -39,23 +39,23 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/http.xml</loc>
-  <lastmod>2022-12-31T14:38:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/hui-tu.xml</loc>
-  <lastmod>2023-01-14T13:11:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/jupyter-notebook.xml</loc>
-  <lastmod>2023-01-15T05:52:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/linux.xml</loc>
-  <lastmod>2022-12-31T14:38:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/matplotlib.xml</loc>
-  <lastmod>2023-01-14T13:11:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/nikola.xml</loc>
@@ -67,7 +67,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pa-chong.xml</loc>
-  <lastmod>2023-01-14T16:12:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pandas.xml</loc>
@@ -79,11 +79,11 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/python.xml</loc>
-  <lastmod>2023-01-15T05:52:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/selenium.xml</loc>
-  <lastmod>2023-01-14T16:12:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/sklearn.xml</loc>
@@ -91,7 +91,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/ubuntu.xml</loc>
-  <lastmod>2022-12-31T14:38:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/wsl2.xml</loc>
@@ -107,10 +107,10 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/rss.xml</loc>
-  <lastmod>2023-01-15T11:59:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/sitemap.xml</loc>
-  <lastmod>2023-01-15T12:03:00Z</lastmod>
+  <lastmod>2023-01-28T06:43:00Z</lastmod>
  </sitemap>
 </sitemapindex>
