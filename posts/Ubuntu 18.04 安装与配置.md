@@ -1,6 +1,6 @@
 ---
 title: Ubuntu 18.04 安装与配置
-slug: ubuntu18.04-安装与配置
+slug: install-ubuntu18.04-desktop
 date: 2019-04-19 20:41:53 UTC+08:00
 tags: Linux, Ubuntu 
 category: TECH
