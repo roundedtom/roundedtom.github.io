@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://example.com/</loc>
-  <lastmod>2023-01-15T11:52:00Z</lastmod>
+  <lastmod>2023-02-02T07:31:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/2019/</loc>
@@ -31,7 +31,7 @@
  </url>
  <url>
   <loc>https://example.com/archive.html</loc>
-  <lastmod>2023-01-29T06:52:00Z</lastmod>
+  <lastmod>2023-02-02T07:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/</loc>
@@ -147,19 +147,11 @@
  </url>
  <url>
   <loc>https://example.com/index-1.html</loc>
-  <lastmod>2023-01-28T06:43:00Z</lastmod>
+  <lastmod>2023-02-02T07:14:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/index-2.html</loc>
-  <lastmod>2023-01-28T06:43:00Z</lastmod>
- </url>
- <url>
-  <loc>https://example.com/index-3.html</loc>
-  <lastmod>2023-01-28T06:43:00Z</lastmod>
- </url>
- <url>
-  <loc>https://example.com/index-4.html</loc>
-  <lastmod>2023-01-29T06:52:00Z</lastmod>
+  <lastmod>2023-02-02T07:29:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/listings/</loc>
@@ -167,7 +159,7 @@
  </url>
  <url>
   <loc>https://example.com/listings/custom.css.html</loc>
-  <lastmod>2023-01-15T12:03:00Z</lastmod>
+  <lastmod>2023-02-02T07:01:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/posts/backtest-portfolio-optimization/</loc>

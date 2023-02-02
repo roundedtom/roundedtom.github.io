@@ -14,7 +14,7 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="rss.xml">
 <link rel="canonical" href="https://example.com/">
 <link rel="icon" href="assets/img/favicon.ico" sizes="16x16">
-<link rel="next" href="index-4.html" type="text/html">
+<link rel="next" href="index-2.html" type="text/html">
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/scraping-debug-connectionreseterror%28100504%29/" type="text/html">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <style>
@@ -23,6 +23,11 @@
             background-repeat:no-repeat;
             background-size:cover;
             -moz-background-size:100% 100%;
+        }
+        
+        .position-sticky {
+            position: sticky!important;
+            top: 20px;
         }
     </style>
 </head>
@@ -144,529 +149,7 @@ bg-white
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>在爬巨潮资讯公告数据时遇到报错 <code>('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))</code>，记录如下：</p>
-<h3 id="1-%E5%8E%9F%E5%A7%8B%E4%BB%A3%E7%A0%81">1 原始代码<a class="anchor-link" href="posts/scraping-debug-connectionreseterror%28100504%29/#1-%E5%8E%9F%E5%A7%8B%E4%BB%A3%E7%A0%81">¶</a>
-</h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">pagenum</span><span class="p">):</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">'http://www.cninfo.com.cn/new/fulltextSearch/full?'</span>
-    
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"Accept-Encoding"</span><span class="p">:</span> <span class="s2">"gzip"</span><span class="p">,</span>
-        <span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"</span><span class="p">,</span>
-    <span class="p">}</span>
-    
-    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">'searchkey'</span><span class="p">:</span> <span class="s1">'区块链'</span><span class="p">,</span>
-        <span class="s1">'sdate'</span><span class="p">:</span> <span class="s1">'2009-01-01'</span><span class="p">,</span>
-        <span class="s1">'edate'</span><span class="p">:</span> <span class="s1">'2022-12-31'</span><span class="p">,</span>
-        <span class="s1">'isfulltext'</span><span class="p">:</span> <span class="s1">'true'</span><span class="p">,</span>
-        <span class="s1">'sortName'</span><span class="p">:</span> <span class="s1">'pubdate'</span><span class="p">,</span>
-        <span class="s1">'sortType'</span><span class="p">:</span> <span class="s1">'asc'</span><span class="p">,</span>
-        <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'shj'</span><span class="p">,</span>
-    <span class="p">}</span>
-    
-    <span class="n">payload</span><span class="p">[</span><span class="s1">'pageNum'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pagenum</span><span class="p">)</span>
-    
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
-<span class="c1">#         res.close()</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        
-    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 查看第一页数据</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">get_json</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="s1">'announcements'</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead><tr style="text-align: right;">
-<th></th>
-      <th>id</th>
-      <th>secCode</th>
-      <th>secName</th>
-      <th>orgId</th>
-      <th>announcementId</th>
-      <th>announcementTitle</th>
-      <th>announcementTime</th>
-      <th>adjunctUrl</th>
-      <th>adjunctSize</th>
-      <th>adjunctType</th>
-      <th>storageTime</th>
-      <th>columnId</th>
-      <th>pageColumn</th>
-      <th>announcementType</th>
-      <th>associateAnnouncement</th>
-      <th>important</th>
-      <th>batchNum</th>
-      <th>announcementContent</th>
-      <th>orgName</th>
-      <th>announcementTypeName</th>
-    </tr></thead>
-<tbody>
-<tr>
-<th>0</th>
-      <td>None</td>
-      <td>000631</td>
-      <td>顺发恒业</td>
-      <td>gssz0000631</td>
-      <td>49624621</td>
-      <td>*ST 兰宝：重大资产出售、发行股份购买资产暨关联交易报告书（修订稿）</td>
-      <td>1235773830000</td>
-      <td>finalpage/2009-02-28/49624621.PDF</td>
-      <td>1749</td>
-      <td>PDF</td>
-      <td>None</td>
-      <td>01030101||010612</td>
-      <td>SZZB</td>
-      <td>01010501||01010701||010112||01170110</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>（二）公司业绩持续下滑，且无改善迹象 由于个别银行发现公司资金&lt;em&gt;链&lt;/em&gt;紧张，逐步...</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-<tr>
-<th>1</th>
-      <td>None</td>
-      <td>600596</td>
-      <td>新安股份</td>
-      <td>gssh0600596</td>
-      <td>49988949</td>
-      <td>新安股份：2008年年度报告</td>
-      <td>1236637800000</td>
-      <td>finalpage/2009-03-10/49988949.PDF</td>
-      <td>1711</td>
-      <td>PDF</td>
-      <td>None</td>
-      <td>01030103||01030404||010612||010613</td>
-      <td>SHZB</td>
-      <td>01010501||010113||01030101</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>3.新安包装公司搬迁事项 因新安江桥东&lt;em&gt;区块&lt;/em&gt;旧城改造，新安包装公司于本期从老...</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-<tr>
-<th>2</th>
-      <td>None</td>
-      <td>600267</td>
-      <td>海正药业</td>
-      <td>gssh0600267</td>
-      <td>50367093</td>
-      <td>海正药业：2008年年度股东大会会议资料</td>
-      <td>1237501800000</td>
-      <td>finalpage/2009-03-20/50367093.PDF</td>
-      <td>346</td>
-      <td>PDF</td>
-      <td>None</td>
-      <td>01030103||010612</td>
-      <td>SHZB</td>
-      <td>01010501||010113||011906</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>100.00% 141,278 100.00% 115,132 100.00% 公司凭借原料...</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-<tr>
-<th>3</th>
-      <td>None</td>
-      <td>002244</td>
-      <td>滨江集团</td>
-      <td>9900004730</td>
-      <td>50327309</td>
-      <td>滨江集团：2008年年度报告</td>
-      <td>1237501800000</td>
-      <td>finalpage/2009-03-20/50327309.PDF</td>
-      <td>867</td>
-      <td>PDF</td>
-      <td>None</td>
-      <td>01010302||01010306||01010410||01010411||010301...</td>
-      <td>SZZB</td>
-      <td>01010503||010112||010114||01030101</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>江干科技经济园区地块开发协议书》（江科园协字【2006】035 号），约定就“S08、09、...</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-<tr>
-<th>4</th>
-      <td>None</td>
-      <td>000301</td>
-      <td>东方盛虹</td>
-      <td>gssz0000301</td>
-      <td>50432137</td>
-      <td>东方市场：2008年年度报告</td>
-      <td>1237847400000</td>
-      <td>finalpage/2009-03-24/50432137.PDF</td>
-      <td>369</td>
-      <td>PDF</td>
-      <td>None</td>
-      <td>01030101||01030402||010612||010613</td>
-      <td>SZZB</td>
-      <td>01010501||010112||01030101</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>公司将采取措施进一步完善产业&lt;em&gt;链&lt;/em&gt;，继续减少关联交易。</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-</tbody>
-</table>
-</div></div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 获取列名</span>
-<span class="n">column</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">get_json</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="s1">'announcements'</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 获取每页数据（DataFrame）格式</span>
-<span class="k">def</span> <span class="nf">get_df_data</span><span class="p">(</span><span class="n">pagenum</span><span class="p">):</span>
-    <span class="n">announcements_list</span> <span class="o">=</span> <span class="n">get_json</span><span class="p">(</span><span class="n">pagenum</span><span class="p">)[</span><span class="s1">'announcements'</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">announcements_list</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">all_data</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">res</span><span class="p">):</span>
-    <span class="n">df_data</span> <span class="o">=</span> <span class="n">get_df_data</span><span class="p">(</span><span class="n">pagenum</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">df_data</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)):</span>
-    <span class="n">all_data</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre> 24%|████████████████████▎                                                                | 119/499 [00:26&lt;01:34,  4.03it/s]WARNING:root:('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
- 24%|████████████████████▎                                                                | 119/499 [00:36&lt;01:56,  3.28it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">UnboundLocalError</span>                         Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_20364/2801816917.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">      1</span> res <span class="ansi-yellow-intense-fg ansi-bold">=</span> <span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
-<span class="ansi-green-fg">      2</span> <span class="ansi-green-intense-fg ansi-bold">for</span> page <span class="ansi-green-intense-fg ansi-bold">in</span> tqdm<span class="ansi-yellow-intense-fg ansi-bold">(</span>range<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-cyan-intense-fg ansi-bold">1</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-cyan-intense-fg ansi-bold">500</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 3</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>all_data<span class="ansi-yellow-intense-fg ansi-bold">(</span>page<span class="ansi-yellow-intense-fg ansi-bold">,</span> res<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_20364/1866910109.py</span> in <span class="ansi-cyan-fg">all_data</span><span class="ansi-blue-intense-fg ansi-bold">(pagenum, res)</span>
-<span class="ansi-green-fg">      1</span> <span class="ansi-green-intense-fg ansi-bold">def</span> all_data<span class="ansi-yellow-intense-fg ansi-bold">(</span>pagenum<span class="ansi-yellow-intense-fg ansi-bold">,</span> res<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 2</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>df_data <span class="ansi-yellow-intense-fg ansi-bold">=</span> get_df_data<span class="ansi-yellow-intense-fg ansi-bold">(</span>pagenum<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">      3</span>     <span class="ansi-green-intense-fg ansi-bold">if</span> len<span class="ansi-yellow-intense-fg ansi-bold">(</span>df_data<span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">&gt;</span> <span class="ansi-cyan-intense-fg ansi-bold">0</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-fg">      4</span>         res<span class="ansi-yellow-intense-fg ansi-bold">.</span>extend<span class="ansi-yellow-intense-fg ansi-bold">(</span>df_data<span class="ansi-yellow-intense-fg ansi-bold">.</span>values<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_20364/1464953047.py</span> in <span class="ansi-cyan-fg">get_df_data</span><span class="ansi-blue-intense-fg ansi-bold">(pagenum)</span>
-<span class="ansi-green-fg">      1</span> <span class="ansi-red-intense-fg ansi-bold"># 获取每页数据（DataFrame）格式</span>
-<span class="ansi-green-fg">      2</span> <span class="ansi-green-intense-fg ansi-bold">def</span> get_df_data<span class="ansi-yellow-intense-fg ansi-bold">(</span>pagenum<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 3</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>announcements_list <span class="ansi-yellow-intense-fg ansi-bold">=</span> get_json<span class="ansi-yellow-intense-fg ansi-bold">(</span>pagenum<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">[</span><span class="ansi-blue-intense-fg ansi-bold">'announcements'</span><span class="ansi-yellow-intense-fg ansi-bold">]</span>
-<span class="ansi-green-fg">      4</span>     <span class="ansi-green-intense-fg ansi-bold">return</span> pd<span class="ansi-yellow-intense-fg ansi-bold">.</span>DataFrame<span class="ansi-yellow-intense-fg ansi-bold">(</span>announcements_list<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Temp/ipykernel_20364/565530397.py</span> in <span class="ansi-cyan-fg">get_json</span><span class="ansi-blue-intense-fg ansi-bold">(pagenum)</span>
-<span class="ansi-green-fg">     26</span>         logging<span class="ansi-yellow-intense-fg ansi-bold">.</span>warning<span class="ansi-yellow-intense-fg ansi-bold">(</span>e<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">     27</span> 
-<span class="ansi-green-intense-fg ansi-bold">---&gt; 28</span><span class="ansi-yellow-intense-fg ansi-bold">     </span><span class="ansi-green-intense-fg ansi-bold">return</span> res<span class="ansi-yellow-intense-fg ansi-bold">.</span>json<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-
-<span class="ansi-red-intense-fg ansi-bold">UnboundLocalError</span>: local variable 'res' referenced before assignment</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>根据错误提示，连接被远程主机强制关闭了， <code>get_json</code> 函数中，<code>requests.get</code> 未成功获取响应报文，故 <code>return res.json()</code> 报错 <code>UnboundLocalError</code>。</p>
-<h3 id="2-%E6%95%85%E9%9A%9C%E5%88%86%E6%9E%90">2 故障分析<a class="anchor-link" href="posts/scraping-debug-connectionreseterror%28100504%29/#2-%E6%95%85%E9%9A%9C%E5%88%86%E6%9E%90">¶</a>
-</h3>
-<p>谷歌了一下，有以下两种解释：</p>
-<ul>
-<li><a href="https://stackoverflow.com/questions/8814802/python-errno-10054-an-existing-connection-was-forcibly-closed-by-the-remote-h"><strong>服务器-客户端超时分歧</strong></a></li>
-</ul>
-<blockquote>
-<p>This can be caused by the two sides of the connection disagreeing over whether the connection timed out or not during a keepalive. (Your code tries to reused the connection just as the server is closing it because it has been idle for too long.) You should basically just retry the operation over a new connection. (I'm surprised your library doesn't do this automatically.)</p>
-</blockquote>
-<p>代码尝试复用旧的 TCP 连接，但服务器认为该连接闲置太久，已经先行关闭了该连接。对于这个解释，我查看了一下 requests 的<a href="https://requests.readthedocs.io/en/latest/_modules/requests/api/#get">文档</a>，发现每一次 <code>requests.get</code> 请求，都是调用了 <code>requests.request('GET', url, **kwargs)</code> 方法，而该方法定义如下：</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c1"># By using the 'with' statement we are sure the session is closed, thus we</span>
-    <span class="c1"># avoid leaving sockets open which can trigger a ResourceWarning in some</span>
-    <span class="c1"># cases, and look like a memory leak in others.</span>
-    <span class="k">with</span> <span class="n">sessions</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</pre></div>
-<p>可以发现，事实上每一次 <code>get</code> 请求都是短连接，因为 <code>requests.request</code> 方法使用 <code>with</code> 语句会自动关闭 <code>session</code>。事实上，如果在 requests 中要实现长连接应该使用 <a href="https://requests.readthedocs.io/en/latest/user/advanced/#session-objects"><code>Session</code></a> 对象。那么，既然每次调用 <code>get</code> 方法都会关闭连接，也就不存在服务器-客户端超时分歧的问题了。</p>
-<p>有回答建议使用 <code>res.close()</code>，既然 <code>requests.request</code> 方法使用 <code>with</code> 语句自动关闭 <code>session</code>，原则上我们应该不用显示调用 <code>res.close()</code>。事实上，官方<a href="https://requests.readthedocs.io/en/latest/api/#requests.Response.close">文档</a>也是这么建议的。</p>
-<blockquote>
-<p><code>close()</code>: Releases the connection back to the pool. Once this method has been called the underlying raw object must not be accessed again. Note: Should not normally need to be called explicitly.</p>
-</blockquote>
-<ul>
-<li><a href="https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error"><strong>被服务器识别为恶意访问</strong></a></li>
-</ul>
-<blockquote>
-<p>The web server actively rejected your connection. That's usually because it is congested, has rate limiting or thinks that you are launching a denial of service attack. If you get this from a server, you should sleep a bit before trying again. In fact, if you don't sleep before retry, you are a denial of service attack. The polite thing to do is implement a progressive sleep of, say, (1,2,4,8,16,32) seconds.</p>
-</blockquote>
-<p>由于请求太频繁，被服务器识别为恶意访问，因此强制断开连接。尝试在请求后 <code>time.sleep(random.random()*2)</code>，有改善，但请求一段时间后，连接仍会断开。</p>
-<h3 id="3-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">3 解决方法<a class="anchor-link" href="posts/scraping-debug-connectionreseterror%28100504%29/#3-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95">¶</a>
-</h3>
-<p>根据故障分析，判断是被服务器识别为恶意访问。解决方法是使用 <code>Session</code> 对象，通过复用 TCP 连接，从而减少创建/关闭多个 TCP 连接的开销（包括响应时间、CPU 资源、减少拥堵等），同时提升爬虫代码的性能。</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">'http://www.cninfo.com.cn/new/fulltextSearch/full?'</span>
-    
-    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"Accept-Encoding"</span><span class="p">:</span> <span class="s2">"gzip"</span><span class="p">,</span>
-        <span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"</span><span class="p">,</span>
-        <span class="s2">"Connection"</span><span class="p">:</span> <span class="s2">"keep-alive"</span><span class="p">,</span>
-    <span class="p">}</span>
-    
-    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">'searchkey'</span><span class="p">:</span> <span class="s1">'区块链'</span><span class="p">,</span>
-        <span class="s1">'sdate'</span><span class="p">:</span> <span class="s1">'2009-01-01'</span><span class="p">,</span>
-        <span class="s1">'edate'</span><span class="p">:</span> <span class="s1">'2022-12-31'</span><span class="p">,</span>
-        <span class="s1">'isfulltext'</span><span class="p">:</span> <span class="s1">'true'</span><span class="p">,</span>
-        <span class="s1">'sortName'</span><span class="p">:</span> <span class="s1">'pubdate'</span><span class="p">,</span>
-        <span class="s1">'sortType'</span><span class="p">:</span> <span class="s1">'asc'</span><span class="p">,</span>
-        <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'shj'</span><span class="p">,</span>
-    <span class="p">}</span>
-    
-    <span class="n">payload</span><span class="p">[</span><span class="s1">'pageNum'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pagenum</span><span class="p">)</span>
-    
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        
-    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_df_data</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-    <span class="n">announcements_list</span> <span class="o">=</span> <span class="n">get_json</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="s1">'announcements'</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">announcements_list</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">all_data</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">res</span><span class="p">):</span>
-    <span class="n">df_data</span> <span class="o">=</span> <span class="n">get_df_data</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">df_data</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)):</span>
-        <span class="n">all_data</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|█████████████████████████████████████████████████████████████████████████████████████| 499/499 [01:27&lt;00:00,  5.71it/s]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料<a class="anchor-link" href="posts/scraping-debug-connectionreseterror%28100504%29/#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">¶</a>
-</h3>
-<ul>
-<li><a href="https://www.cnblogs.com/caoweixiong/p/14720254.html">Http——Keep-Alive 机制</a></li>
-<li>图解 HTTP 2.7：持久连接节省通信量</li>
-<li><a href="https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error">https://stackoverflow.com/questions/27333671/how-to-solve-the-10054-error</a></li>
-<li><a href="https://stackoverflow.com/questions/8814802/python-errno-10054-an-existing-connection-was-forcibly-closed-by-the-remote-h">https://stackoverflow.com/questions/8814802/python-errno-10054-an-existing-connection-was-forcibly-closed-by-the-remote-h</a></li>
-</ul>
+<p class="more"><a href="posts/scraping-debug-connectionreseterror%28100504%29/">Read more…</a></p>
 </div>
 </div>
 </div>
@@ -689,125 +172,9 @@ bg-white
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>for/else</code> 和 <code>while/else</code> 中的 <code>else</code> 语句后的内容，在循环正常结束时，才会执行。换一句话说，当 <code>for</code> 循环或者 <code>While</code> 循环遇到 <code>break</code> 跳出循环时，<code>else</code> 语句后的内容则不执行。这个特性可以让某些行为变得更优雅，比如搜索过程。一般我们可能会利用一个标识变量（flag varable），当条件满足时，改变标识变量的值，然后跳出循环。比如下面这个例子，判断 John 是不是我们的顾客：</p>
-
+<p class="more"><a href="posts/using-else-statement-in-a-loop/">Read more…</a></p>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">customers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom'</span><span class="p">,</span> <span class="s1">'Mike'</span><span class="p">,</span> <span class="s1">'Jeff'</span><span class="p">,</span> <span class="s1">'Tony'</span><span class="p">]</span>
-<span class="n">is_John</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
-    <span class="k">if</span> <span class="s1">'John'</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
-        <span class="n">is_John</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">break</span>
-    
-<span class="k">if</span> <span class="n">is_John</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'John is our customer.'</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'John is not our customer.'</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>John is not our customer.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>利用 <code>else</code> 语句，则不需要设置标识变量，当循环正常结束时，则表明 John 不是我们的顾客。</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">customers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Tom'</span><span class="p">,</span> <span class="s1">'Mike'</span><span class="p">,</span> <span class="s1">'Jeff'</span><span class="p">,</span> <span class="s1">'Tony'</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
-    <span class="k">if</span> <span class="s1">'John'</span> <span class="ow">in</span> <span class="n">customers</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'John is our customer.'</span><span class="p">)</span>
-        <span class="k">break</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'John is not our customer.'</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>John is not our customer.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>利用 <code>else</code> 语句也可以执行一些必要内容。比如使用 selenium 爬虫结束后，我们需要 <code>driver.close()</code> 和 <code>driver.quit()</code> 释放内存资源。那么在循环解析页面时，我们也可以把这两个语句放到 <code>else</code> 后面。</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [ ]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pseudocode</span>
-<span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">url_list</span><span class="p">:</span>
-    <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
 </div>
             </div>
             </article><hr style="border: 0; border-top: 1px solid #eee;">
@@ -828,406 +195,83 @@ bg-white
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>新浪财经的 <a href="https://finance.sina.com.cn/esg/grade.shtml">ESG 评级指数</a>页面分页利用了 JS 进行动态渲染，因为数据量不大，就利用 Selenium 来爬取。</p>
-
+<p class="more"><a href="posts/scraping-sina-esg-grades/">Read more…</a></p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
-<span class="kn">from</span> <span class="nn">selenium.webdriver</span> <span class="kn">import</span> <span class="n">ChromeOptions</span>
-<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
-<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
-<span class="kn">from</span> <span class="nn">selenium.webdriver.support.wait</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>
-<span class="kn">from</span> <span class="nn">selenium.common.exceptions</span> <span class="kn">import</span> <span class="n">StaleElementReferenceException</span>
-
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
+            </div>
+            </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/plotting-with-pandas/" class="u-url">Plotting with pandas</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Tom
+                    </span></p>
+                    <p class="dateline">
+                    <a href="posts/plotting-with-pandas/" rel="bookmark">
+                    <time class="published dt-published" datetime="2022-05-01T19:52:05Z" itemprop="datePublished" title="2022-05-01 19:52">2022-05-01 19:52</time></a>
+                    </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+            <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>我们利用 CSS 选择器来解析所需数据，然后模拟点击下一页，循环解析。</p>
-<p>这里存在的一个问题是，点击下一页后，JS 渲染需要时间，页面可能还在加载，这时候 <code>browser.find_elements()</code> 会报错 <code>StaleElementReferenceException</code>。一个选择是在每次解析数据前做一个判断，判断所需数据是否已经加载出来了。而由于网站没有反爬措施，另一个选择是暴力循环，直到页面加载出来。</p>
-
+<p>在数据分析过程中，我们常常碰到需要快速绘图的场景。比如，在回归分析前看一下 y 和 x 的散点图。对于这类需求，pandas 提供了一个 <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html"><code>pandas.DataFrame.plot</code></a> 方法可以方便快捷地实现可视化。<code>pandas.DataFrame.plot</code> 方法是对 <code>matplotlib.axes.Axes.plot</code> 的封装，所以在调用该方法前，我们需要导入 matplotlib 包。</p>
+<p class="more"><a href="posts/plotting-with-pandas/">Read more…</a></p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">parse_data</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># use CSS selectors to locate the data</span>
-            <span class="n">lft_list</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span>
-                    <span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="s1">'#lft-name-list i'</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
-            <span class="n">esg_score</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span>
-                    <span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="s1">'div[data-key="esg_score"] li'</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
-            <span class="n">env_score</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span>
-                    <span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="s1">'div[data-key="env_score"] li'</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
-            <span class="n">social_score</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span>
-                    <span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="s1">'div[data-key="social_score"] li'</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
-            <span class="n">governance_score</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_elements</span><span class="p">(</span>
-                    <span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="s1">'div[data-key="governance_score"] li'</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
-
-            <span class="n">data_dic</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">"lft_list"</span> <span class="p">:</span> <span class="n">lft_list</span><span class="p">,</span>
-                    <span class="s2">"esg_score"</span> <span class="p">:</span> <span class="n">esg_score</span><span class="p">,</span>
-                    <span class="s2">"env_score"</span> <span class="p">:</span> <span class="n">env_score</span><span class="p">,</span>
-                    <span class="s2">"social_score"</span> <span class="p">:</span> <span class="n">social_score</span><span class="p">,</span>
-                    <span class="s2">"governance_score"</span> <span class="p">:</span> <span class="n">governance_score</span><span class="p">,</span>
-            <span class="p">}</span>
-            
-            <span class="k">if</span> <span class="n">page</span> <span class="o">&lt;</span> <span class="mi">510</span><span class="p">:</span>
-            <span class="c1"># locate the next page button and click</span>
-                <span class="n">button</span> <span class="o">=</span> <span class="n">browser</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="s1">'.pages-rt'</span><span class="p">)</span>
-                <span class="n">button</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">pass</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="c1"># waiting 0.2s for page refresh if the Exception is StaleElementReferenceException,</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">StaleElementReferenceException</span><span class="p">):</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">break</span>
-    
-    <span class="k">return</span> <span class="n">data_dic</span>  
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
-    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s1">'</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1">: </span><span class="si">%(message)s</span><span class="s1">'</span>
-<span class="p">)</span>
-
-<span class="c1"># basic settings for headless browser and anti-detection</span>
-<span class="n">option</span> <span class="o">=</span> <span class="n">ChromeOptions</span><span class="p">()</span>
-<span class="n">option</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">'--headless'</span><span class="p">)</span>
-<span class="n">option</span><span class="o">.</span><span class="n">add_experimental_option</span><span class="p">(</span><span class="s1">'excludeSwitches'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'enable-automation'</span><span class="p">])</span>
-<span class="n">option</span><span class="o">.</span><span class="n">add_experimental_option</span><span class="p">(</span><span class="s1">'useAutomationExtension'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
-<span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">option</span><span class="p">)</span>
-<span class="n">browser</span><span class="o">.</span><span class="n">execute_cdp_cmd</span><span class="p">(</span>
-    <span class="s1">'Page.addScriptToEvaluateOnNewDocument'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Object.defineProperty(navigator, "webdriver", {get: () =&gt; undefined})'</span>
-<span class="p">})</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[3]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>{'identifier': '2'}</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">wait</span> <span class="o">=</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">browser</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'https://finance.sina.com.cn/esg/grade.shtml'</span><span class="p">)</span>
-    <span class="n">wait</span><span class="o">.</span><span class="n">until</span><span class="p">(</span>
-        <span class="n">EC</span><span class="o">.</span><span class="n">visibility_of_all_elements_located</span><span class="p">((</span><span class="n">By</span><span class="o">.</span><span class="n">CSS_SELECTOR</span><span class="p">,</span> <span class="s1">'.lft-bodylist'</span><span class="p">))</span>
-    <span class="p">)</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-    
-<span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">511</span><span class="p">)):</span>
-    <span class="n">data_dic</span> <span class="o">=</span> <span class="n">parse_data</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
-    <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_dic</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">browser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="n">browser</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>2023-01-14 20:13:53,283 - WARNING: Message: 
-
-100%|████████████████████████████████████████████████████████████████████████████████| 510/510 [14:00&lt;00:00,  1.65s/it]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ESG</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'lft_list'</span><span class="p">,</span> <span class="s1">'esg_score'</span><span class="p">,</span> <span class="s1">'env_score'</span><span class="p">,</span> <span class="s1">'social_score'</span><span class="p">,</span> <span class="s1">'governance_score'</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="k">for</span> <span class="n">data_df</span> <span class="ow">in</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dic</span><span class="p">)</span> <span class="k">for</span> <span class="n">data_dic</span> <span class="ow">in</span> <span class="n">res</span><span class="p">]:</span>
-    <span class="n">ESG</span> <span class="o">=</span> <span class="n">ESG</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_df</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ESG</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ESG</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[7]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead><tr style="text-align: right;">
-<th></th>
-      <th>lft_list</th>
-      <th>esg_score</th>
-      <th>env_score</th>
-      <th>social_score</th>
-      <th>governance_score</th>
-    </tr></thead>
-<tbody>
-<tr>
-<th>0</th>
-      <td>酒鬼酒</td>
-      <td>15.3(D)</td>
-      <td>3.4(D-)</td>
-      <td>10.3(D)</td>
-      <td>38.9(C)</td>
-    </tr>
-<tr>
-<th>1</th>
-      <td>耐斯系统</td>
-      <td>61.4(B)</td>
-      <td>38.9(C)</td>
-      <td>60.2(B)</td>
-      <td>69.3(B+)</td>
-    </tr>
-<tr>
-<th>2</th>
-      <td>SunCoke Energy</td>
-      <td>60.6(B)</td>
-      <td>68.9(B+)</td>
-      <td>56.6(B-)</td>
-      <td>55.1(B-)</td>
-    </tr>
-<tr>
-<th>3</th>
-      <td>普尔斯玛特</td>
-      <td>31.5(C-)</td>
-      <td>8.9(D)</td>
-      <td>40.8(C)</td>
-      <td>41.6(C)</td>
-    </tr>
-<tr>
-<th>4</th>
-      <td>新城发展</td>
-      <td>53.3(B-)</td>
-      <td>30.3(C-)</td>
-      <td>43.6(C+)</td>
-      <td>86.1(A)</td>
-    </tr>
-<tr>
-<th>6</th>
-      <td>华能国际电力股份</td>
-      <td>51.1(B-)</td>
-      <td>61.2(B)</td>
-      <td>41.1(C)</td>
-      <td>46.7(C+)</td>
-    </tr>
-<tr>
-<th>7</th>
-      <td>安徽皖通高速公路</td>
-      <td>44.7(C+)</td>
-      <td>51.2(B-)</td>
-      <td>41.1(C)</td>
-      <td>43.4(C+)</td>
-    </tr>
-<tr>
-<th>8</th>
-      <td>民生银行</td>
-      <td>47.4(C+)</td>
-      <td>37.0(C)</td>
-      <td>71.4(B+)</td>
-      <td>18.3(D+)</td>
-    </tr>
-<tr>
-<th>9</th>
-      <td>中远海能</td>
-      <td>57.1(B-)</td>
-      <td>61.1(B)</td>
-      <td>38.7(C)</td>
-      <td>78.8(A-)</td>
-    </tr>
-<tr>
-<th>0</th>
-      <td>中国石油化工股份</td>
-      <td>58.8(B)</td>
-      <td>69.9(B+)</td>
-      <td>50.3(B-)</td>
-      <td>57.9(B-)</td>
-    </tr>
-</tbody>
-</table>
-</div></div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In [8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ESG</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'ESG.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
+            </div>
+            </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/blogging-with-Nikola-and-WSL2/" class="u-url">Blogging with Nikola and WSL2</a></h1>
+                <div class="metadata">
+                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                        Tom
+                    </span></p>
+                    <p class="dateline">
+                    <a href="posts/blogging-with-Nikola-and-WSL2/" rel="bookmark">
+                    <time class="published dt-published" datetime="2022-04-29T13:28:09+08:00" itemprop="datePublished" title="2022-04-29 13:28">2022-04-29 13:28</time></a>
+                    </p>
+                </div>
+            </header><div class="p-summary entry-summary">
+            <div>
+<p>一直希望搭建一个博客，一方面是希望能有一个地方记录整理自己学过的知识，另一方面也希望能交到一些志同道合的朋友（有人可以讨论真是太棒了！）在各种鼓捣之后，我选择了 <a href="https://getnikola.com/">Nikola</a>，因为它原生支持 Jupyter notebook。至于为什么选择静态博客，Nikola 官网这篇<a href="https://getnikola.com/handbook.html#why-static">文章</a>写的很好。</p>
+<p class="more"><a href="posts/blogging-with-Nikola-and-WSL2/">Read more…</a></p>
 </div>
             </div>
             </article><hr style="border: 0; border-top: 1px solid #eee;">
 </div>
-   <aside class="col-md-4 blog-sidebar"><div class="p-4 mb-3 bg-light rounded">
-        <h4 class="font-italic">About</h4>
-        <p class="mb-0">我是 Tom，金融民工，兴趣使然的 coder，偶尔折腾一下机器学习。欢迎与我联系，QQ：3587734141，邮箱：roundedtom@qq.com</p>
-      </div>
-      <div class="p-4">
-        <h4 class="font-italic">Archives</h4>
-        <ol class="list-unstyled mb-0">
+   <aside class="col-md-4 blog-sidebar"><div class="position-sticky">
+     <div class="p-4 mb-3 bg-light rounded">
+         <h4 class="font-italic">About</h4>
+         <p class="mb-0">我是 Tom，金融民工，兴趣使然的 coder，偶尔折腾一下机器学习。欢迎与我联系，QQ：3587734141，邮箱：roundedtom@qq.com</p>
+       </div>
+       <div class="p-4">
+         <h4 class="font-italic">Archives</h4>
+         <ol class="list-unstyled mb-0">
 <li><a href="2023/">2023</a></li>
-          <li><a href="2022/">2022</a></li>
-          <li><a href="2021/">2021</a></li>
-          <li><a href="2020/">2020</a></li>
-          <li><a href="2019/">2019</a></li>
-        </ol>
+           <li><a href="2022/">2022</a></li>
+           <li><a href="2021/">2021</a></li>
+           <li><a href="2020/">2020</a></li>
+           <li><a href="2019/">2019</a></li>
+         </ol>
 </div>
-      <div class="p-4">
-        <h4 class="font-italic">Elsewhere</h4>
-        <ol class="list-unstyled">
+       <div class="p-4">
+         <h4 class="font-italic">Elsewhere</h4>
+         <ol class="list-unstyled">
 <li><a href="#">GitHub</a></li>
-          <li><a href="#">Weibo</a></li>
-        </ol>
+           <li><a href="#">Weibo</a></li>
+         </ol>
 </div>
+    </div>
    </aside>
 </div>
    </main>
 </div>
 
         <ul class="pager postindexpager clearfix">
-<li class="next"><a href="index-4.html" rel="next">Older posts</a></li>
+<li class="next"><a href="index-2.html" rel="next">Older posts</a></li>
         </ul>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
                 renderMathInElement(document.body,
