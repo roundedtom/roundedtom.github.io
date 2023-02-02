@@ -19,13 +19,14 @@
 <meta property="og:site_name" content="RoundedTom">
 <meta property="og:title" content="Numpy Notes: Python data analysis">
 <meta property="og:url" content="https://example.com/posts/numpy-notes-python-data-analysis/">
-<meta property="og:description" content="Numpy¶NumPy, short for Numerical Python, has such advantages:
+<meta property="og:description" content="NumPy, short for Numerical Python, has such advantages:
 
-Fast vectorized array operations for data munging and cleaning, subsetting and filtering, transformation, and any other kinds of computat">
+Fast vectorized array operations for data munging and cleaning, subsetting and filtering, transformation, and any other kinds of computations
+C">
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2021-09-20T00:00:00+08:00">
-<meta property="article:tag" content="Data Analysis">
 <meta property="article:tag" content="Jupyter-notebook">
+<meta property="article:tag" content="Numpy">
 <meta property="article:tag" content="Python">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <style>
@@ -98,8 +99,6 @@ bg-white
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Numpy">Numpy<a class="anchor-link" href="#Numpy">¶</a>
-</h2>
 <p>NumPy, short for Numerical Python, has such advantages:</p>
 <ul>
 <li>Fast vectorized array operations for <a href="https://www.experian.co.uk/business/glossary/data-munging/">data munging</a> and cleaning, subsetting and filtering, transformation, and any other kinds of computations</li>
@@ -109,7 +108,7 @@ bg-white
 <li>Expressing conditional logic as array expressions instead of loops with <code>if-elif-else</code> branches</li>
 <li>Group-wise data manipulations (aggregation, transformation, function application)</li>
 </ul>
-<p><a href="https://python-programming.quantecon.org/need_for_speed.html">Pure Python leaves many details to runtime environment:</a></p>
+<!-- TEASER_END --><p><a href="https://python-programming.quantecon.org/need_for_speed.html">Pure Python leaves many details to runtime environment:</a></p>
 <ul>
 <li>specifying variable types</li>
 <li>memory allocation/deallocation, etc</li>
@@ -219,7 +218,7 @@ bg-white
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="ndarray">ndarray<a class="anchor-link" href="#ndarray">¶</a>
+<h3 id="1-ndarray">1 ndarray<a class="anchor-link" href="#1-ndarray">¶</a>
 </h3>
 <p>An *<strong>ndarray</strong>* (N dimensional array) is a generic multidimensional container for <strong>homogeneous</strong> data; that is, all of the elements must be the same type (free of type checking). Every array has a *<strong>shape</strong><em>, a tuple indicating the size of each dimension; a </em><strong>dtype</strong><em>, an object describing the data type of the array; a </em><strong>ndim</strong>*, an integer indicating the dimension of the ndarray.</p>
 
@@ -366,10 +365,9 @@ bg-white
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Creating-ndarrays">Creating ndarrays<a class="anchor-link" href="#Creating-ndarrays">¶</a>
+<h4 id="1.1-Creating-ndarrays">1.1 Creating ndarrays<a class="anchor-link" href="#1.1-Creating-ndarrays">¶</a>
 </h4>
-<h5 id="array-function.">
-<code>array</code> function.<a class="anchor-link" href="#array-function.">¶</a>
+<h5 id="1.1.1-array-function.">1.1.1 <code>array</code> function.<a class="anchor-link" href="#1.1.1-array-function.">¶</a>
 </h5>
 <p><code>array</code> function accepts any sequence-like object (list, list of lists, other arrays, etc) and produces a new NumPy array containing the passed data. <strong>Unless explicitly specified, <code>np.array</code> tries to infer a good data type for the array that it creates</strong>. The data type is stored in a special <strong>dtype</strong> metadata object.</p>
 
@@ -501,8 +499,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h5 id="zeros,ones,empty,arange-etc">
-<code>zeros</code>,<code>ones</code>,<code>empty</code>,<code>arange</code> etc<a class="anchor-link" href="#zeros,ones,empty,arange-etc">¶</a>
+<h5 id="1.1.2-zeros,ones,empty,arange-etc">1.1.2 <code>zeros</code>,<code>ones</code>,<code>empty</code>,<code>arange</code> etc<a class="anchor-link" href="#1.1.2-zeros,ones,empty,arange-etc">¶</a>
 </h5>
 <table>
 <thead><tr>
@@ -711,7 +708,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Data-Types-for-ndarrays">Data Types for ndarrays<a class="anchor-link" href="#Data-Types-for-ndarrays">¶</a>
+<h4 id="1.2-Data-Types-for-ndarrays">1.2 Data Types for ndarrays<a class="anchor-link" href="#1.2-Data-Types-for-ndarrays">¶</a>
 </h4>
 <p>The data type or *<strong>dtype</strong>* is a special object containing the information (or metadata, data about data) the ndarray needs to interpret a chunk of memory as a particular type of data. <strong>In most cases dtype provide a mapping directly onto an  underlying disk or memory representation, which makes it easy to read and write binary streams of data to disk and also to connect to code written in a low-level language like C or Fortran.</strong></p>
 
@@ -723,7 +720,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Arithmetic-with-NumPy-Arrays">Arithmetic with NumPy Arrays<a class="anchor-link" href="#Arithmetic-with-NumPy-Arrays">¶</a>
+<h4 id="1.3-Arithmetic-with-NumPy-Arrays">1.3 Arithmetic with NumPy Arrays<a class="anchor-link" href="#1.3-Arithmetic-with-NumPy-Arrays">¶</a>
 </h4>
 <p>*<strong>Vectorization</strong>* - Any arithmetic operations between equal-size arrays applies the operation element-wise.</p>
 
@@ -886,7 +883,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Basic-Indexing-and-Slicing">Basic Indexing and Slicing<a class="anchor-link" href="#Basic-Indexing-and-Slicing">¶</a>
+<h4 id="1.4-Basic-Indexing-and-Slicing">1.4 Basic Indexing and Slicing<a class="anchor-link" href="#1.4-Basic-Indexing-and-Slicing">¶</a>
 </h4>
 <p>One-dimensional array indexing and slicing act similarly to Python lists.</p>
 
@@ -1261,7 +1258,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Boolean-Indexing">Boolean Indexing<a class="anchor-link" href="#Boolean-Indexing">¶</a>
+<h4 id="1.5-Boolean-Indexing">1.5 Boolean Indexing<a class="anchor-link" href="#1.5-Boolean-Indexing">¶</a>
 </h4>
 <p>Selecting data from an array by boolean indexing always creates a <strong>copy</strong> of the data.</p>
 
@@ -1551,7 +1548,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Fancy-Indexing">Fancy Indexing<a class="anchor-link" href="#Fancy-Indexing">¶</a>
+<h4 id="1.6-Fancy-Indexing">1.6 Fancy Indexing<a class="anchor-link" href="#1.6-Fancy-Indexing">¶</a>
 </h4>
 <ul>
 <li>*<strong>Fancy indexing</strong>* is a term adopted by NumPy to describe indexing using integer arrays.</li>
@@ -1720,7 +1717,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Transposing-Arrays-and-Swapping-Axes">Transposing Arrays and Swapping Axes<a class="anchor-link" href="#Transposing-Arrays-and-Swapping-Axes">¶</a>
+<h4 id="1.7-Transposing-Arrays-and-Swapping-Axes">1.7 Transposing Arrays and Swapping Axes<a class="anchor-link" href="#1.7-Transposing-Arrays-and-Swapping-Axes">¶</a>
 </h4>
 <p>Transposing is a special form of reshaping that similiarly <strong>returns a view on the underlying data without copying anything</strong>. Arrays have the <code>transpose</code> method and also the special <code>T</code> attribute.</p>
 
@@ -1802,7 +1799,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Universal-Functions">Universal Functions<a class="anchor-link" href="#Universal-Functions">¶</a>
+<h3 id="2-Universal-Functions">2 Universal Functions<a class="anchor-link" href="#2-Universal-Functions">¶</a>
 </h3>
 <p>*<strong>ufunc</strong>*, short for universal function, is a function that performs element-wise operations on data in ndarrays.</p>
 
@@ -1922,7 +1919,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Array-Oriented-Programming-with-Arrays">Array-Oriented Programming with Arrays<a class="anchor-link" href="#Array-Oriented-Programming-with-Arrays">¶</a>
+<h3 id="3-Array-Oriented-Programming-with-Arrays">3 Array-Oriented Programming with Arrays<a class="anchor-link" href="#3-Array-Oriented-Programming-with-Arrays">¶</a>
 </h3>
 </div>
 </div>
@@ -2038,7 +2035,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Expressing-Conditional-Logic-as-Array-Operations">Expressing Conditional Logic as Array Operations<a class="anchor-link" href="#Expressing-Conditional-Logic-as-Array-Operations">¶</a>
+<h4 id="3.1-Expressing-Conditional-Logic-as-Array-Operations">3.1 Expressing Conditional Logic as Array Operations<a class="anchor-link" href="#3.1-Expressing-Conditional-Logic-as-Array-Operations">¶</a>
 </h4>
 </div>
 </div>
@@ -2133,7 +2130,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Mathematical-and-Statiscal-Methods">Mathematical and Statiscal Methods<a class="anchor-link" href="#Mathematical-and-Statiscal-Methods">¶</a>
+<h4 id="3.2-Mathematical-and-Statiscal-Methods">3.2 Mathematical and Statiscal Methods<a class="anchor-link" href="#3.2-Mathematical-and-Statiscal-Methods">¶</a>
 </h4>
 <p>A set of mathematical functions that compute statistics about an entire array or about the data along an axis are accessible as methods of the array class and the top-level NumPy function.</p>
 
@@ -2318,7 +2315,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Methods-for-Boolean-Arrays">Methods for Boolean Arrays<a class="anchor-link" href="#Methods-for-Boolean-Arrays">¶</a>
+<h4 id="3.3-Methods-for-Boolean-Arrays">3.3 Methods for Boolean Arrays<a class="anchor-link" href="#3.3-Methods-for-Boolean-Arrays">¶</a>
 </h4>
 <p>Boolean values are coerced to 1 (True) and 0 (False) in the preceding methods. Thus, sum is often used as a means of counting True values in a boolean array.</p>
 
@@ -2453,7 +2450,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Sorting">Sorting<a class="anchor-link" href="#Sorting">¶</a>
+<h4 id="3.4-Sorting">3.4 Sorting<a class="anchor-link" href="#3.4-Sorting">¶</a>
 </h4>
 <p>NumPy arrays can be <strong>sorted in-place</strong> with the <code>sort</code> method.</p>
 
@@ -2690,7 +2687,7 @@ int32
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Unique-and-Other-Set-Logic">Unique and Other Set Logic<a class="anchor-link" href="#Unique-and-Other-Set-Logic">¶</a>
+<h4 id="3.5-Unique-and-Other-Set-Logic">3.5 Unique and Other Set Logic<a class="anchor-link" href="#3.5-Unique-and-Other-Set-Logic">¶</a>
 </h4>
 </div>
 </div>
@@ -2766,8 +2763,8 @@ int32
 </div>
     </div>
     <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/data-analysis/" rel="tag">Data Analysis</a></li>
-            <li><a class="tag p-category" href="../../categories/jupyter-notebook/" rel="tag">Jupyter-notebook</a></li>
+<li><a class="tag p-category" href="../../categories/jupyter-notebook/" rel="tag">Jupyter-notebook</a></li>
+            <li><a class="tag p-category" href="../../categories/numpy/" rel="tag">Numpy</a></li>
             <li><a class="tag p-category" href="../../categories/python/" rel="tag">Python</a></li>
         </ul>
 <ul class="pager hidden-print">

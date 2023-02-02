@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手把手教你做事件研究——数据清洗 Part2 | RoundedTom</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/event-study-tutorial-data-cleaning-part2/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../event-study-tutorial-data-cleaning-part1/" title="手把手教你做事件研究——数据清洗 Part1" type="text/html">
+<link rel="next" href="../event-study-tutorial-car-significance-test/" title="手把手教你做事件研究——CAR计算与显著性检验" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="手把手教你做事件研究——数据清洗 Part2">
+<meta property="og:url" content="https://example.com/posts/event-study-tutorial-data-cleaning-part2/">
+<meta property="og:description" content="这篇博客（视频）记录区块链技术投资公告效应研究样本的数据清洗过程，主要内容是剔除业绩预告、分红、收购并购、重组以及其他突发事件公告日落在事件窗口期之内样本公司。
+
+
+
+
+
+
+
+In [1]:
+
+    
+import logging
+from datetime import date, timedelta
+
+import numpy as np
+import pandas as pd
+import">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-02-01T00:00:00+08:00">
+<meta property="article:tag" content="data cleaning">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="事件研究法">
+<meta property="article:tag" content="公告效应">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<style>
+        
+    </style>
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
+<a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li></ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">手把手教你做事件研究——数据清洗 Part2</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Tom
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2023-02-01T00:00:00+08:00" itemprop="datePublished" title="2023-02-01 00:00">2023-02-01 00:00</time></a>
+            </p>
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>这篇博客（<a href="https://www.bilibili.com/video/BV1r3411979W/?spm_id_from=333.999.0.0&amp;vd_source=b4496ba547455f3db613a8f8de6bea01">视频</a>）记录区块链技术投资公告效应研究样本的数据清洗过程，主要内容是剔除业绩预告、分红、收购并购、重组以及其他突发事件公告日落在事件窗口期之内样本公司。</p>
+<!-- TEASER_END -->
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'./data/tidyed_data.csv'</span><span class="p">,</span> <span class="n">converters</span><span class="o">=</span><span class="p">{</span><span class="sa">u</span><span class="s1">'secCode'</span><span class="p">:</span><span class="nb">str</span><span class="p">})</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>announcementContent</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>002152</td>
+      <td>广电运通</td>
+      <td>9900003423</td>
+      <td>广电运通：2016年4月1日投资者关系活动记录表</td>
+      <td>2016-04-06</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>9、公司提过有储备区块链技术，是否可以介绍？</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>002177</td>
+      <td>御银股份</td>
+      <td>9900003781</td>
+      <td>御银股份：2016年4月21日投资者关系活动记录表</td>
+      <td>2016-04-21</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>4、公司在区块链技术上未来有什么规划？</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>300386</td>
+      <td>飞天诚信</td>
+      <td>9900023058</td>
+      <td>飞天诚信：2016年4月22日投资者关系活动记录表</td>
+      <td>2016-04-25</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>公司在区块链部分如何布局?</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>000997</td>
+      <td>新 大 陆</td>
+      <td>gssz0000997</td>
+      <td>新 大 陆：董事会关于本次募集资金使用的可行性分析</td>
+      <td>2016-06-03</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+      <td>支付行业技术创新和业务创新不断涌现，包括 NFC、条码（二维码）支付、可信服务平台（TSM）...</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>300423</td>
+      <td>鲁亿通</td>
+      <td>9900028812</td>
+      <td>鲁亿通：关于本次交易前12个月内购买、出售资产的说明</td>
+      <td>2016-06-09</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+      <td>同时，上市公司拟采用定价发行的方式向纪法清、孔剑平、孙奇锋、王麒诚和中信建投-数贝泽华人工智...</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 394 entries, 0 to 393
+Data columns (total 7 columns):
+ #   Column               Non-Null Count  Dtype 
+---  ------               --------------  ----- 
+ 0   secCode              394 non-null    object
+ 1   secName              394 non-null    object
+ 2   orgId                394 non-null    object
+ 3   announcementTitle    394 non-null    object
+ 4   announcementTime     394 non-null    object
+ 5   adjunctUrl           394 non-null    object
+ 6   announcementContent  394 non-null    object
+dtypes: object(7)
+memory usage: 21.7+ KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">codedata</span><span class="p">,</span> <span class="n">seDate</span><span class="p">):</span>
+    <span class="sd">"""获取 json 数据</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        codedata (str): 'code,orgId'</span>
+<span class="sd">        seDate (str): '2019-05-03~2019-05-05'</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        res.json(): json data</span>
+<span class="sd">    """</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">'http://www.cninfo.com.cn/new/hisAnnouncement/query'</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"Accept-Encoding"</span><span class="p">:</span> <span class="s2">"gzip"</span><span class="p">,</span>
+        <span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<span class="c1">#       'stock': 'code,orgId',</span>
+        <span class="s1">'tabName'</span><span class="p">:</span> <span class="s1">'fulltext'</span><span class="p">,</span>
+        <span class="s1">'pageSize'</span><span class="p">:</span> <span class="s1">'30'</span><span class="p">,</span>
+        <span class="s1">'pageNum'</span><span class="p">:</span> <span class="s1">'1'</span><span class="p">,</span>
+        <span class="s1">'column'</span><span class="p">:</span> <span class="s1">'szse'</span><span class="p">,</span>
+        <span class="s1">'category'</span><span class="p">:</span> <span class="s1">'category_yjygjxz_szsh;category_qyfpxzcs_szsh;category_zf_szsh;category_jj_szsh;category_tbclts_szsh;category_tszlq_szsh;category_ndbg_szsh;category_bndbg_szsh;category_yjdbg_szsh;category_sjdbg_szsh;category_sf_szsh;category_pg_szsh;category_gszq_szsh;category_kzzq_szsh;category_gqjl_szsh;category_gqbd_szsh;category_cqdq_szsh;category_qtrz_szsh;category_zj_szsh;'</span><span class="p">,</span>
+        <span class="s1">'plate'</span><span class="p">:</span> <span class="s1">'sz'</span><span class="p">,</span>
+<span class="c1">#       'seDate': '2019-05-03~2019-05-28',</span>
+        <span class="s1">'isHLtitle'</span><span class="p">:</span> <span class="s1">'true'</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s1">'stock'</span><span class="p">]</span> <span class="o">=</span> <span class="n">codedata</span>
+    <span class="n">payload</span><span class="p">[</span><span class="s1">'seDate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">seDate</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_json</span><span class="p">(</span><span class="s1">'300427,9900023902'</span><span class="p">,</span> <span class="s1">'2019-05-07~2019-05-09'</span><span class="p">)[</span><span class="s1">'totalAnnouncement'</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">filter_event</span><span class="p">(</span><span class="n">codedata</span><span class="p">,</span> <span class="n">seDate</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">get_json</span><span class="p">(</span><span class="n">codedata</span><span class="p">,</span> <span class="n">seDate</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">'totalAnnouncement'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">codedata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">codedata</span> <span class="o">=</span> <span class="s1">'300427,9900023902'</span>
+<span class="n">seDate</span> <span class="o">=</span> <span class="s1">'2019-05-07~2019-05-09'</span>
+<span class="n">filter_event</span><span class="p">(</span><span class="n">codedata</span><span class="p">,</span> <span class="n">seDate</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>True</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>announcementContent</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>002152</td>
+      <td>广电运通</td>
+      <td>9900003423</td>
+      <td>广电运通：2016年4月1日投资者关系活动记录表</td>
+      <td>2016-04-06</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>9、公司提过有储备区块链技术，是否可以介绍？</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>002177</td>
+      <td>御银股份</td>
+      <td>9900003781</td>
+      <td>御银股份：2016年4月21日投资者关系活动记录表</td>
+      <td>2016-04-21</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>4、公司在区块链技术上未来有什么规划？</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>300386</td>
+      <td>飞天诚信</td>
+      <td>9900023058</td>
+      <td>飞天诚信：2016年4月22日投资者关系活动记录表</td>
+      <td>2016-04-25</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>公司在区块链部分如何布局?</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>000997</td>
+      <td>新 大 陆</td>
+      <td>gssz0000997</td>
+      <td>新 大 陆：董事会关于本次募集资金使用的可行性分析</td>
+      <td>2016-06-03</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+      <td>支付行业技术创新和业务创新不断涌现，包括 NFC、条码（二维码）支付、可信服务平台（TSM）...</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>300423</td>
+      <td>鲁亿通</td>
+      <td>9900028812</td>
+      <td>鲁亿通：关于本次交易前12个月内购买、出售资产的说明</td>
+      <td>2016-06-09</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+      <td>同时，上市公司拟采用定价发行的方式向纪法清、孔剑平、孙奇锋、王麒诚和中信建投-数贝泽华人工智...</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final_code</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">code</span><span class="p">,</span><span class="n">orgId</span><span class="p">,</span><span class="n">time</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'secCode'</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'orgId'</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'announcementTime'</span><span class="p">]):</span>
+    <span class="n">codedata</span> <span class="o">=</span> <span class="n">code</span> <span class="o">+</span> <span class="s1">','</span> <span class="o">+</span> <span class="n">orgId</span>
+    <span class="c1"># [-1,1]</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">sedate</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="s1">'~'</span> <span class="o">+</span> <span class="n">end</span>
+    <span class="k">if</span> <span class="n">filter_event</span><span class="p">(</span><span class="n">codedata</span><span class="p">,</span> <span class="n">seDate</span><span class="p">):</span>
+        <span class="n">final_code</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">final_code</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>330</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">filter_code</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">final_code</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'secCode'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">filter_code</span><span class="p">(</span><span class="n">c</span><span class="p">)),</span> <span class="p">:]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[14]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>announcementContent</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>002152</td>
+      <td>广电运通</td>
+      <td>9900003423</td>
+      <td>广电运通：2016年4月1日投资者关系活动记录表</td>
+      <td>2016-04-06</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>9、公司提过有储备区块链技术，是否可以介绍？</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>002177</td>
+      <td>御银股份</td>
+      <td>9900003781</td>
+      <td>御银股份：2016年4月21日投资者关系活动记录表</td>
+      <td>2016-04-21</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>4、公司在区块链技术上未来有什么规划？</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>300386</td>
+      <td>飞天诚信</td>
+      <td>9900023058</td>
+      <td>飞天诚信：2016年4月22日投资者关系活动记录表</td>
+      <td>2016-04-25</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+      <td>公司在区块链部分如何布局?</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>300423</td>
+      <td>鲁亿通</td>
+      <td>9900028812</td>
+      <td>鲁亿通：关于本次交易前12个月内购买、出售资产的说明</td>
+      <td>2016-06-09</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+      <td>同时，上市公司拟采用定价发行的方式向纪法清、孔剑平、孙奇锋、王麒诚和中信建投-数贝泽华人工智...</td>
+    </tr>
+<tr>
+<th>5</th>
+      <td>000961</td>
+      <td>中南建设</td>
+      <td>gssz0000961</td>
+      <td>中南建设：关于本公司投资上海承泰信息科技股份有限公司的进展公告</td>
+      <td>2016-06-23</td>
+      <td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+      <td>，以区块链技术处理玛娜花园不同版本的个人数据，形成对数据信息的安全保护。</td>
+    </tr>
+<tr>
+<th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+<tr>
+<th>388</th>
+      <td>300133</td>
+      <td>华策影视</td>
+      <td>9900013428</td>
+      <td>华策影视：关于全资子公司增资扩股暨关联交易的公告</td>
+      <td>2021-12-17</td>
+      <td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+      <td>影业上海基于节目库搭建的正版影视素材库“华策新视界”已进入正式运营，目前正在推进基于区块链技...</td>
+    </tr>
+<tr>
+<th>389</th>
+      <td>300235</td>
+      <td>方直科技</td>
+      <td>9900011849</td>
+      <td>方直科技：关于对深圳证券交易所关注函的回复公告</td>
+      <td>2021-12-20</td>
+      <td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+      <td>元宇宙是整合多种新技术而产生的新型虚实相融的互联网应用和社会形态，它基于扩展现实技术提供沉浸...</td>
+    </tr>
+<tr>
+<th>390</th>
+      <td>300649</td>
+      <td>杭州园林</td>
+      <td>9900023811</td>
+      <td>杭州园林：关于收购参股公司部分股权的公告</td>
+      <td>2021-12-24</td>
+      <td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+      <td>一般项目：网络技术服务；物联网技术服务；技术服务、技术开发、技术咨询、技术交流、技术转让、技...</td>
+    </tr>
+<tr>
+<th>391</th>
+      <td>300533</td>
+      <td>冰川网络</td>
+      <td>9900027730</td>
+      <td>冰川网络：关于全资子公司设立三家子公司并完成工商注册登记的公告</td>
+      <td>2021-12-24</td>
+      <td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+      <td>人工智能通用应用系统；智能控制系统集成；量子计算技术服务；电竞信息科技；云计算装备技术服务；...</td>
+    </tr>
+<tr>
+<th>392</th>
+      <td>301116</td>
+      <td>益客食品</td>
+      <td>9900028946</td>
+      <td>益客食品：法律意见书及补充法律意见书</td>
+      <td>2021-12-27</td>
+      <td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+      <td>不含特种设备制造）；液气密元件及系统制造；工业自动控制系统装置销售；物料搬运装备销售；非居住...</td>
+    </tr>
+</tbody>
+</table>
+<p>330 rows × 7 columns</p>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'./data/final.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf_8_sig'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/data-cleaning/" rel="tag">data cleaning</a></li>
+            <li><a class="tag p-category" href="../../categories/python/" rel="tag">Python</a></li>
+            <li><a class="tag p-category" href="../../categories/shi-jian-yan-jiu-fa/" rel="tag">事件研究法</a></li>
+            <li><a class="tag p-category" href="../../categories/gong-gao-xiao-ying/" rel="tag">公告效应</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../event-study-tutorial-data-cleaning-part1/" rel="prev" title="手把手教你做事件研究——数据清洗 Part1">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../event-study-tutorial-car-significance-test/" rel="next" title="手把手教你做事件研究——CAR计算与显著性检验">Next post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
+                renderMathInElement(document.body,
+                    {
+                        
+delimiters: [
+    {left: "$$", right: "$$", display: true},
+    {left: "\\[", right: "\\]", display: true},
+    {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+    {left: "$", right: "$", display: false},
+    {left: "\\(", right: "\\)", display: false}
+]
+
+                    }
+                );
+            </script></article><!--End of body content--><footer id="footer">
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手把手教你做事件研究——公告爬取 | RoundedTom</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/event-study-tutorial-crawl-announcements-data/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../event-study-tutorial-intro/" title="手把手教你做事件研究——导论" type="text/html">
+<link rel="next" href="../event-study-tutorial-data-cleaning-part1/" title="手把手教你做事件研究——数据清洗 Part1" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="手把手教你做事件研究——公告爬取">
+<meta property="og:url" content="https://example.com/posts/event-study-tutorial-crawl-announcements-data/">
+<meta property="og:description" content="这篇博客（视频）记录从巨潮资讯爬取区块链技术投资相关的公告数据。
+
+
+
+
+
+
+
+In [1]:
+
+    
+import logging
+import time
+
+import numpy as np
+import pandas as pd
+import requests
+
+from concurrent.futures import ThreadPoolExecutor
+
+
+    
+
+
+
+
+
+">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-01-30T00:00:00+08:00">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="事件研究法">
+<meta property="article:tag" content="公告效应">
+<meta property="article:tag" content="巨潮资讯">
+<meta property="article:tag" content="爬虫">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<style>
+        
+    </style>
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
+<a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li></ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">手把手教你做事件研究——公告爬取</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+                    Tom
+            </span></p>
+            <p class="dateline">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2023-01-30T00:00:00+08:00" itemprop="datePublished" title="2023-01-30 00:00">2023-01-30 00:00</time></a>
+            </p>
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>这篇博客（<a href="https://www.bilibili.com/video/BV1fA41167Qg/?spm_id_from=333.999.0.0&amp;vd_source=b4496ba547455f3db613a8f8de6bea01">视频</a>）记录从巨潮资讯爬取区块链技术投资相关的公告数据。</p>
+<!-- TEASER_END -->
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_json</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="sd">"""获取 json 数据</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pagenum (str): page number</span>
+<span class="sd">        s (requests.Session): Session object</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        res.json(): json data</span>
+<span class="sd">    """</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">'http://www.cninfo.com.cn/new/fulltextSearch/full?'</span>
+    
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"Accept-Encoding"</span><span class="p">:</span> <span class="s2">"gzip"</span><span class="p">,</span>
+        <span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"</span><span class="p">,</span>
+        <span class="s2">"Connection"</span><span class="p">:</span> <span class="s2">"keep-alive"</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'searchkey'</span><span class="p">:</span> <span class="s1">'区块链'</span><span class="p">,</span>
+        <span class="s1">'sdate'</span><span class="p">:</span> <span class="s1">'2009-01-01'</span><span class="p">,</span>
+        <span class="s1">'edate'</span><span class="p">:</span> <span class="s1">'2022-01-01'</span><span class="p">,</span>
+        <span class="s1">'isfulltext'</span><span class="p">:</span> <span class="s1">'true'</span><span class="p">,</span>
+        <span class="s1">'sortName'</span><span class="p">:</span> <span class="s1">'pubdate'</span><span class="p">,</span>
+        <span class="s1">'sortType'</span><span class="p">:</span> <span class="s1">'asc'</span><span class="p">,</span>
+        <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'shj'</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="n">payload</span><span class="p">[</span><span class="s1">'pageNum'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pagenum</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    
+
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+    <span class="n">page_one</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">get_json</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="s1">'announcements'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">page_one</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>id</th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>adjunctSize</th>
+      <th>adjunctType</th>
+      <th>storageTime</th>
+      <th>columnId</th>
+      <th>pageColumn</th>
+      <th>announcementType</th>
+      <th>associateAnnouncement</th>
+      <th>important</th>
+      <th>batchNum</th>
+      <th>announcementContent</th>
+      <th>orgName</th>
+      <th>announcementTypeName</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>None</td>
+      <td>000631</td>
+      <td>顺发恒业</td>
+      <td>gssz0000631</td>
+      <td>49624621</td>
+      <td>*ST 兰宝：重大资产出售、发行股份购买资产暨关联交易报告书（修订稿）</td>
+      <td>1235773830000</td>
+      <td>finalpage/2009-02-28/49624621.PDF</td>
+      <td>1749</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030101||010612</td>
+      <td>SZZB</td>
+      <td>01010501||01010701||010112||01170110</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>（二）公司业绩持续下滑，且无改善迹象 由于个别银行发现公司资金&lt;em&gt;链&lt;/em&gt;紧张，逐步...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>None</td>
+      <td>600596</td>
+      <td>新安股份</td>
+      <td>gssh0600596</td>
+      <td>49988949</td>
+      <td>新安股份：2008年年度报告</td>
+      <td>1236637800000</td>
+      <td>finalpage/2009-03-10/49988949.PDF</td>
+      <td>1711</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030103||01030404||010612||010613</td>
+      <td>SHZB</td>
+      <td>01010501||010113||01030101</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>3.新安包装公司搬迁事项 因新安江桥东&lt;em&gt;区块&lt;/em&gt;旧城改造，新安包装公司于本期从老...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>None</td>
+      <td>600267</td>
+      <td>海正药业</td>
+      <td>gssh0600267</td>
+      <td>50367093</td>
+      <td>海正药业：2008年年度股东大会会议资料</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50367093.PDF</td>
+      <td>346</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030103||010612</td>
+      <td>SHZB</td>
+      <td>01010501||010113||011906</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>100.00% 141,278 100.00% 115,132 100.00% 公司凭借原料...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>None</td>
+      <td>002244</td>
+      <td>滨江集团</td>
+      <td>9900004730</td>
+      <td>50327309</td>
+      <td>滨江集团：2008年年度报告</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50327309.PDF</td>
+      <td>867</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01010302||01010306||01010410||01010411||010301...</td>
+      <td>SZZB</td>
+      <td>01010503||010112||010114||01030101</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>江干科技经济园区地块开发协议书》（江科园协字【2006】035 号），约定就“S08、09、...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>None</td>
+      <td>000301</td>
+      <td>东方盛虹</td>
+      <td>gssz0000301</td>
+      <td>50432137</td>
+      <td>东方市场：2008年年度报告</td>
+      <td>1237847400000</td>
+      <td>finalpage/2009-03-24/50432137.PDF</td>
+      <td>369</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030101||01030402||010612||010613</td>
+      <td>SZZB</td>
+      <td>01010501||010112||01030101</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>公司将采取措施进一步完善产业&lt;em&gt;链&lt;/em&gt;，继续减少关联交易。</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">column</span> <span class="o">=</span> <span class="n">page_one</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_data_array</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="n">announcements_list</span> <span class="o">=</span> <span class="n">get_json</span><span class="p">(</span><span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="s1">'announcements'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">announcements_list</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pages</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1106</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span>  <span class="p">[]</span>
+<span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+        <span class="n">futures</span> <span class="o">=</span> <span class="p">[</span><span class="n">pool</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">get_data_array</span><span class="p">,</span> <span class="n">pagenum</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">pagenum</span> <span class="ow">in</span> <span class="n">pages</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">futures</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>id</th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>adjunctSize</th>
+      <th>adjunctType</th>
+      <th>storageTime</th>
+      <th>columnId</th>
+      <th>pageColumn</th>
+      <th>announcementType</th>
+      <th>associateAnnouncement</th>
+      <th>important</th>
+      <th>batchNum</th>
+      <th>announcementContent</th>
+      <th>orgName</th>
+      <th>announcementTypeName</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>None</td>
+      <td>000631</td>
+      <td>顺发恒业</td>
+      <td>gssz0000631</td>
+      <td>49624621</td>
+      <td>*ST 兰宝：重大资产出售、发行股份购买资产暨关联交易报告书（修订稿）</td>
+      <td>1235773830000</td>
+      <td>finalpage/2009-02-28/49624621.PDF</td>
+      <td>1749</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030101||010612</td>
+      <td>SZZB</td>
+      <td>01010501||01010701||010112||01170110</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>（二）公司业绩持续下滑，且无改善迹象 由于个别银行发现公司资金&lt;em&gt;链&lt;/em&gt;紧张，逐步...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>None</td>
+      <td>600596</td>
+      <td>新安股份</td>
+      <td>gssh0600596</td>
+      <td>49988949</td>
+      <td>新安股份：2008年年度报告</td>
+      <td>1236637800000</td>
+      <td>finalpage/2009-03-10/49988949.PDF</td>
+      <td>1711</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030103||01030404||010612||010613</td>
+      <td>SHZB</td>
+      <td>01010501||010113||01030101</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>3.新安包装公司搬迁事项 因新安江桥东&lt;em&gt;区块&lt;/em&gt;旧城改造，新安包装公司于本期从老...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>None</td>
+      <td>600267</td>
+      <td>海正药业</td>
+      <td>gssh0600267</td>
+      <td>50367093</td>
+      <td>海正药业：2008年年度股东大会会议资料</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50367093.PDF</td>
+      <td>346</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030103||010612</td>
+      <td>SHZB</td>
+      <td>01010501||010113||011906</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>100.00% 141,278 100.00% 115,132 100.00% 公司凭借原料...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>None</td>
+      <td>002244</td>
+      <td>滨江集团</td>
+      <td>9900004730</td>
+      <td>50327309</td>
+      <td>滨江集团：2008年年度报告</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50327309.PDF</td>
+      <td>867</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01010302||01010306||01010410||01010411||010301...</td>
+      <td>SZZB</td>
+      <td>01010503||010112||010114||01030101</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>江干科技经济园区地块开发协议书》（江科园协字【2006】035 号），约定就“S08、09、...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>None</td>
+      <td>000301</td>
+      <td>东方盛虹</td>
+      <td>gssz0000301</td>
+      <td>50432137</td>
+      <td>东方市场：2008年年度报告</td>
+      <td>1237847400000</td>
+      <td>finalpage/2009-03-24/50432137.PDF</td>
+      <td>369</td>
+      <td>PDF</td>
+      <td>None</td>
+      <td>01030101||01030402||010612||010613</td>
+      <td>SZZB</td>
+      <td>01010501||010112||01030101</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>公司将采取措施进一步完善产业&lt;em&gt;链&lt;/em&gt;，继续减少关联交易。</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res_df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 11050 entries, 0 to 11049
+Data columns (total 20 columns):
+ #   Column                 Non-Null Count  Dtype 
+---  ------                 --------------  ----- 
+ 0   id                     0 non-null      object
+ 1   secCode                11050 non-null  object
+ 2   secName                11050 non-null  object
+ 3   orgId                  11050 non-null  object
+ 4   announcementId         11050 non-null  object
+ 5   announcementTitle      11050 non-null  object
+ 6   announcementTime       11050 non-null  int64 
+ 7   adjunctUrl             11050 non-null  object
+ 8   adjunctSize            11050 non-null  int64 
+ 9   adjunctType            11050 non-null  object
+ 10  storageTime            0 non-null      object
+ 11  columnId               11050 non-null  object
+ 12  pageColumn             11050 non-null  object
+ 13  announcementType       11050 non-null  object
+ 14  associateAnnouncement  910 non-null    object
+ 15  important              0 non-null      object
+ 16  batchNum               0 non-null      object
+ 17  announcementContent    11050 non-null  object
+ 18  orgName                0 non-null      object
+ 19  announcementTypeName   0 non-null      object
+dtypes: int64(2), object(18)
+memory usage: 1.7+ MB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'announcementId'</span><span class="p">,</span> <span class="s1">'adjunctSize'</span><span class="p">,</span> <span class="s1">'adjunctType'</span><span class="p">,</span> <span class="s1">'storageTime'</span><span class="p">,</span> <span class="s1">'columnId'</span><span class="p">,</span> <span class="s1">'pageColumn'</span><span class="p">,</span>
+             <span class="s1">'announcementType'</span><span class="p">,</span> <span class="s1">'associateAnnouncement'</span><span class="p">,</span> <span class="s1">'important'</span><span class="p">,</span> <span class="s1">'batchNum'</span><span class="p">,</span> <span class="s1">'orgName'</span><span class="p">,</span> <span class="s1">'announcementTypeName'</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">raw_data</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[13]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>announcementContent</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>000631</td>
+      <td>顺发恒业</td>
+      <td>gssz0000631</td>
+      <td>*ST 兰宝：重大资产出售、发行股份购买资产暨关联交易报告书（修订稿）</td>
+      <td>1235773830000</td>
+      <td>finalpage/2009-02-28/49624621.PDF</td>
+      <td>（二）公司业绩持续下滑，且无改善迹象 由于个别银行发现公司资金&lt;em&gt;链&lt;/em&gt;紧张，逐步...</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>600596</td>
+      <td>新安股份</td>
+      <td>gssh0600596</td>
+      <td>新安股份：2008年年度报告</td>
+      <td>1236637800000</td>
+      <td>finalpage/2009-03-10/49988949.PDF</td>
+      <td>3.新安包装公司搬迁事项 因新安江桥东&lt;em&gt;区块&lt;/em&gt;旧城改造，新安包装公司于本期从老...</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>600267</td>
+      <td>海正药业</td>
+      <td>gssh0600267</td>
+      <td>海正药业：2008年年度股东大会会议资料</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50367093.PDF</td>
+      <td>100.00% 141,278 100.00% 115,132 100.00% 公司凭借原料...</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>002244</td>
+      <td>滨江集团</td>
+      <td>9900004730</td>
+      <td>滨江集团：2008年年度报告</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50327309.PDF</td>
+      <td>江干科技经济园区地块开发协议书》（江科园协字【2006】035 号），约定就“S08、09、...</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>000301</td>
+      <td>东方盛虹</td>
+      <td>gssz0000301</td>
+      <td>东方市场：2008年年度报告</td>
+      <td>1237847400000</td>
+      <td>finalpage/2009-03-24/50432137.PDF</td>
+      <td>公司将采取措施进一步完善产业&lt;em&gt;链&lt;/em&gt;，继续减少关联交易。</td>
+    </tr>
+<tr>
+<th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+<tr>
+<th>11045</th>
+      <td>600382</td>
+      <td>*ST广珠</td>
+      <td>gssh0600382</td>
+      <td>*ST广珠：西部证券股份有限公司关于广东明珠集团股份有限公司重大资产出售及购买资产暨关联交易...</td>
+      <td>1640707200000</td>
+      <td>finalpage/2021-12-29/1212047512.PDF</td>
+      <td>、探矿权、采矿权规定方面，相关法律法规主要有《中华人民共和国矿产资源法》及其实施细则、《矿产...</td>
+    </tr>
+<tr>
+<th>11046</th>
+      <td>300164</td>
+      <td>通源石油</td>
+      <td>9900016228</td>
+      <td>通源石油：关于2021年以简易程序向特定对象发行股票募集资金使用可行性分析报告（修订稿）</td>
+      <td>1640776515000</td>
+      <td>finalpage/2021-12-29/1212055672.PDF</td>
+      <td>公司是以油气田增产为核心的油服企业，业务涵盖钻井、定向、完井压裂、测井、射孔、带压作业、连续...</td>
+    </tr>
+<tr>
+<th>11047</th>
+      <td>300164</td>
+      <td>通源石油</td>
+      <td>9900016228</td>
+      <td>通源石油：关于2021年以简易程序向特定对象发行股票方案论证分析报告（修订稿）</td>
+      <td>1640776515000</td>
+      <td>finalpage/2021-12-29/1212055670.PDF</td>
+      <td>公司是以油气田增产为核心的国际油服企业，业务涵盖钻井、定向、完井压裂、测井、射孔、带压作业、...</td>
+    </tr>
+<tr>
+<th>11048</th>
+      <td>300164</td>
+      <td>通源石油</td>
+      <td>9900016228</td>
+      <td>通源石油：2021年以简易程序向特定对象发行股票预案（修订稿）</td>
+      <td>1640776516000</td>
+      <td>finalpage/2021-12-29/1212055680.PDF</td>
+      <td>公司是以油气田增产为核心的油服企业，业务涵盖钻井、定向、完井压裂、测井、射孔、带压作业、连续...</td>
+    </tr>
+<tr>
+<th>11049</th>
+      <td>300605</td>
+      <td>恒锋信息</td>
+      <td>9900030876</td>
+      <td>恒锋信息：向不特定对象发行可转换公司债券之发行保荐书</td>
+      <td>1640780703000</td>
+      <td>finalpage/2021-12-29/1212056530.PDF</td>
+      <td>（二）技术创新风险 目前中国处于互联网、物联网、大数据、人工智能、&lt;em&gt;区块&lt;/em&gt;&lt;e...</td>
+    </tr>
+</tbody>
+</table>
+<p>11050 rows × 7 columns</p>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 去除 announcementTitle 和 announcementContent 里的 &lt;em&gt; 标签</span>
+<span class="k">def</span> <span class="nf">drop_em</span><span class="p">(</span><span class="n">c</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">c</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'&lt;em&gt;'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'&lt;/em&gt;'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+
+<span class="n">data_drop_em</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data_drop_em</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'announcementTitle'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_drop_em</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'announcementTitle'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span> <span class="p">:</span> <span class="n">drop_em</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="n">data_drop_em</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'announcementContent'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_drop_em</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'announcementContent'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span> <span class="p">:</span> <span class="n">drop_em</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_drop_em</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>announcementContent</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>000631</td>
+      <td>顺发恒业</td>
+      <td>gssz0000631</td>
+      <td>*ST 兰宝：重大资产出售、发行股份购买资产暨关联交易报告书（修订稿）</td>
+      <td>1235773830000</td>
+      <td>finalpage/2009-02-28/49624621.PDF</td>
+      <td>（二）公司业绩持续下滑，且无改善迹象 由于个别银行发现公司资金链紧张，逐步停止转贷并收缩银根...</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>600596</td>
+      <td>新安股份</td>
+      <td>gssh0600596</td>
+      <td>新安股份：2008年年度报告</td>
+      <td>1236637800000</td>
+      <td>finalpage/2009-03-10/49988949.PDF</td>
+      <td>3.新安包装公司搬迁事项 因新安江桥东区块旧城改造，新安包装公司于本期从老厂区（新安江街道桥...</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>600267</td>
+      <td>海正药业</td>
+      <td>gssh0600267</td>
+      <td>海正药业：2008年年度股东大会会议资料</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50367093.PDF</td>
+      <td>100.00% 141,278 100.00% 115,132 100.00% 公司凭借原料...</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>002244</td>
+      <td>滨江集团</td>
+      <td>9900004730</td>
+      <td>滨江集团：2008年年度报告</td>
+      <td>1237501800000</td>
+      <td>finalpage/2009-03-20/50327309.PDF</td>
+      <td>江干科技经济园区地块开发协议书》（江科园协字【2006】035 号），约定就“S08、09、...</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>000301</td>
+      <td>东方盛虹</td>
+      <td>gssz0000301</td>
+      <td>东方市场：2008年年度报告</td>
+      <td>1237847400000</td>
+      <td>finalpage/2009-03-24/50432137.PDF</td>
+      <td>公司将采取措施进一步完善产业链，继续减少关联交易。</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 将时间戳转化为日期</span>
+<span class="k">def</span> <span class="nf">transform_date</span><span class="p">(</span><span class="n">timeStamp</span><span class="p">):</span>
+    <span class="n">timeStamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">timeStamp</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">timeArray</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">timeStamp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">,</span> <span class="n">timeArray</span><span class="p">)</span>
+
+<span class="n">data_time_transformed</span> <span class="o">=</span> <span class="n">data_drop_em</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data_time_transformed</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'announcementTime'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_time_transformed</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'announcementTime'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">transform_date</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="n">data_time_transformed</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[16]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>announcementContent</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>000631</td>
+      <td>顺发恒业</td>
+      <td>gssz0000631</td>
+      <td>*ST 兰宝：重大资产出售、发行股份购买资产暨关联交易报告书（修订稿）</td>
+      <td>2009-02-28</td>
+      <td>finalpage/2009-02-28/49624621.PDF</td>
+      <td>（二）公司业绩持续下滑，且无改善迹象 由于个别银行发现公司资金链紧张，逐步停止转贷并收缩银根...</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>600596</td>
+      <td>新安股份</td>
+      <td>gssh0600596</td>
+      <td>新安股份：2008年年度报告</td>
+      <td>2009-03-10</td>
+      <td>finalpage/2009-03-10/49988949.PDF</td>
+      <td>3.新安包装公司搬迁事项 因新安江桥东区块旧城改造，新安包装公司于本期从老厂区（新安江街道桥...</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>600267</td>
+      <td>海正药业</td>
+      <td>gssh0600267</td>
+      <td>海正药业：2008年年度股东大会会议资料</td>
+      <td>2009-03-20</td>
+      <td>finalpage/2009-03-20/50367093.PDF</td>
+      <td>100.00% 141,278 100.00% 115,132 100.00% 公司凭借原料...</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>002244</td>
+      <td>滨江集团</td>
+      <td>9900004730</td>
+      <td>滨江集团：2008年年度报告</td>
+      <td>2009-03-20</td>
+      <td>finalpage/2009-03-20/50327309.PDF</td>
+      <td>江干科技经济园区地块开发协议书》（江科园协字【2006】035 号），约定就“S08、09、...</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>000301</td>
+      <td>东方盛虹</td>
+      <td>gssz0000301</td>
+      <td>东方市场：2008年年度报告</td>
+      <td>2009-03-24</td>
+      <td>finalpage/2009-03-24/50432137.PDF</td>
+      <td>公司将采取措施进一步完善产业链，继续减少关联交易。</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># 拼接公告 url</span>
+<span class="k">def</span> <span class="nf">url_join</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">'http://static.cninfo.com.cn/'</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+
+<span class="n">data_url_joined</span> <span class="o">=</span> <span class="n">data_time_transformed</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data_url_joined</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'adjunctUrl'</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_url_joined</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">'adjunctUrl'</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">url_join</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+<span class="n">data_url_joined</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>secCode</th>
+      <th>secName</th>
+      <th>orgId</th>
+      <th>announcementTitle</th>
+      <th>announcementTime</th>
+      <th>adjunctUrl</th>
+      <th>announcementContent</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>000631</td>
+      <td>顺发恒业</td>
+      <td>gssz0000631</td>
+      <td>*ST 兰宝：重大资产出售、发行股份购买资产暨关联交易报告书（修订稿）</td>
+      <td>2009-02-28</td>
+      <td>http://static.cninfo.com.cn/finalpage/2009-02-...</td>
+      <td>（二）公司业绩持续下滑，且无改善迹象 由于个别银行发现公司资金链紧张，逐步停止转贷并收缩银根...</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>600596</td>
+      <td>新安股份</td>
+      <td>gssh0600596</td>
+      <td>新安股份：2008年年度报告</td>
+      <td>2009-03-10</td>
+      <td>http://static.cninfo.com.cn/finalpage/2009-03-...</td>
+      <td>3.新安包装公司搬迁事项 因新安江桥东区块旧城改造，新安包装公司于本期从老厂区（新安江街道桥...</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>600267</td>
+      <td>海正药业</td>
+      <td>gssh0600267</td>
+      <td>海正药业：2008年年度股东大会会议资料</td>
+      <td>2009-03-20</td>
+      <td>http://static.cninfo.com.cn/finalpage/2009-03-...</td>
+      <td>100.00% 141,278 100.00% 115,132 100.00% 公司凭借原料...</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>002244</td>
+      <td>滨江集团</td>
+      <td>9900004730</td>
+      <td>滨江集团：2008年年度报告</td>
+      <td>2009-03-20</td>
+      <td>http://static.cninfo.com.cn/finalpage/2009-03-...</td>
+      <td>江干科技经济园区地块开发协议书》（江科园协字【2006】035 号），约定就“S08、09、...</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>000301</td>
+      <td>东方盛虹</td>
+      <td>gssz0000301</td>
+      <td>东方市场：2008年年度报告</td>
+      <td>2009-03-24</td>
+      <td>http://static.cninfo.com.cn/finalpage/2009-03-...</td>
+      <td>公司将采取措施进一步完善产业链，继续减少关联交易。</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_url_joined</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'./data/raw_data.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf_8_sig'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/python/" rel="tag">Python</a></li>
+            <li><a class="tag p-category" href="../../categories/shi-jian-yan-jiu-fa/" rel="tag">事件研究法</a></li>
+            <li><a class="tag p-category" href="../../categories/gong-gao-xiao-ying/" rel="tag">公告效应</a></li>
+            <li><a class="tag p-category" href="../../categories/ju-chao-zi-xun/" rel="tag">巨潮资讯</a></li>
+            <li><a class="tag p-category" href="../../categories/pa-chong/" rel="tag">爬虫</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../event-study-tutorial-intro/" rel="prev" title="手把手教你做事件研究——导论">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../event-study-tutorial-data-cleaning-part1/" rel="next" title="手把手教你做事件研究——数据清洗 Part1">Next post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
+                renderMathInElement(document.body,
+                    {
+                        
+delimiters: [
+    {left: "$$", right: "$$", display: true},
+    {left: "\\[", right: "\\]", display: true},
+    {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+    {left: "$", right: "$", display: false},
+    {left: "\\(", right: "\\)", display: false}
+]
+
+                    }
+                );
+            </script></article><!--End of body content--><footer id="footer">
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+        <script src="../../assets/js/all-nocdn.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

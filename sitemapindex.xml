@@ -10,24 +10,44 @@
   <lastmod>2023-02-02T07:26:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://example.com/categories/cat_blockchain.xml</loc>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/cat_coding.xml</loc>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/cat_data-analysis.xml</loc>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/cat_econometrics.xml</loc>
+  <lastmod>2023-02-02T15:11:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://example.com/categories/cat_mathematics.xml</loc>
   <lastmod>2022-12-31T14:38:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_tech.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://example.com/categories/data-analysis.xml</loc>
-  <lastmod>2022-12-31T14:41:00Z</lastmod>
+  <loc>https://example.com/categories/cat_web-scraping.xml</loc>
+  <lastmod>2023-02-02T15:13:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/data-cleaning.xml</loc>
+  <lastmod>2023-02-02T15:09:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/docker.xml</loc>
-  <lastmod>2023-01-15T11:52:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/fabric.xml</loc>
-  <lastmod>2023-01-15T11:52:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/github.xml</loc>
@@ -35,19 +55,23 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/golang.xml</loc>
-  <lastmod>2023-01-15T11:59:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/gong-gao-xiao-ying.xml</loc>
+  <lastmod>2023-02-02T15:11:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/http.xml</loc>
-  <lastmod>2023-01-28T06:43:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://example.com/categories/hui-tu.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <loc>https://example.com/categories/ju-chao-zi-xun.xml</loc>
+  <lastmod>2023-02-02T15:09:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/jupyter-notebook.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/linux.xml</loc>
@@ -55,7 +79,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/matplotlib.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/nikola.xml</loc>
@@ -63,35 +87,51 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/notes.xml</loc>
-  <lastmod>2023-01-15T11:59:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/numpy.xml</loc>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pa-chong-cai-keng.xml</loc>
-  <lastmod>2023-02-02T07:26:00Z</lastmod>
+  <lastmod>2023-02-02T15:13:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pa-chong.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T15:13:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pandas.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/probabilities.xml</loc>
   <lastmod>2022-12-31T14:38:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://example.com/categories/python-tips.xml</loc>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://example.com/categories/python.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T15:13:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/requests.xml</loc>
-  <lastmod>2023-02-02T07:26:00Z</lastmod>
+  <lastmod>2023-02-02T15:13:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/selenium.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/shi-jian-yan-jiu-fa.xml</loc>
+  <lastmod>2023-02-02T15:11:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/shu-ju-ke-shi-hua.xml</loc>
+  <lastmod>2023-02-02T14:06:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/sklearn.xml</loc>
@@ -115,10 +155,10 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/rss.xml</loc>
-  <lastmod>2023-02-02T07:29:00Z</lastmod>
+  <lastmod>2023-02-02T15:13:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/sitemap.xml</loc>
-  <lastmod>2023-02-02T07:36:00Z</lastmod>
+  <lastmod>2023-02-02T15:16:00Z</lastmod>
  </sitemap>
 </sitemapindex>
