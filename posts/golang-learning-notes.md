@@ -2,7 +2,7 @@
 slug: golang-learning-notes
 date: 2020-02-03 09:49:24
 tags: Golang, Notes
-category: TECH
+category: Coding
 description: Golang 学习笔记
 type: text
 title: Golang 学习笔记

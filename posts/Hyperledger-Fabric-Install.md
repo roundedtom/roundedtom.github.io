@@ -2,7 +2,7 @@
 slug: hyperledger-fabric-install
 date: 2022-02-09 13:27:01
 tags: Fabric, Golang, Docker
-category: TECH
+category: Blockchain
 description: hyperledger fabric 安装笔记
 type: text
 title: hyperledger fabric (v2.0) 安装过程记录
