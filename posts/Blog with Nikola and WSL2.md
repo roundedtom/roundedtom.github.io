@@ -439,3 +439,4 @@ GITHUB_COMMIT_SOURCE = True
 - [The Nikola Handbook](https://getnikola.com/handbook.html#)
 - https://randlow.github.io/posts/python/create-nikola-coding-blog/
 - https://www.brainsorting.com/posts/create-a-blog-with-nikola/
+- https://paulomarconi.github.io/blog/Nikola-guide/
