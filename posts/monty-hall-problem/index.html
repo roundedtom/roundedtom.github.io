@@ -23,6 +23,7 @@
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2023-03-15T20:18:00+08:00">
 <meta property="article:tag" content="Probabilities">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <style>
         @media screen and (min-width: 1024px) {
             .e-content {
@@ -167,25 +168,25 @@ bg-white
 <p>事实上，这是一个条件概率问题。记参赛者改变选择赢得汽车为事件 $A$，参赛者第一次选择的那扇门后是汽车为事件 $B_{1}$，第一次选择的那扇门后是羊为事件 $B_{2}$，主持人打开的门后面是羊为事件 $C$。那么我们要求的概率为：
 $$
 P(A/C) = \frac{P(AC)}{P(C)}
+$$</p>
+<p>这里，$P(AC)$ 为主持人打开的门后面是羊，同时参赛者改变选择赢得汽车的概率，我们可以使用全概率公式求解，即分两种情况，参赛者第一次选择的那扇门后是汽车，与参赛者第一次选择的那扇门后是羊：
 $$
-这里，$P(AC)$ 为主持人打开的门后面是羊，同时参赛者改变选择赢得汽车的概率，我们可以使用全概率公式求解，即分两种情况，参赛者第一次选择的那扇门后是汽车，与参赛者第一次选择的那扇门后是羊：
-$$
-\begin{array}{l}
-P(AC) = P(AC/B_{1}) \times P(B_{1}) + P(AC/B_{2}) \times P(B_{2})\
-P(AC) = 0 \times \frac{1}{3} + 1 \times \frac{2}{3} \
-P(AC) = \frac{2}{3}
-\end{array}
-$$
-不难理解，当参赛者第一次选择的门后是车时，此时主持人随意选择一扇门，参赛者改变选择赢得汽车的概率为 0，即 $P(AC/B_{1})$ 为 0。当参赛者第一次选择的门后是羊时，由于主持人知道剩下的两扇门背后的情况，那么他一定会打开有羊的那扇门，此时参赛者改变选择赢得汽车的概率为 1，即 $P(AC/B_{2})$ 为 1。由此可以计算出 $P(AC)=\frac{2}{3}$。</p>
+\begin{aligned}
+P(AC) &amp;= P(AC/B_{1}) \times P(B_{1}) + P(AC/B_{2}) \times P(B_{2}) \\
+P(AC) &amp;= 0 \times \frac{1}{3} + 1 \times \frac{2}{3} \\
+P(AC) &amp;= \frac{2}{3}
+\end{aligned}
+$$</p>
+<p>不难理解，当参赛者第一次选择的门后是车时，此时主持人随意选择一扇门，参赛者改变选择赢得汽车的概率为 0，即 $P(AC/B_{1})$ 为 0。当参赛者第一次选择的门后是羊时，由于主持人知道剩下的两扇门背后的情况，那么他一定会打开有羊的那扇门，此时参赛者改变选择赢得汽车的概率为 1，即 $P(AC/B_{2})$ 为 1。由此可以计算出 $P(AC)=\frac{2}{3}$。</p>
 <p>同理我们也可以用全概率公式计算 $P(C)$:
 $$
-\begin{array}{l}
-P(C) = P(C/B_{1}) \times P(B_{1}) + P(C/B_{2}) \times P(B_{2}) \
-P(C) = 1 \times \frac{1}{3} + 1 \times \frac{2}{3} \
-P(C) = 1
-\end{array}
-$$
-事实上，无论参赛者第一次选择的门背后是车还是羊，主持人打开的门背后是羊的概率都为 1，因为主持人知道门背后的情况。</p>
+\begin{aligned}
+P(C) &amp;= P(C/B_{1}) \times P(B_{1}) + P(C/B_{2}) \times P(B_{2}) \\
+P(C) &amp;= 1 \times \frac{1}{3} + 1 \times \frac{2}{3} \\
+P(C) &amp;= 1
+\end{aligned}
+$$</p>
+<p>事实上，无论参赛者第一次选择的门背后是车还是羊，主持人打开的门背后是羊的概率都为 1，因为主持人知道门背后的情况。</p>
 <p>由此我们可以计算出在主持人打开的门后面是羊的情况下，参赛者改变选择赢得汽车的概率为：
 $$
 P(A/C) = \frac{\frac{2}{3}}{1} = \frac{2}{3}
@@ -194,12 +195,12 @@ $$</p>
 <p>通过上面的计算，我们发现主持人打开剩下的一扇门提供了更多的信息，本质上是因为主持人了解门背后的情况。那么，如果我们假设主持人不知道门背后的情况，记事件 $C$ 为主持人打开剩下一扇门，那扇门背后恰好是羊，那么这个时候我们要不要改变选择呢？</p>
 <p>我们依然可以使用条件概率和全概率公式来计算：
 $$
-\begin{array}{l}
-P(A/C) = \frac{P(AC)}{P(C)} \
-P(A/C) = \frac{P(AC/B_{1}) \times P(B_{1}) + P(AC/B_{2}) \times P(B_{2})}{P(C/B_{1}) \times P(B_{1}) + P(C/B_{2}) \times P(B_{2})} \
-P(A/C) = \frac{0 \times \frac{1}{3} + \frac{1}{2} \times \frac{2}{3}}{1 \times \frac{1}{3} + \frac{1}{2} \times \frac{2}{3}} \
-P(A/C) = \frac{1}{2}
-\end{array}
+\begin{aligned}
+P(A/C) &amp;= \frac{P(AC)}{P(C)} \\
+P(A/C) &amp;= \frac{P(AC/B_{1}) \times P(B_{1}) + P(AC/B_{2}) \times P(B_{2})}{P(C/B_{1}) \times P(B_{1}) + P(C/B_{2}) \times P(B_{2})} \\
+P(A/C) &amp;= \frac{0 \times \frac{1}{3} + \frac{1}{2} \times \frac{2}{3}}{1 \times \frac{1}{3} + \frac{1}{2} \times \frac{2}{3}} \\
+P(A/C) &amp;= \frac{1}{2}
+\end{aligned}
 $$</p>
 <p>正好是 $\frac{1}{2}$，符合我们的直觉，参赛者改不改变选择都一样。这里需要注意，此时 $P(C)$ 不为 1，因为主持人不清楚门背后的情况。$P(AC/B_{2})$ 也不等于 $\frac{2}{3}$，因为当参赛者第一次选择的门后是羊时，主持人打开剩下一扇门背后恰好是羊的概率为 $\frac{1}{2}$。</p>
 <h2 id="3">3 一个简单的想法</h2>
@@ -235,7 +236,21 @@ $$</p>
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section></article><script>var disqus_shortname="roundedtom";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><!--End of body content--><footer id="footer">
+        </section><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
+                renderMathInElement(document.body,
+                    {
+                        
+delimiters: [
+    {left: "$$", right: "$$", display: true},
+    {left: "\\[", right: "\\]", display: true},
+    {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+    {left: "$", right: "$", display: false},
+    {left: "\\(", right: "\\)", display: false}
+]
+
+                    }
+                );
+            </script></article><script>var disqus_shortname="roundedtom";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><!--End of body content--><footer id="footer">
             Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
             

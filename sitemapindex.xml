@@ -27,7 +27,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_mathematics.xml</loc>
-  <lastmod>2023-03-16T01:53:00Z</lastmod>
+  <lastmod>2023-03-16T02:17:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_tech.xml</loc>
@@ -107,7 +107,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/probabilities.xml</loc>
-  <lastmod>2023-03-16T01:53:00Z</lastmod>
+  <lastmod>2023-03-16T02:17:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/python-tips.xml</loc>
@@ -155,10 +155,10 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/rss.xml</loc>
-  <lastmod>2023-03-16T01:53:00Z</lastmod>
+  <lastmod>2023-03-16T02:17:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/sitemap.xml</loc>
-  <lastmod>2023-03-16T01:53:00Z</lastmod>
+  <lastmod>2023-03-16T02:17:00Z</lastmod>
  </sitemap>
 </sitemapindex>
