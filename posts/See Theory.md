@@ -17,15 +17,15 @@ Here are some notes from [see-theory](https://seeing-theory.brown.edu/) on proba
 
 # 1 Basic Probability
 
-## Sample space
+## 1.1 Sample space
 
 A **probabilistic experiment** has severval components. The **sample space** is the set of all possible **outcomes** in the experiment. We usually denote the sample space by $\Omega$ .
 
-## Events
+## 1.2 Events
 
 Collections of outcomes in the sample space $\Omega$ are called **events**.
 
-## Probability measure
+## 1.3 Probability measure
 
 A **probability measure** P is a **function** that maps subsets of the **state space** $\Omega$ to numbers in the interval $[0,1]$ . 
 
@@ -35,7 +35,7 @@ The probabilities in a probabilistic experiment are not arbitrary, the must sati
 - The sum of the probabilisties of all the outcomes in $\Omega$ must be 1.
 - The probability of an event is the sum of the probabilities of the outcomes it comprises.
 
-## Independence
+## 1.4 Independence
 
 If two events A and B do not influence or give any information about the other, we say A and B are **independent**.
 
@@ -44,7 +44,7 @@ $$
 P(A \cap B)=P(A)P(B)
 $$
 
-## Expectation
+## 1.5 Expectation
 
 The expected value, or **expectation** of X, denoted by $E(X)$, is defined to be 
 $$
@@ -66,7 +66,7 @@ $$
 E(XY) = E(X)E(Y)
 $$
 
-## Variance
+## 1.6 Variance
 
 The variance of a random variable X is a nonnegative number that summarizes on average how much X differs from its mean, or expectation.
 
@@ -86,14 +86,14 @@ Properties of variance:
   Var(X+Y) = Var(X) + Var(Y)
   $$
 
-## Markov's Inequality
+## 1.7 Markov's Inequality
 
 Suppose $X$ is a nonnegative random variable and $a$ is a positive constant. Then
 $$
 P(X \ge a) \le \frac{EX}{a}
 $$
 
-## Chebyschev's Inequality
+## 1.8 Chebyschev's Inequality
 
 Let $X$ be a random variable. Then
 $$
@@ -102,11 +102,11 @@ $$
 
 切比雪夫不等式阐释了这样一个事实，随机变量大幅偏离期望的概率较小。
 
-## Estimation
+## 1.9 Estimation
 
 **Estimator** is a function or expression to **make inferences** about a population given data from a subset of that population.
 
-### Consistency of Estimators
+### 1.9.1 Consistency of Estimators
 
 We say an estimator $\hat{p}$ is  a **consistent** estimator of $p$ if for any $\epsilon >0$, 
 $$
@@ -115,9 +115,9 @@ $$
 
 # 2 Compound Probability
 
-## Set Theory
+## 2.1 Set Theory
 
-### Basic Definitions
+### 2.1.1 Basic Definitions
 
 A **set** is a collections of items, or elements, with no repeats. Usually we write a set $A$ using curly brackets and commas to distinguish elements, shown below
 $$
@@ -125,32 +125,32 @@ A = \{a_0, a_1, a_2\}
 $$
 The size of the set $A$ is denoted $|A|$ and is called the **cardinality** of $A$. The **empty set** is denoted $\emptyset$.
 
-### Intersection, Union and Complementation
+### 2.1.2 Intersection, Union and Complementation
 
 - $A \cap B = \{x \in \Omega : x \in A \ and \  x \in B \}$
 - $A \cup B = \{x \in \Omega : x \in A \ or \ x \in B \}$
 - $A^c = \{x \in \Omega : x \notin A \}$
 
-### Disjointness
+### 2.1.3 Disjointness
 
 For two sets to be disjoint, they must share no common elements. We say two sets $A$ and $B$ are **disjoint** if 
 $$
 A \cap B = \emptyset
 $$
 
-## Frequentist inference
+## 2.2 Frequentist inference
 
 Frequentist inference is the process of determining properties of an underlying distribution via the observation of data.
 
-### Point Estimation
+### 2.2.1 Point Estimation
 
 One of the main goals of statistics is to estimate unknown parameters. To approximate these parameters, we choose an estimator, which is simply any function of randomly sampled observations.
 
-### Confidence Interval
+### 2.2.2 Confidence Interval
 
 In contrast to point estimators, confidence intervals estimate a parameter by specifying a range of possible values. Such an interval is associated with a confidence level, which is the probability that the procedure used to generate the interval will produce an interval containing the true parameter.
 
-# Bayesian Inference
+# 3 Bayesian Inference
 
 Bayesian inference techniques specify how one should update one’s beliefs upon observing data.
 
