@@ -31,7 +31,7 @@
  </url>
  <url>
   <loc>https://example.com/archive.html</loc>
-  <lastmod>2023-03-09T07:49:00Z</lastmod>
+  <lastmod>2023-03-16T01:53:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/</loc>
@@ -195,7 +195,7 @@
  </url>
  <url>
   <loc>https://example.com/index-3.html</loc>
-  <lastmod>2023-03-09T07:49:00Z</lastmod>
+  <lastmod>2023-03-16T01:53:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/listings/</loc>
@@ -244,6 +244,10 @@
  <url>
   <loc>https://example.com/posts/install-ubuntu18.04-desktop/</loc>
   <lastmod>2023-01-28T06:43:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/posts/monty-hall-problem/</loc>
+  <lastmod>2023-03-16T01:53:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/posts/most-useful-matplotlib-plots/</loc>
