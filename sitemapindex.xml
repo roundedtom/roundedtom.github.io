@@ -19,7 +19,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_data-analysis.xml</loc>
-  <lastmod>2023-02-02T14:06:00Z</lastmod>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/cat_econometrics.xml</loc>
@@ -38,6 +38,10 @@
   <lastmod>2023-02-02T15:13:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>https://example.com/categories/data-analysis.xml</loc>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>https://example.com/categories/data-cleaning.xml</loc>
   <lastmod>2023-02-02T15:09:00Z</lastmod>
  </sitemap>
@@ -48,6 +52,10 @@
  <sitemap>
   <loc>https://example.com/categories/fabric.xml</loc>
   <lastmod>2023-02-02T14:06:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://example.com/categories/filter-data.xml</loc>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/github.xml</loc>
@@ -103,7 +111,7 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/pandas.xml</loc>
-  <lastmod>2023-02-02T14:06:00Z</lastmod>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/categories/probabilities.xml</loc>
@@ -155,10 +163,10 @@
  </sitemap>
  <sitemap>
   <loc>https://example.com/rss.xml</loc>
-  <lastmod>2023-04-07T05:57:00Z</lastmod>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://example.com/sitemap.xml</loc>
-  <lastmod>2023-04-07T05:57:00Z</lastmod>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </sitemap>
 </sitemapindex>

@@ -31,11 +31,11 @@
  </url>
  <url>
   <loc>https://example.com/archive.html</loc>
-  <lastmod>2023-03-17T06:15:00Z</lastmod>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/</loc>
-  <lastmod>2023-02-02T15:14:00Z</lastmod>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/blog/</loc>
@@ -70,6 +70,10 @@
   <lastmod>2023-02-02T14:06:00Z</lastmod>
  </url>
  <url>
+  <loc>https://example.com/categories/data-analysis/</loc>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://example.com/categories/data-cleaning/</loc>
   <lastmod>2023-02-02T14:54:00Z</lastmod>
  </url>
@@ -80,6 +84,10 @@
  <url>
   <loc>https://example.com/categories/fabric/</loc>
   <lastmod>2023-01-15T11:52:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/categories/filter-data/</loc>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/github/</loc>
@@ -199,7 +207,7 @@
  </url>
  <url>
   <loc>https://example.com/index-4.html</loc>
-  <lastmod>2023-03-17T06:15:00Z</lastmod>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/listings/</loc>
@@ -272,6 +280,10 @@
  <url>
   <loc>https://example.com/posts/plotting-workflow-with-matplotlib/</loc>
   <lastmod>2023-01-28T06:43:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://example.com/posts/query-and-filter-data-using-pandas/</loc>
+  <lastmod>2023-04-13T00:24:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/posts/scraping-debug-connectionreseterror%28100504%29/</loc>
