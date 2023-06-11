@@ -59,9 +59,10 @@
                 align-self: start;
                 position: sticky;
                 top: 20px;
+
                 /* overflow: auto; */
             }
-        
+
             .toc::before {
                 /* font-family: var(--font-serif); */
                 content: "ON this page";
@@ -72,20 +73,21 @@
                 font-style: italic;
                 /* display: inline-block; */
                 padding: 5px 5px;
-                margin-left: 20px;
+                margin-left: 0px;
             }
         }
+
         @media screen and (max-width: 767px) {
             .e-content {
                 display: grid;
                 grid-template-columns: 1fr;
             }
-            
+
             .toc {
                 grid-column: 1 / 2;
                 /* overflow: auto; */
             }
-            
+
             .toc::before {
                 content: "ON this page";
                 background-color: #ffe70e;
@@ -98,7 +100,7 @@
             }
 
         }
-        
+
         code {
             background-color: #DDDDDD;
             color: #000;
@@ -124,7 +126,7 @@ bg-white
 
         <div class="collapse navbar-collapse" id="bs-navbar">
             <ul class="navbar-nav mr-auto"><li class="nav-item">
-<a href="../../categories/" class="nav-link">Categories &amp; Tags</a>
+<a href="../../categories/" class="nav-link">Tags</a>
 
                 
             </li></ul>
@@ -151,7 +153,7 @@ bg-white
         
         
         
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Ubuntu 18.04 安装与配置</a></h1>
+    <article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Ubuntu 18.04 安装与配置</a></h1>
 
         <div class="metadata">
             <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
@@ -159,7 +161,7 @@ bg-white
             </span></p>
             <p class="dateline">
             <a href="." rel="bookmark">
-            <time class="published dt-published" datetime="2019-04-19T20:41:53+08:00" itemprop="datePublished" title="2019-04-19 20:41">2019-04-19 20:41</time></a>
+            <time class="published dt-published" datetime="2019-04-19T20:41:53+08:00" itemprop="datePublished" title="2019-04-19">2019-04-19</time></a>
             </p>
             
 
@@ -167,7 +169,7 @@ bg-white
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
-    <p>这篇博客记录了 Ubuntu 18.04 的安装、配置与美化过程。</p>
+            <p>这篇博客记录了 Ubuntu 18.04 的安装、配置与美化过程。</p>
 <!-- TEASER_END -->
 
 <div class="toc">
@@ -256,8 +258,8 @@ sudo apt-get install fish
 
 <p>然后进入搜狗输入法官网下载搜狗输入法的 deb 安装包。安装搜狗输入法。</p>
 <p>打开 gnome-tweaks，在开机启动推荐中添加 fcitx。</p>
-    </div>
-    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+        </div>
+        <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
 <li><a class="tag p-category" href="../../categories/linux/" rel="tag">Linux</a></li>
             <li><a class="tag p-category" href="../../categories/ubuntu/" rel="tag">Ubuntu</a></li>
         </ul>

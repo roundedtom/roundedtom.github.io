@@ -18,15 +18,23 @@
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <style>
         .index_bg_picture {
-            background-image: url('assets/img/index.png'); 
-            background-repeat:no-repeat;
-            background-size:cover;
-            -moz-background-size:100% 100%;
+            background-image: url('assets/img/index.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            -moz-background-size: 100% 100%;
         }
-        
+
         .position-sticky {
-            position: sticky!important;
+            position: sticky !important;
             top: 20px;
+        }
+
+        .badge {
+            display: unset;
+        }
+
+        .list-inline-item:not(:last-child) {
+            margin-right: 0;
         }
     </style>
 </head>
@@ -49,7 +57,7 @@ bg-white
 
         <div class="collapse navbar-collapse" id="bs-navbar">
             <ul class="navbar-nav mr-auto"><li class="nav-item">
-<a href="categories/" class="nav-link">Categories &amp; Tags</a>
+<a href="categories/" class="nav-link">Tags</a>
 
                 
             </li></ul>
@@ -76,91 +84,57 @@ bg-white
         
         
         
+    
+        
 
     
-
-
     
 
-<div class="postindex">
-    <div class="jumbotron p-4 p-md-5 textwhite rounded bg-dark index_bg_picture">
-        <div class="col-md-6 px-0">
-            <h1 class="display-4 font-itlaic text-white font-weight-bold">数据科学家的笔记本</h1>
-            <p class="lead my-3 text-white">
-                3 分钟使用 Nilola 搭建个人博客
-            </p>
-            <p class="lead mb-0">
-                <a href="posts/blogging-with-Nikola-and-WSL2/" class="text-white font-weight-bold">Continue reading ...</a>
-            </p>
-        </div>
-    </div>
-
-    <div class="row mb-2">
-        <div class="col-md-6">
-            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary">Mathematics</strong>
-                    <h3 class="mb-0">See theory</h3>
-                    <div class="mb-1 text-muted">2020-04-19</div>
-                    <p class="card-text mb-auto">
-                        Notes from <em>see theory</em> on probability theory.
-                    </p>
-                    <a href="posts/see-theory" class="stretched-link"></a>
-                </div>
-                <div class="col-auto d-none d-lg-block">
-                    <img class="img-thumbnail img-fluid" src="assets/img/frontpage.jpg" width="200" height="250">
-</div>
+    <div class="postindex">
+        <div class="jumbotron p-4 p-md-5 textwhite rounded bg-dark index_bg_picture">
+            <div class="col-md-6 px-0">
+                <h1 class="display-4 font-itlaic text-white font-weight-bold">数据科学家的笔记本</h1>
+                <p class="lead my-3 text-white">
+                    3 分钟使用 Nilola 搭建个人博客
+                </p>
+                <p class="lead mb-0">
+                    <a href="posts/blogging-with-Nikola-and-WSL2/" class="text-white font-weight-bold">Continue reading
+                        ...</a>
+                </p>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-success">TECH</strong>
-                    <h3 class="mb-0">Plotting with Pandas</h3>
-                    <div class="mb-1 text-muted">2022-05-01</div>
-                    <p class="card-text mb-auto">
-                        Let's plotting with pandas.
-                    </p>
-                    <a href="posts/plotting-with-pandas" class="stretched-link"></a>
-                </div>
-                <div class="col-auto d-none d-lg-block">
-                    <img src="assets/img/frontpage2.png" alt="" class="img-thumbnail img-fluid" width="200" height="250">
-</div>
-            </div>
-        </div>
-    </div>
 
-   <main role="main" class="container"><div class="row">
-        <div class="col-md-8 blog-main">
-            <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/web-scraping-tutorial/" class="u-url">从0到1的爬虫教程</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Tom
-                    </span></p>
-                    <p class="dateline">
-                    <a href="posts/web-scraping-tutorial/" rel="bookmark">
-                    <time class="published dt-published" datetime="2021-01-08T13:01:04+08:00" itemprop="datePublished" title="2021-01-08 13:01">2021-01-08 13:01</time></a>
-                    </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-            <div>
+        <main role="main" class="container"><div class="row">
+                <div class="col-md-8 blog-main">
+                    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/web-scraping-tutorial/" class="u-url">从0到1的爬虫教程</a></h1>
+                            <div class="metadata">
+                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                                        Tom
+                                    </span></p>
+                                <p class="dateline">
+                                    <a href="posts/web-scraping-tutorial/" rel="bookmark">
+                                        <time class="published dt-published" datetime="2021-01-08T13:01:04+08:00" itemprop="datePublished" title="2021-01-08">2021-01-08</time></a>
+                                </p>
+                            </div>
+                        </header><div class="p-summary entry-summary">
+                            <div>
 <p>这篇文章既是面向像我这种经管类非科班同学的爬虫教程，也是我自己对于爬虫学习的一个总结。</p>
 <p class="more"><a href="posts/web-scraping-tutorial/">Read more…</a></p>
 </div>
-            </div>
-            </article><hr style="border: 0; border-top: 1px solid #eee;">
+                            </div>
+                    </article><hr style="border: 0; border-top: 1px solid #eee;">
 <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/most-useful-matplotlib-plots/" class="u-url">Matplotlib 常用绘图</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Tom
-                    </span></p>
-                    <p class="dateline">
-                    <a href="posts/most-useful-matplotlib-plots/" rel="bookmark">
-                    <time class="published dt-published" datetime="2020-09-15T19:52:05Z" itemprop="datePublished" title="2020-09-15 19:52">2020-09-15 19:52</time></a>
-                    </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-            <div class="cell border-box-sizing code_cell rendered">
+                            <div class="metadata">
+                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                                        Tom
+                                    </span></p>
+                                <p class="dateline">
+                                    <a href="posts/most-useful-matplotlib-plots/" rel="bookmark">
+                                        <time class="published dt-published" datetime="2020-09-15T19:52:05Z" itemprop="datePublished" title="2020-09-15">2020-09-15</time></a>
+                                </p>
+                            </div>
+                        </header><div class="p-summary entry-summary">
+                            <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
@@ -401,88 +375,107 @@ bg-white
 </div>
 
 </div>
-            </div>
-            </article><hr style="border: 0; border-top: 1px solid #eee;">
+                            </div>
+                    </article><hr style="border: 0; border-top: 1px solid #eee;">
 <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/see-theory/" class="u-url">See Theory</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Tom
-                    </span></p>
-                    <p class="dateline">
-                    <a href="posts/see-theory/" rel="bookmark">
-                    <time class="published dt-published" datetime="2020-04-19T20:41:53+08:00" itemprop="datePublished" title="2020-04-19 20:41">2020-04-19 20:41</time></a>
-                    </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-            <div>
+                            <div class="metadata">
+                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                                        Tom
+                                    </span></p>
+                                <p class="dateline">
+                                    <a href="posts/see-theory/" rel="bookmark">
+                                        <time class="published dt-published" datetime="2020-04-19T20:41:53+08:00" itemprop="datePublished" title="2020-04-19">2020-04-19</time></a>
+                                </p>
+                            </div>
+                        </header><div class="p-summary entry-summary">
+                            <div>
 <p>Here are some notes from <a href="https://seeing-theory.brown.edu/">see-theory</a> on probability theory.</p>
 <p class="more"><a href="posts/see-theory/">Read more…</a></p>
 </div>
-            </div>
-            </article><hr style="border: 0; border-top: 1px solid #eee;">
+                            </div>
+                    </article><hr style="border: 0; border-top: 1px solid #eee;">
 <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/golang-learning-notes/" class="u-url">Golang 学习笔记</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Tom
-                    </span></p>
-                    <p class="dateline">
-                    <a href="posts/golang-learning-notes/" rel="bookmark">
-                    <time class="published dt-published" datetime="2020-02-03T09:49:24+08:00" itemprop="datePublished" title="2020-02-03 09:49">2020-02-03 09:49</time></a>
-                    </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-            <div>
+                            <div class="metadata">
+                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                                        Tom
+                                    </span></p>
+                                <p class="dateline">
+                                    <a href="posts/golang-learning-notes/" rel="bookmark">
+                                        <time class="published dt-published" datetime="2020-02-03T09:49:24+08:00" itemprop="datePublished" title="2020-02-03">2020-02-03</time></a>
+                                </p>
+                            </div>
+                        </header><div class="p-summary entry-summary">
+                            <div>
 <p>这篇博客记录 Golang 的学习笔记。</p>
 <p class="more"><a href="posts/golang-learning-notes/">Read more…</a></p>
 </div>
-            </div>
-            </article><hr style="border: 0; border-top: 1px solid #eee;">
+                            </div>
+                    </article><hr style="border: 0; border-top: 1px solid #eee;">
 <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/install-ubuntu18.04-desktop/" class="u-url">Ubuntu 18.04 安装与配置</a></h1>
-                <div class="metadata">
-                    <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                        Tom
-                    </span></p>
-                    <p class="dateline">
-                    <a href="posts/install-ubuntu18.04-desktop/" rel="bookmark">
-                    <time class="published dt-published" datetime="2019-04-19T20:41:53+08:00" itemprop="datePublished" title="2019-04-19 20:41">2019-04-19 20:41</time></a>
-                    </p>
-                </div>
-            </header><div class="p-summary entry-summary">
-            <div>
+                            <div class="metadata">
+                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                                        Tom
+                                    </span></p>
+                                <p class="dateline">
+                                    <a href="posts/install-ubuntu18.04-desktop/" rel="bookmark">
+                                        <time class="published dt-published" datetime="2019-04-19T20:41:53+08:00" itemprop="datePublished" title="2019-04-19">2019-04-19</time></a>
+                                </p>
+                            </div>
+                        </header><div class="p-summary entry-summary">
+                            <div>
 <p>这篇博客记录了 Ubuntu 18.04 的安装、配置与美化过程。</p>
 <p class="more"><a href="posts/install-ubuntu18.04-desktop/">Read more…</a></p>
 </div>
-            </div>
-            </article><hr style="border: 0; border-top: 1px solid #eee;">
+                            </div>
+                    </article><hr style="border: 0; border-top: 1px solid #eee;">
 </div>
-   <aside class="col-md-4 blog-sidebar"><div class="position-sticky">
-     <div class="p-4 mb-3 bg-light rounded">
-         <h4 class="font-italic">About</h4>
-         <p class="mb-0">我是 Tom，金融民工，兴趣使然的 coder，偶尔折腾一下机器学习。欢迎与我联系，QQ：3587734141，邮箱：roundedtom@qq.com</p>
-       </div>
-       <div class="p-4">
-         <h4 class="font-italic">Archives</h4>
-         <ol class="list-unstyled mb-0">
-<li><a href="2023/">2023</a></li>
-           <li><a href="2022/">2022</a></li>
-           <li><a href="2021/">2021</a></li>
-           <li><a href="2020/">2020</a></li>
-           <li><a href="2019/">2019</a></li>
-         </ol>
+                <aside class="col-md-4 blog-sidebar"><div class="position-sticky">
+                        <div class="px-4 pt-4 mb-3">
+                            <h4 class="font-italic">About</h4>
+                            <p class="mb-0 text-left">Tom，金融民工，兴趣使然的
+                                coder，偶尔折腾一下机器学习。
+                            </p>
+                            <p class="mb-0 text-left">联系方式，QQ：3587734141，邮箱：roundedtom@qq.com</p>
+                        </div>
+                        <div class="px-4 mb-3">
+                            <h4 class="font-italic">Categories</h4>
+                            <ul class="list-inline">
+<li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_blockchain/">Blockchain</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_coding/">Coding</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_data-analysis/">Data Analysis</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_econometrics/">Econometrics</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_mathematics/">Mathematics</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_tech/">TECH</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_web-scraping/">Web Scraping</a></li>
+                            </ul>
 </div>
-       <div class="p-4">
-         <h4 class="font-italic">Elsewhere</h4>
-         <ol class="list-unstyled">
-<li><a href="#">GitHub</a></li>
-           <li><a href="#">Weibo</a></li>
-         </ol>
+                        <div class="px-4 mb-3">
+                            <h4 class="font-italic">Arhcives</h4>
+                            <ul class="list-inline">
+<li class="list-inline-item"><a class="reference badge badge-secondary" href="2023/">2023</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2022/">2022</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2021/">2021</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2020/">2020</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2019/">2019</a></li>
+                            </ul>
 </div>
-    </div>
-   </aside>
+                        <div class="px-4 mb-3">
+                            <h4 class="font-italic">Elsewhere</h4>
+                            <ul class="list-inline">
+<li class="list-inline-item"><a class="reference badge badge-secondary" href="#">Github</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="#">Weibo</a></li>
+                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="#">Mail</a></li>
+                                <li class="list-inline-item">
+<a class="reference badge badge-secondary" href="#">QQ</a>
+                                </li>
+                            </ul>
 </div>
-   </main>
+                    </div>
+                </aside>
 </div>
-
+        </main>
+</div>
+    
         <ul class="pager postindexpager clearfix">
 <li class="previous"><a href="index-2.html" rel="prev">Newer posts</a></li>
         </ul>
