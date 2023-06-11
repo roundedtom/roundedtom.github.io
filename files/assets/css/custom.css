@@ -64,6 +64,7 @@ h4 {
 body {
     font-family: var(--font-sans-serif);
     line-height: 1.8em;
+    text-align: justify;
 }
 
 /* customize the color of links (By default all links are blue.) */
@@ -147,3 +148,7 @@ pre {
     border-radius: 0.375rem;
 }
 
+.toc ul {
+    text-align: left;
+    padding-inline-start: 20px;
+}

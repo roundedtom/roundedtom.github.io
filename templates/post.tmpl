@@ -1,10 +1,10 @@
 ## -*- coding: utf-8 -*-
-<%namespace name="helper" file="post_helper.tmpl"/>
-<%namespace name="pheader" file="post_header.tmpl"/>
-<%namespace name="comments" file="comments_helper.tmpl"/>
-<%namespace name="math" file="math_helper.tmpl"/>
-<%namespace name="ui" file="ui_helper.tmpl"/>
-<%inherit file="base.tmpl"/>
+<%namespace name="helper" file="post_helper.tmpl" />
+<%namespace name="pheader" file="post_header.tmpl" />
+<%namespace name="comments" file="comments_helper.tmpl" />
+<%namespace name="math" file="math_helper.tmpl" />
+<%namespace name="ui" file="ui_helper.tmpl" />
+<%inherit file="base.tmpl" />
 
 <%block name="extra_head">
     ${parent.extra_head()}
@@ -13,13 +13,13 @@
     % endif
     <meta name="author" content="${post.author()|h}">
     %if post.prev_post:
-        <link rel="prev" href="${post.prev_post.permalink()}" title="${post.prev_post.title()|h}" type="text/html">
+    <link rel="prev" href="${post.prev_post.permalink()}" title="${post.prev_post.title()|h}" type="text/html">
     %endif
     %if post.next_post:
-        <link rel="next" href="${post.next_post.permalink()}" title="${post.next_post.title()|h}" type="text/html">
+    <link rel="next" href="${post.next_post.permalink()}" title="${post.next_post.title()|h}" type="text/html">
     %endif
     % if post.is_draft:
-        <meta name="robots" content="noindex">
+    <meta name="robots" content="noindex">
     % endif
     ${helper.open_graph_metadata(post)}
     ${helper.twitter_card_information(post)}
@@ -40,9 +40,10 @@
                 align-self: start;
                 position: sticky;
                 top: 20px;
+
                 /* overflow: auto; */
             }
-        
+
             .toc::before {
                 /* font-family: var(--font-serif); */
                 content: "ON this page";
@@ -53,20 +54,21 @@
                 font-style: italic;
                 /* display: inline-block; */
                 padding: 5px 5px;
-                margin-left: 20px;
+                margin-left: 0px;
             }
         }
+
         @media screen and (max-width: 767px) {
             .e-content {
                 display: grid;
                 grid-template-columns: 1fr;
             }
-            
+
             .toc {
                 grid-column: 1 / 2;
                 /* overflow: auto; */
             }
-            
+
             .toc::before {
                 content: "ON this page";
                 background-color: #ffe70e;
@@ -79,7 +81,7 @@
             }
 
         }
-        
+
         code {
             background-color: #DDDDDD;
             color: #000;
@@ -88,30 +90,31 @@
 </%block>
 
 <%block name="content">
-<article class="post-${post.meta('type')} h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article">
-    ${pheader.html_post_header()}
-    <div class="e-content entry-content" itemprop="articleBody text">
-    ${post.text()}
-    </div>
-    <aside class="postpromonav">
-    <nav>
-    ${helper.html_tags(post)}
-    ${helper.html_pager(post)}
-    </nav>
-    </aside>
-    % if not post.meta('nocomments') and site_has_comments:
+    <article class="post-${post.meta('type')} h-entry hentry postpage" itemscope="itemscope"
+        itemtype="http://schema.org/Article">
+        ${pheader.html_post_header()}
+        <div class="e-content entry-content" itemprop="articleBody text">
+            ${post.text()}
+        </div>
+        <aside class="postpromonav">
+            <nav>
+                ${helper.html_tags(post)}
+                ${helper.html_pager(post)}
+            </nav>
+        </aside>
+        % if not post.meta('nocomments') and site_has_comments:
         <section class="comments hidden-print">
-        <h2>${messages("Comments")}</h2>
-        ${comments.comment_form(post.permalink(absolute=True), post.title(), post._base_path)}
+            <h2>${messages("Comments")}</h2>
+            ${comments.comment_form(post.permalink(absolute=True), post.title(), post._base_path)}
         </section>
-    % endif
-    ${math.math_scripts_ifpost(post)}
-</article>
-${comments.comment_link_script()}
+        % endif
+        ${math.math_scripts_ifpost(post)}
+    </article>
+    ${comments.comment_link_script()}
 </%block>
 
 <%block name="sourcelink">
-% if show_sourcelink:
+    % if show_sourcelink:
     ${ui.show_sourcelink(post.source_link())}
-% endif
+    % endif
 </%block>

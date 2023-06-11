@@ -20,3 +20,7 @@ P(A/B) &= \frac{P(AB)}{P(B)} \\\
 P(A/C) &= \frac{P(AC)}{P(C)} 
 \end{aligned}
 ```
+
+# 2 Nikola 文章分类
+- 文章分类使用 status
+- 草稿文本：`status: draft`
