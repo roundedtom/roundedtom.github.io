@@ -25,9 +25,7 @@
     ${helper.twitter_card_information(post)}
     ${helper.meta_translations(post)}
     ${math.math_styles_ifpost(post)}
-    <style>
-        
-    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 </%block>
 
 <%block name="content">
@@ -38,7 +36,6 @@
     </div>
     <aside class="postpromonav">
     <nav>
-    ${helper.html_tags(post)}
     ${helper.html_pager(post)}
     </nav>
     </aside>
@@ -51,6 +48,23 @@
     ${math.math_scripts_ifpost(post)}
 </article>
 ${comments.comment_link_script()}
+## 动态插入CSS文件
+<script>
+    function loadStyle(url) {
+      var link = document.createElement('link')
+      link.type = 'text/css'
+      link.rel = 'stylesheet'
+      link.href = url
+      var head = document.getElementsByTagName('head')[0]
+      head.appendChild(link)
+    }
+
+    var toc = document.getElementsByClassName("toc")
+    if (!toc) {
+    }else{
+        loadStyle("/assets/css/post.css")
+    }
+</script>
 </%block>
 
 <%block name="sourcelink">
