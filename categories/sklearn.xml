@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RoundedTom (Posts about Sklearn)</title><link>https://example.com/</link><description></description><atom:link href="https://example.com/categories/sklearn.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:roundedtom@qq.com"&gt;Tom&lt;/a&gt; </copyright><lastBuildDate>Sun, 01 Jan 2023 01:33:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Backtesting portfolio optimization strategies</title><link>https://example.com/posts/backtest-portfolio-optimization/</link><dc:creator>Tom</dc:creator><description>&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RoundedTom (Posts about Sklearn)</title><link>https://example.com/</link><description></description><atom:link href="https://example.com/categories/sklearn.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2023 &lt;a href="mailto:roundedtom@qq.com"&gt;Tom&lt;/a&gt; </copyright><lastBuildDate>Mon, 31 Jul 2023 06:39:38 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Backtesting portfolio optimization strategies</title><link>https://example.com/posts/backtest-portfolio-optimization/</link><dc:creator>Tom</dc:creator><description>&lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
 &lt;div class="inner_cell"&gt;
@@ -271,4 +271,4 @@ The mean squared error of uniform-weighted KNeighborRegression:  21.703073090490
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;/div&gt;</description><category>Python</category><category>Sklearn</category><guid>https://example.com/posts/backtest-portfolio-optimization/</guid><pubDate>Fri, 18 Feb 2022 16:00:00 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;</description><category>Python</category><category>Sklearn</category><guid>https://example.com/posts/backtest-portfolio-optimization/</guid><pubDate>Sat, 19 Feb 2022 00:00:00 GMT</pubDate></item></channel></rss>

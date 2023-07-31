@@ -7,31 +7,31 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://example.com/</loc>
-  <lastmod>2023-03-17T06:10:00Z</lastmod>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
-  <loc>https://example.com/2019/</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <loc>https://example.com/archive/2019/</loc>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
-  <loc>https://example.com/2020/</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <loc>https://example.com/archive/2020/</loc>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
-  <loc>https://example.com/2021/</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <loc>https://example.com/archive/2021/</loc>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
-  <loc>https://example.com/2022/</loc>
-  <lastmod>2022-12-31T13:55:00Z</lastmod>
+  <loc>https://example.com/archive/2022/</loc>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
-  <loc>https://example.com/2023/</loc>
-  <lastmod>2023-01-14T13:24:00Z</lastmod>
+  <loc>https://example.com/archive/2023/</loc>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
-  <loc>https://example.com/archive.html</loc>
-  <lastmod>2023-06-11T09:32:00Z</lastmod>
+  <loc>https://example.com/archive/archive.html</loc>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/</loc>
@@ -191,19 +191,19 @@
  </url>
  <url>
   <loc>https://example.com/index-1.html</loc>
-  <lastmod>2023-06-11T09:32:00Z</lastmod>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/index-2.html</loc>
-  <lastmod>2023-06-11T09:32:00Z</lastmod>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/index-3.html</loc>
-  <lastmod>2023-06-11T09:32:00Z</lastmod>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/index-4.html</loc>
-  <lastmod>2023-06-11T09:32:00Z</lastmod>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/listings/</loc>
@@ -211,7 +211,7 @@
  </url>
  <url>
   <loc>https://example.com/listings/custom.css.html</loc>
-  <lastmod>2023-06-11T09:32:00Z</lastmod>
+  <lastmod>2023-07-31T06:39:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/posts/backtest-portfolio-optimization/</loc>

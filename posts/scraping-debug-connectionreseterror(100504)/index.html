@@ -5,7 +5,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>爬虫踩坑——ConnectionResetError（100504） | RoundedTom</title>
-<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/tomtom.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#5670d4">
@@ -32,19 +36,15 @@ In [1]:
     
 import loggin">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2023-01-27T00:00:00+08:00">
+<meta property="article:published_time" content="2023-01-27T00:00:00Z">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Requests">
 <meta property="article:tag" content="爬虫">
 <meta property="article:tag" content="爬虫踩坑">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
-<style>
-        
-    </style>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 </head>
 <body>
-<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
-
 <!-- Menubar -->
 
 <nav class="navbar navbar-expand-md static-top mb-4
@@ -53,7 +53,7 @@ bg-white
 "><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href="../../">
-            <img src="../../assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+            <img src="../../files/assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -61,7 +61,7 @@ bg-white
 
         <div class="collapse navbar-collapse" id="bs-navbar">
             <ul class="navbar-nav mr-auto"><li class="nav-item">
-<a href="../../categories/" class="nav-link">Tags</a>
+<a href="../../categories/index.html" class="nav-link">Categories &amp; Tags</a>
 
                 
             </li></ul>
@@ -70,7 +70,7 @@ bg-white
 <input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
 </div>
 <button type="submit" class="btn btn-secondary my-sm-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
 <input type="hidden" name="sitesearch" value="https://example.com/">
 </form>
 <!-- End of custom search -->
@@ -81,23 +81,30 @@ bg-white
 <!-- /.navbar-collapse -->
     </div>
 <!-- /.container -->
-   
 </nav><!-- End of Menubar --><div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
         
         
         
-<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="../scraping-debug-connectionreseterror%28100504%29/" class="u-url">爬虫踩坑——ConnectionResetError（100504）</a></h1>
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title py-2" itemprop="headline name"><a href="../scraping-debug-connectionreseterror%28100504%29/" class="u-url">爬虫踩坑——ConnectionResetError（100504）</a></h1>
 
         <div class="metadata">
-            <p class="byline author vcard p-author h-card"><span class="byline-name fn p-name" itemprop="author">
+            <p class="byline author vcard p-author h-card font-italic"><span class="byline-name fn p-name" itemprop="author">Posted by
                     Tom
             </span></p>
-            <p class="dateline">
+            <p class="dateline font-italic">
             <a href="../scraping-debug-connectionreseterror%28100504%29/" rel="bookmark">
-            <time class="published dt-published" datetime="2023-01-27T00:00:00+08:00" itemprop="datePublished" title="2023-01-27">2023-01-27</time></a>
+            <time class="published dt-published" datetime="2023-01-27T00:00:00Z" itemprop="datePublished" title="2023-01-27">2023-01-27</time></a>
             </p>
+
+            <p>
+                    <a class="fa fa-tags p-category" href="../../categories/python/" rel="tag">Python</a>
+                    <a class="fa fa-tags p-category" href="../../categories/requests/" rel="tag">Requests</a>
+                    <a class="fa fa-tags p-category" href="../../categories/pa-chong/" rel="tag">爬虫</a>
+                    <a class="fa fa-tags p-category" href="../../categories/pa-chong-cai-keng/" rel="tag">爬虫踩坑</a>
+            </p>
+
             
 
         </div>
@@ -638,13 +645,7 @@ bg-white
 </div>
 </div>
     </div>
-    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
-<li><a class="tag p-category" href="../../categories/python/" rel="tag">Python</a></li>
-            <li><a class="tag p-category" href="../../categories/requests/" rel="tag">Requests</a></li>
-            <li><a class="tag p-category" href="../../categories/pa-chong/" rel="tag">爬虫</a></li>
-            <li><a class="tag p-category" href="../../categories/pa-chong-cai-keng/" rel="tag">爬虫踩坑</a></li>
-        </ul>
-<ul class="pager hidden-print">
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
 <li class="previous">
                 <a href="../using-else-statement-in-a-loop/" rel="prev" title="Using else statement in a loop">Previous post</a>
             </li>
@@ -665,7 +666,22 @@ delimiters: [
 
                     }
                 );
-            </script></article><!--End of body content--><footer id="footer">
+            </script></article><script>
+    function loadStyle(url) {
+      var link = document.createElement('link')
+      link.type = 'text/css'
+      link.rel = 'stylesheet'
+      link.href = url
+      var head = document.getElementsByTagName('head')[0]
+      head.appendChild(link)
+    }
+
+    var id = document.getElementById("toc0_")
+    if (!id) {
+    }else{
+        loadStyle("/assets/css/post_ipynb.css")
+    }
+</script><!--End of body content--><footer id="footer">
             Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
             
             
@@ -674,7 +690,7 @@ delimiters: [
 </div>
 
 
-        <script src="../../assets/js/all-nocdn.js"></script><script>
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});

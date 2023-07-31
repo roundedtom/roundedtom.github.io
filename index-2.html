@@ -3,10 +3,14 @@
 " lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="description" content="球形汤姆的个人博客">
+<meta name="description" content="This is a personal blog of Tom.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RoundedTom (old posts, page 2) | RoundedTom</title>
-<link href="assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="assets/css/tomtom.css" rel="stylesheet" type="text/css">
 <link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
 <meta name="theme-color" content="#5670d4">
@@ -17,9 +21,10 @@
 <link rel="prev" href="index-3.html" type="text/html">
 <link rel="next" href="index-1.html" type="text/html">
 <!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="assets/css/index.css" rel="stylesheet" type="text/css">
 <style>
         .index_bg_picture {
-            background-image: url('assets/img/index.png');
+            background-image: url('files/assets/img/index.png');
             background-repeat: no-repeat;
             background-size: cover;
             -moz-background-size: 100% 100%;
@@ -27,21 +32,16 @@
 
         .position-sticky {
             position: sticky !important;
-            top: 20px;
-        }
-
-        .badge {
-            display: unset;
+            top: 10px;
         }
 
         .list-inline-item:not(:last-child) {
             margin-right: 0;
         }
+
     </style>
 </head>
 <body>
-<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
-
 <!-- Menubar -->
 
 <nav class="navbar navbar-expand-md static-top mb-4
@@ -50,7 +50,7 @@ bg-white
 "><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
 <!-- This keeps the margins nice -->
         <a class="navbar-brand" href=".">
-            <img src="assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+            <img src="files/assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -58,7 +58,7 @@ bg-white
 
         <div class="collapse navbar-collapse" id="bs-navbar">
             <ul class="navbar-nav mr-auto"><li class="nav-item">
-<a href="categories/" class="nav-link">Tags</a>
+<a href="categories/index.html" class="nav-link">Categories &amp; Tags</a>
 
                 
             </li></ul>
@@ -67,7 +67,7 @@ bg-white
 <input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
 </div>
 <button type="submit" class="btn btn-secondary my-sm-2">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
 <input type="hidden" name="sitesearch" value="https://example.com/">
 </form>
 <!-- End of custom search -->
@@ -78,22 +78,20 @@ bg-white
 <!-- /.navbar-collapse -->
     </div>
 <!-- /.container -->
-   
 </nav><!-- End of Menubar --><div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
         
         
         
-    
-        
 
     
+
+
     
 
-    <div class="postindex">
-        <div class="jumbotron p-4 p-md-5 textwhite rounded bg-dark index_bg_picture">
-            <div class="col-md-6 px-0">
+<main role="main" class="container"><div class="jumbotron p-4 p-md-5 textwhite rounded bg-dark index_bg_picture">
+            <div class="col-md-8 px-0">
                 <h1 class="display-4 font-itlaic text-white font-weight-bold">数据科学家的笔记本</h1>
                 <p class="lead my-3 text-white">
                     3 分钟使用 Nilola 搭建个人博客
@@ -103,39 +101,38 @@ bg-white
                         ...</a>
                 </p>
             </div>
-        </div>
-
-        <main role="main" class="container"><div class="row">
-                <div class="col-md-8 blog-main">
-                    <article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/blogging-with-Nikola-and-WSL2/" class="u-url">Blogging with Nikola and WSL2</a></h1>
-                            <div class="metadata">
-                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                                        Tom
-                                    </span></p>
-                                <p class="dateline">
-                                    <a href="posts/blogging-with-Nikola-and-WSL2/" rel="bookmark">
-                                        <time class="published dt-published" datetime="2022-04-29T13:28:09+08:00" itemprop="datePublished" title="2022-04-29">2022-04-29</time></a>
-                                </p>
-                            </div>
-                        </header><div class="p-summary entry-summary">
-                            <div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 blog-main postindex">
+                <article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/blogging-with-Nikola-and-WSL2/" class="u-url">Blogging with Nikola and WSL2</a></h1>
+                    <div class="metadata">
+                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
+                            Tom
+                        </span></p>
+                        <p class="dateline font-italic">
+                        <a href="posts/blogging-with-Nikola-and-WSL2/" rel="bookmark">
+                        <time class="published dt-published" datetime="2022-04-29T13:28:09+08:00" itemprop="datePublished" title="2022-04-29">2022-04-29</time></a>
+                        </p>
+                    </div>
+                </header><div class="p-summary entry-summary">
+                <div>
 <p>一直希望搭建一个博客，一方面是希望能有一个地方记录整理自己学过的知识，另一方面也希望能交到一些志同道合的朋友（有人可以讨论真是太棒了！）在各种鼓捣之后，我选择了 <a href="https://getnikola.com/">Nikola</a>，因为它原生支持 Jupyter notebook。至于为什么选择静态博客，Nikola 官网这篇<a href="https://getnikola.com/handbook.html#why-static">文章</a>写的很好。</p>
 <p class="more"><a href="posts/blogging-with-Nikola-and-WSL2/">Read more…</a></p>
 </div>
-                            </div>
-                    </article><hr style="border: 0; border-top: 1px solid #eee;">
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/backtest-portfolio-optimization/" class="u-url">Backtesting portfolio optimization strategies</a></h1>
-                            <div class="metadata">
-                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                                        Tom
-                                    </span></p>
-                                <p class="dateline">
-                                    <a href="posts/backtest-portfolio-optimization/" rel="bookmark">
-                                        <time class="published dt-published" datetime="2022-02-19T00:00:00+08:00" itemprop="datePublished" title="2022-02-19">2022-02-19</time></a>
-                                </p>
-                            </div>
-                        </header><div class="p-summary entry-summary">
-                            <div class="cell border-box-sizing code_cell rendered">
+                </div>
+                </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/backtest-portfolio-optimization/" class="u-url">Backtesting portfolio optimization strategies</a></h1>
+                    <div class="metadata">
+                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
+                            Tom
+                        </span></p>
+                        <p class="dateline font-italic">
+                        <a href="posts/backtest-portfolio-optimization/" rel="bookmark">
+                        <time class="published dt-published" datetime="2022-02-19T00:00:00Z" itemprop="datePublished" title="2022-02-19">2022-02-19</time></a>
+                        </p>
+                    </div>
+                </header><div class="p-summary entry-summary">
+                <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
@@ -408,37 +405,37 @@ The mean squared error of uniform-weighted KNeighborRegression:  21.703073090490
 </div>
 
 </div>
-                            </div>
-                    </article><hr style="border: 0; border-top: 1px solid #eee;">
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/hyperledger-fabric-install/" class="u-url">hyperledger fabric (v2.0) 安装过程记录</a></h1>
-                            <div class="metadata">
-                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                                        Tom
-                                    </span></p>
-                                <p class="dateline">
-                                    <a href="posts/hyperledger-fabric-install/" rel="bookmark">
-                                        <time class="published dt-published" datetime="2022-02-09T13:27:01+08:00" itemprop="datePublished" title="2022-02-09">2022-02-09</time></a>
-                                </p>
-                            </div>
-                        </header><div class="p-summary entry-summary">
-                            <div>
+                </div>
+                </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/hyperledger-fabric-install/" class="u-url">hyperledger fabric (v2.0) 安装过程记录</a></h1>
+                    <div class="metadata">
+                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
+                            Tom
+                        </span></p>
+                        <p class="dateline font-italic">
+                        <a href="posts/hyperledger-fabric-install/" rel="bookmark">
+                        <time class="published dt-published" datetime="2022-02-09T13:27:01Z" itemprop="datePublished" title="2022-02-09">2022-02-09</time></a>
+                        </p>
+                    </div>
+                </header><div class="p-summary entry-summary">
+                <div>
 <p>这篇文章记录安装 fabric(v2.0) 的过程。</p>
 <p class="more"><a href="posts/hyperledger-fabric-install/">Read more…</a></p>
 </div>
-                            </div>
-                    </article><hr style="border: 0; border-top: 1px solid #eee;">
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/plotting-workflow-with-matplotlib/" class="u-url">Matplotlib 绘图工作流</a></h1>
-                            <div class="metadata">
-                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                                        Tom
-                                    </span></p>
-                                <p class="dateline">
-                                    <a href="posts/plotting-workflow-with-matplotlib/" rel="bookmark">
-                                        <time class="published dt-published" datetime="2022-01-15T19:12:05Z" itemprop="datePublished" title="2022-01-15">2022-01-15</time></a>
-                                </p>
-                            </div>
-                        </header><div class="p-summary entry-summary">
-                            <div class="cell border-box-sizing text_cell rendered">
+                </div>
+                </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/plotting-workflow-with-matplotlib/" class="u-url">Matplotlib 绘图工作流</a></h1>
+                    <div class="metadata">
+                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
+                            Tom
+                        </span></p>
+                        <p class="dateline font-italic">
+                        <a href="posts/plotting-workflow-with-matplotlib/" rel="bookmark">
+                        <time class="published dt-published" datetime="2022-01-15T19:12:05Z" itemprop="datePublished" title="2022-01-15">2022-01-15</time></a>
+                        </p>
+                    </div>
+                </header><div class="p-summary entry-summary">
+                <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -455,20 +452,20 @@ The mean squared error of uniform-weighted KNeighborRegression:  21.703073090490
 </div>
 </div>
 </div>
-                            </div>
-                    </article><hr style="border: 0; border-top: 1px solid #eee;">
-<article class="h-entry post-text" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title"><a href="posts/numpy-notes-python-data-analysis/" class="u-url">Numpy Notes: Python data analysis</a></h1>
-                            <div class="metadata">
-                                <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
-                                        Tom
-                                    </span></p>
-                                <p class="dateline">
-                                    <a href="posts/numpy-notes-python-data-analysis/" rel="bookmark">
-                                        <time class="published dt-published" datetime="2021-09-20T00:00:00+08:00" itemprop="datePublished" title="2021-09-20">2021-09-20</time></a>
-                                </p>
-                            </div>
-                        </header><div class="p-summary entry-summary">
-                            <div class="cell border-box-sizing text_cell rendered">
+                </div>
+                </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/numpy-notes-python-data-analysis/" class="u-url">Numpy Notes: Python data analysis</a></h1>
+                    <div class="metadata">
+                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
+                            Tom
+                        </span></p>
+                        <p class="dateline font-italic">
+                        <a href="posts/numpy-notes-python-data-analysis/" rel="bookmark">
+                        <time class="published dt-published" datetime="2021-09-20T00:00:00Z" itemprop="datePublished" title="2021-09-20">2021-09-20</time></a>
+                        </p>
+                    </div>
+                </header><div class="p-summary entry-summary">
+                <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
@@ -486,61 +483,70 @@ The mean squared error of uniform-weighted KNeighborRegression:  21.703073090490
 </div>
 </div>
 </div>
-                            </div>
-                    </article><hr style="border: 0; border-top: 1px solid #eee;">
-</div>
-                <aside class="col-md-4 blog-sidebar"><div class="position-sticky">
-                        <div class="px-4 pt-4 mb-3">
-                            <h4 class="font-italic">About</h4>
-                            <p class="mb-0 text-left">Tom，金融民工，兴趣使然的
-                                coder，偶尔折腾一下机器学习。
-                            </p>
-                            <p class="mb-0 text-left">联系方式，QQ：3587734141，邮箱：roundedtom@qq.com</p>
-                        </div>
-                        <div class="px-4 mb-3">
-                            <h4 class="font-italic">Categories</h4>
-                            <ul class="list-inline">
-<li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_blockchain/">Blockchain</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_coding/">Coding</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_data-analysis/">Data Analysis</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_econometrics/">Econometrics</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_mathematics/">Mathematics</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_tech/">TECH</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="categories/cat_web-scraping/">Web Scraping</a></li>
-                            </ul>
-</div>
-                        <div class="px-4 mb-3">
-                            <h4 class="font-italic">Arhcives</h4>
-                            <ul class="list-inline">
-<li class="list-inline-item"><a class="reference badge badge-secondary" href="2023/">2023</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2022/">2022</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2021/">2021</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2020/">2020</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="2019/">2019</a></li>
-                            </ul>
-</div>
-                        <div class="px-4 mb-3">
-                            <h4 class="font-italic">Elsewhere</h4>
-                            <ul class="list-inline">
-<li class="list-inline-item"><a class="reference badge badge-secondary" href="#">Github</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="#">Weibo</a></li>
-                                <li class="list-inline-item"><a class="reference badge badge-secondary" href="#">Mail</a></li>
-                                <li class="list-inline-item">
-<a class="reference badge badge-secondary" href="#">QQ</a>
-                                </li>
-                            </ul>
-</div>
-                    </div>
-                </aside>
-</div>
-        </main>
-</div>
-    
-        <ul class="pager postindexpager clearfix">
+                </div>
+                </article><hr style="border: 0; border-top: 1px solid #eee;">
+<ul class="pager postindexpager clearfix">
 <li class="previous"><a href="index-3.html" rel="prev">Newer posts</a></li>
             <li class="next"><a href="index-1.html" rel="next">Older posts</a></li>
         </ul>
-<script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
+</div>
+        <aside class="col-md-4 blog-sidebar"><div class="position-sticky">
+                <div class="px-4 pt-4 mb-3">
+                    <h4 class="font-italic">About</h4>
+                    <p class="mb-0 text-left">欢迎来到 RoundedTom，这是由汤姆维护的个人博客，主要记录一些金融计量、概率论、机器学习、数据分析相关的内容，大部分是个人笔记:)
+                    </p>
+                </div>
+                <div class="px-4 mb-3">
+                    <h4 class="font-italic">Categories</h4>
+                    <ul class="list-inline">
+<li class="list-inline-item">
+                            <a class="reference badge badge-secondary" id="tag" href="categories/cat_blockchain/">Blockchain</a>
+</li>
+                        <li class="list-inline-item">
+                            <a class="reference badge badge-secondary" id="tag" href="categories/cat_coding/">Coding</a>
+</li>
+                        <li class="list-inline-item">
+                            <a class="reference badge badge-secondary" id="tag" href="categories/cat_data-analysis/">Data Analysis</a>
+</li>
+                        <li class="list-inline-item">
+                            <a class="reference badge badge-secondary" id="tag" href="categories/cat_econometrics/">Econometrics</a>
+</li>
+                        <li class="list-inline-item">
+                            <a class="reference badge badge-secondary" id="tag" href="categories/cat_mathematics/">Mathematics</a>
+</li>
+                        <li class="list-inline-item">
+                            <a class="reference badge badge-secondary" id="tag" href="categories/cat_tech/">TECH</a>
+</li>
+                        <li class="list-inline-item">
+                            <a class="reference badge badge-secondary" id="tag" href="categories/cat_web-scraping/">Web Scraping</a>
+</li>
+                    </ul>
+</div>
+                <div class="px-4 mb-3">
+                    <h4 class="font-italic">Arhcives</h4>
+                    <ul class="list-inline">
+<li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="archive/2023/">2023</a></li>
+                        <li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="archive/2022/">2022</a></li>
+                        <li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="archive/2021/">2021</a></li>
+                        <li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="archive/2020/">2020</a></li>
+                        <li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="archive/2019/">2019</a></li>
+                    </ul>
+</div>
+                <div class="px-4 mb-3">
+                    <h4 class="font-italic">Elsewhere</h4>
+                    <ul class="list-inline">
+<li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="#">Github</a></li>
+                        <li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="#">Weibo</a></li>
+                        <li class="list-inline-item"><a class="reference badge badge-secondary" id="tag" href="#">Mail</a></li>
+                        <li class="list-inline-item">
+<a class="reference badge badge-secondary" id="tag" href="#">QQ</a>
+                        </li>
+                    </ul>
+</div>
+            </div>
+        </aside>
+</div>
+</main><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
                 renderMathInElement(document.body,
                     {
                         
@@ -563,7 +569,7 @@ delimiters: [
 </div>
 
 
-        <script src="assets/js/all-nocdn.js"></script><script>
+            <script src="assets/js/jquery.min.js"></script><script src="assets/js/popper.min.js"></script><script src="assets/js/bootstrap.min.js"></script><script src="assets/js/baguetteBox.min.js"></script><script>
     baguetteBox.run('div#content', {
         ignoreClass: 'islink',
         captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
