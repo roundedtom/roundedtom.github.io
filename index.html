@@ -19,7 +19,7 @@
 <link rel="canonical" href="https://example.com/">
 <link rel="icon" href="assets/img/favicon.ico" sizes="16x16">
 <link rel="next" href="index-4.html" type="text/html">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/query-and-filter-data-using-pandas/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/pandas-query/" type="text/html">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <link href="assets/css/index.css" rel="stylesheet" type="text/css">
 <style>
@@ -104,7 +104,30 @@ bg-white
     </div>
     <div class="row">
         <div class="col-md-8 blog-main postindex">
-                <article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/query-and-filter-data-using-pandas/" class="u-url">在 Pandas 中如何实现复杂的筛选和查询</a></h1>
+                <article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/pandas-query/" class="u-url">Pandas Tips：使用 query 实现优雅的查询</a></h1>
+                    <div class="metadata">
+                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
+                            Tom
+                        </span></p>
+                        <p class="dateline font-italic">
+                        <a href="posts/pandas-query/" rel="bookmark">
+                        <time class="published dt-published" datetime="2023-08-01T00:00:00Z" itemprop="datePublished" title="2023-08-01">2023-08-01</time></a>
+                        </p>
+                    </div>
+                </header><div class="p-summary entry-summary">
+                <div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html"><code>DataFrame.query(expr, *, inplace=False, **kwargs)</code></a> 函数使用布尔表达式对列进行查询，可以简化我们使用 <code>loc</code> 进行查询的写法。</p>
+<p class="more"><a href="posts/pandas-query/">Read more…</a></p>
+</div>
+</div>
+</div>
+                </div>
+                </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/query-and-filter-data-using-pandas/" class="u-url">在 Pandas 中如何实现复杂的筛选和查询</a></h1>
                     <div class="metadata">
                         <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
                             Tom
@@ -214,29 +237,6 @@ bg-white
 <li>累计异常收益率计算与显著性检验</li>
 </ul>
 <p class="more"><a href="posts/event-study-tutorial-car-significance-test/">Read more…</a></p>
-</div>
-</div>
-</div>
-                </div>
-                </article><hr style="border: 0; border-top: 1px solid #eee;">
-<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/event-study-tutorial-data-cleaning-part2/" class="u-url">手把手教你做事件研究——数据清洗 Part2</a></h1>
-                    <div class="metadata">
-                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
-                            Tom
-                        </span></p>
-                        <p class="dateline font-italic">
-                        <a href="posts/event-study-tutorial-data-cleaning-part2/" rel="bookmark">
-                        <time class="published dt-published" datetime="2023-02-01T00:00:00Z" itemprop="datePublished" title="2023-02-01">2023-02-01</time></a>
-                        </p>
-                    </div>
-                </header><div class="p-summary entry-summary">
-                <div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>这篇博客（<a href="https://www.bilibili.com/video/BV1r3411979W/?spm_id_from=333.999.0.0&amp;vd_source=b4496ba547455f3db613a8f8de6bea01">视频</a>）记录区块链技术投资公告效应研究样本的数据清洗过程，主要内容是剔除业绩预告、分红、收购并购、重组以及其他突发事件公告日落在事件窗口期之内样本公司。</p>
-<p class="more"><a href="posts/event-study-tutorial-data-cleaning-part2/">Read more…</a></p>
 </div>
 </div>
 </div>

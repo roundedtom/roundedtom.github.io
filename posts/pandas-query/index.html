@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pandas Tips：使用 query 实现优雅的查询 | RoundedTom</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/tomtom.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/pandas-query/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../query-and-filter-data-using-pandas/" title="在 Pandas 中如何实现复杂的筛选和查询" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="Pandas Tips：使用 query 实现优雅的查询">
+<meta property="og:url" content="https://example.com/posts/pandas-query/">
+<meta property="og:description" content="DataFrame.query(expr, *, inplace=False, **kwargs) 函数使用布尔表达式对列进行查询，可以简化我们使用 loc 进行查询的写法。
+
+
+
+
+
+
+
+In [1]:
+
+    
+import pandas as pd
+import tushare as ts
+
+pro = ts.pro_api()
+
+
+    
+
+
+
+
+
+
+In [2]:
+
+    
+dat">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-08-01T00:00:00Z">
+<meta property="article:tag" content="data analysis">
+<meta property="article:tag" content="Filter Data">
+<meta property="article:tag" content="Pandas Tips">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+<body>
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../files/assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
+<a href="../../categories/index.html" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li></ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title py-2" itemprop="headline name"><a href="." class="u-url">Pandas Tips：使用 query 实现优雅的查询</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card font-italic"><span class="byline-name fn p-name" itemprop="author">Posted by
+                    Tom
+            </span></p>
+            <p class="dateline font-italic">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2023-08-01T00:00:00Z" itemprop="datePublished" title="2023-08-01">2023-08-01</time></a>
+            </p>
+
+            <p>
+                    <a class="fa fa-tags p-category" href="../../categories/data-analysis/" rel="tag">data analysis</a>
+                    <a class="fa fa-tags p-category" href="../../categories/filter-data/" rel="tag">Filter Data</a>
+                    <a class="fa fa-tags p-category" href="../../categories/pandas-tips/" rel="tag">Pandas Tips</a>
+            </p>
+
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html"><code>DataFrame.query(expr, *, inplace=False, **kwargs)</code></a> 函数使用布尔表达式对列进行查询，可以简化我们使用 <code>loc</code> 进行查询的写法。</p>
+<!-- TEASER_END -->
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">tushare</span> <span class="k">as</span> <span class="nn">ts</span>
+
+<span class="n">pro</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">pro_api</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pro</span><span class="o">.</span><span class="n">stock_basic</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s1">'SSE'</span><span class="p">,</span> <span class="n">list_status</span><span class="o">=</span><span class="s1">'L'</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s1">'ts_code,symbol,name,area,industry,list_date'</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[2]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>ts_code</th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>area</th>
+      <th>industry</th>
+      <th>list_date</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>600000.SH</td>
+      <td>600000</td>
+      <td>浦发银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>19991110</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>600004.SH</td>
+      <td>600004</td>
+      <td>白云机场</td>
+      <td>广东</td>
+      <td>机场</td>
+      <td>20030428</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>600006.SH</td>
+      <td>600006</td>
+      <td>东风汽车</td>
+      <td>湖北</td>
+      <td>汽车整车</td>
+      <td>19990727</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>600007.SH</td>
+      <td>600007</td>
+      <td>中国国贸</td>
+      <td>北京</td>
+      <td>园区开发</td>
+      <td>19990312</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>600008.SH</td>
+      <td>600008</td>
+      <td>首创环保</td>
+      <td>北京</td>
+      <td>环境保护</td>
+      <td>20000427</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>如上所示，data 数据集是上海证券交易所的上市公司数据。如果我们要查询股票代码为 600000 的股票，使用 <code>loc</code> 方法我们应该利用逻辑运算传入一个布尔表达式：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">symbol</span> <span class="o">==</span> <span class="s2">"600000"</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>ts_code</th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>area</th>
+      <th>industry</th>
+      <th>list_date</th>
+    </tr></thead>
+<tbody><tr>
+<th>0</th>
+      <td>600000.SH</td>
+      <td>600000</td>
+      <td>浦发银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>19991110</td>
+    </tr></tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>使用 <code>query</code>，我们可以这样写：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"symbol == '600000'"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>ts_code</th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>area</th>
+      <th>industry</th>
+      <th>list_date</th>
+    </tr></thead>
+<tbody><tr>
+<th>0</th>
+      <td>600000.SH</td>
+      <td>600000</td>
+      <td>浦发银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>19991110</td>
+    </tr></tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>query</code> 函数接受一个查询字符串，然后利用 <code>eval()</code> 函数对该字符串进行计算，获得一个布尔表达式，再利用布尔表达式实现查询。</p>
+<p><code>query</code> 本质与 <code>loc</code> 相同，但写法上更清晰、简洁了。同样，<code>query</code> 也接受包含复杂逻辑运算的查询字符串，比如筛选地区在上海，同时行业为银行的股票：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"area == '上海' &amp; industry == '银行'"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>ts_code</th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>area</th>
+      <th>industry</th>
+      <th>list_date</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>600000.SH</td>
+      <td>600000</td>
+      <td>浦发银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>19991110</td>
+    </tr>
+<tr>
+<th>856</th>
+      <td>601229.SH</td>
+      <td>601229</td>
+      <td>上海银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20161116</td>
+    </tr>
+<tr>
+<th>868</th>
+      <td>601328.SH</td>
+      <td>601328</td>
+      <td>交通银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20070515</td>
+    </tr>
+<tr>
+<th>946</th>
+      <td>601825.SH</td>
+      <td>601825</td>
+      <td>沪农商行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20210819</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>query</code> 也支持传入变量，使用 <code>@</code> 传入：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">area</span> <span class="o">=</span> <span class="s2">"上海"</span>
+<span class="n">industry</span> <span class="o">=</span> <span class="s2">"银行"</span>
+<span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"area == @area &amp; industry == @industry"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>ts_code</th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>area</th>
+      <th>industry</th>
+      <th>list_date</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>600000.SH</td>
+      <td>600000</td>
+      <td>浦发银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>19991110</td>
+    </tr>
+<tr>
+<th>856</th>
+      <td>601229.SH</td>
+      <td>601229</td>
+      <td>上海银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20161116</td>
+    </tr>
+<tr>
+<th>868</th>
+      <td>601328.SH</td>
+      <td>601328</td>
+      <td>交通银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20070515</td>
+    </tr>
+<tr>
+<th>946</th>
+      <td>601825.SH</td>
+      <td>601825</td>
+      <td>沪农商行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20210819</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>需要注意的是，对于非有效的 Python 变量名，可以用反引号（``）来使用。比如，如果查询列名为 3D 的列，查询字符串中需要用反引号将 3D 括起来使用。</p>
+<p>此外，根据官方文档，DataFrame 实例的 <code>DataFrame.index</code> 和 <code>DataFrame.columns</code> 属性也被放置在查询命名空间中，因此我们可以把表的索引当作列进行查询。如果索引命名了，可以使用索引的名称在查询中标识它，如果没有命名可以使用 <code>index</code>。比如，我们查询 data 数据集中索引为 0 的数据：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">index</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>RangeIndex(start=0, stop=2228, step=1)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"index == 0"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>ts_code</th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>area</th>
+      <th>industry</th>
+      <th>list_date</th>
+    </tr></thead>
+<tbody><tr>
+<th>0</th>
+      <td>600000.SH</td>
+      <td>600000</td>
+      <td>浦发银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>19991110</td>
+    </tr></tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>列名的命名空间下的方法也可以在查询字符串中使用。比如，我们查询股票名称中包含银行的股票：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"@data.name.str.contains('银行')"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>ts_code</th>
+      <th>symbol</th>
+      <th>name</th>
+      <th>area</th>
+      <th>industry</th>
+      <th>list_date</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>600000.SH</td>
+      <td>600000</td>
+      <td>浦发银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>19991110</td>
+    </tr>
+<tr>
+<th>9</th>
+      <td>600015.SH</td>
+      <td>600015</td>
+      <td>华夏银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20030912</td>
+    </tr>
+<tr>
+<th>10</th>
+      <td>600016.SH</td>
+      <td>600016</td>
+      <td>民生银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20001219</td>
+    </tr>
+<tr>
+<th>28</th>
+      <td>600036.SH</td>
+      <td>600036</td>
+      <td>招商银行</td>
+      <td>深圳</td>
+      <td>银行</td>
+      <td>20020409</td>
+    </tr>
+<tr>
+<th>723</th>
+      <td>600908.SH</td>
+      <td>600908</td>
+      <td>无锡银行</td>
+      <td>江苏</td>
+      <td>银行</td>
+      <td>20160923</td>
+    </tr>
+<tr>
+<th>728</th>
+      <td>600919.SH</td>
+      <td>600919</td>
+      <td>江苏银行</td>
+      <td>江苏</td>
+      <td>银行</td>
+      <td>20160802</td>
+    </tr>
+<tr>
+<th>730</th>
+      <td>600926.SH</td>
+      <td>600926</td>
+      <td>杭州银行</td>
+      <td>浙江</td>
+      <td>银行</td>
+      <td>20161027</td>
+    </tr>
+<tr>
+<th>732</th>
+      <td>600928.SH</td>
+      <td>600928</td>
+      <td>西安银行</td>
+      <td>陕西</td>
+      <td>银行</td>
+      <td>20190301</td>
+    </tr>
+<tr>
+<th>786</th>
+      <td>601009.SH</td>
+      <td>601009</td>
+      <td>南京银行</td>
+      <td>江苏</td>
+      <td>银行</td>
+      <td>20070719</td>
+    </tr>
+<tr>
+<th>825</th>
+      <td>601128.SH</td>
+      <td>601128</td>
+      <td>常熟银行</td>
+      <td>江苏</td>
+      <td>银行</td>
+      <td>20160930</td>
+    </tr>
+<tr>
+<th>836</th>
+      <td>601166.SH</td>
+      <td>601166</td>
+      <td>兴业银行</td>
+      <td>福建</td>
+      <td>银行</td>
+      <td>20070205</td>
+    </tr>
+<tr>
+<th>838</th>
+      <td>601169.SH</td>
+      <td>601169</td>
+      <td>北京银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20070919</td>
+    </tr>
+<tr>
+<th>842</th>
+      <td>601187.SH</td>
+      <td>601187</td>
+      <td>厦门银行</td>
+      <td>福建</td>
+      <td>银行</td>
+      <td>20201027</td>
+    </tr>
+<tr>
+<th>856</th>
+      <td>601229.SH</td>
+      <td>601229</td>
+      <td>上海银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20161116</td>
+    </tr>
+<tr>
+<th>862</th>
+      <td>601288.SH</td>
+      <td>601288</td>
+      <td>农业银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20100715</td>
+    </tr>
+<tr>
+<th>868</th>
+      <td>601328.SH</td>
+      <td>601328</td>
+      <td>交通银行</td>
+      <td>上海</td>
+      <td>银行</td>
+      <td>20070515</td>
+    </tr>
+<tr>
+<th>881</th>
+      <td>601398.SH</td>
+      <td>601398</td>
+      <td>工商银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20061027</td>
+    </tr>
+<tr>
+<th>889</th>
+      <td>601528.SH</td>
+      <td>601528</td>
+      <td>瑞丰银行</td>
+      <td>浙江</td>
+      <td>银行</td>
+      <td>20210625</td>
+    </tr>
+<tr>
+<th>894</th>
+      <td>601577.SH</td>
+      <td>601577</td>
+      <td>长沙银行</td>
+      <td>湖南</td>
+      <td>银行</td>
+      <td>20180926</td>
+    </tr>
+<tr>
+<th>914</th>
+      <td>601658.SH</td>
+      <td>601658</td>
+      <td>邮储银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20191210</td>
+    </tr>
+<tr>
+<th>915</th>
+      <td>601665.SH</td>
+      <td>601665</td>
+      <td>齐鲁银行</td>
+      <td>山东</td>
+      <td>银行</td>
+      <td>20210618</td>
+    </tr>
+<tr>
+<th>945</th>
+      <td>601818.SH</td>
+      <td>601818</td>
+      <td>光大银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20100818</td>
+    </tr>
+<tr>
+<th>949</th>
+      <td>601838.SH</td>
+      <td>601838</td>
+      <td>成都银行</td>
+      <td>四川</td>
+      <td>银行</td>
+      <td>20180131</td>
+    </tr>
+<tr>
+<th>952</th>
+      <td>601860.SH</td>
+      <td>601860</td>
+      <td>紫金银行</td>
+      <td>江苏</td>
+      <td>银行</td>
+      <td>20190103</td>
+    </tr>
+<tr>
+<th>971</th>
+      <td>601916.SH</td>
+      <td>601916</td>
+      <td>浙商银行</td>
+      <td>浙江</td>
+      <td>银行</td>
+      <td>20191126</td>
+    </tr>
+<tr>
+<th>978</th>
+      <td>601939.SH</td>
+      <td>601939</td>
+      <td>建设银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20070925</td>
+    </tr>
+<tr>
+<th>983</th>
+      <td>601963.SH</td>
+      <td>601963</td>
+      <td>重庆银行</td>
+      <td>重庆</td>
+      <td>银行</td>
+      <td>20210205</td>
+    </tr>
+<tr>
+<th>990</th>
+      <td>601988.SH</td>
+      <td>601988</td>
+      <td>中国银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20060705</td>
+    </tr>
+<tr>
+<th>997</th>
+      <td>601997.SH</td>
+      <td>601997</td>
+      <td>贵阳银行</td>
+      <td>贵州</td>
+      <td>银行</td>
+      <td>20160816</td>
+    </tr>
+<tr>
+<th>998</th>
+      <td>601998.SH</td>
+      <td>601998</td>
+      <td>中信银行</td>
+      <td>北京</td>
+      <td>银行</td>
+      <td>20070427</td>
+    </tr>
+<tr>
+<th>1232</th>
+      <td>603323.SH</td>
+      <td>603323</td>
+      <td>苏农银行</td>
+      <td>江苏</td>
+      <td>银行</td>
+      <td>20161129</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../query-and-filter-data-using-pandas/" rel="prev" title="在 Pandas 中如何实现复杂的筛选和查询">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
+                renderMathInElement(document.body,
+                    {
+                        
+delimiters: [
+    {left: "$$", right: "$$", display: true},
+    {left: "\\[", right: "\\]", display: true},
+    {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+    {left: "$", right: "$", display: false},
+    {left: "\\(", right: "\\)", display: false}
+]
+
+                    }
+                );
+            </script></article><script>
+    function loadStyle(url) {
+      var link = document.createElement('link')
+      link.type = 'text/css'
+      link.rel = 'stylesheet'
+      link.href = url
+      var head = document.getElementsByTagName('head')[0]
+      head.appendChild(link)
+    }
+
+    var id = document.getElementById("toc0_")
+    if (!id) {
+    }else{
+        loadStyle("/assets/css/post_ipynb.css")
+    }
+</script><!--End of body content--><footer id="footer">
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>
