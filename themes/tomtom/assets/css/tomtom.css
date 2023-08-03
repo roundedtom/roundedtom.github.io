@@ -331,10 +331,14 @@ blockquote::before {
 
 /* customize hyperlink */
 article a:link {
-    color: #212529 !important;
+    color: #404040 !important;
     text-decoration: none;
 }
 
+article a:visited {
+    color: #404040 !important;
+    text-decoration: none;
+}
 article a:hover {
     text-decoration: underline #ffe70e 20%;
 }
@@ -354,6 +358,7 @@ h1 > a {
 #footer a {
     color: #404040;
 }
+
 /* customize code area */
 code, div.code, pre.code, pre.literal-block {
     font-family: var(--font-mono);
