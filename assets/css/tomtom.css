@@ -373,6 +373,11 @@ code {
     color: #000;
 }
 
+.rendered_html pre, .highlight pre {
+        background-color: #3f3f3f !important;
+        padding: 0.4em !important;
+}
+
 /* tags */
 #tag {
     color: #fff !important;
