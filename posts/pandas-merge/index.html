@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pandas Tips：使用 merge 实现关系型合并 | RoundedTom</title>
+<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/tomtom.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://example.com/posts/pandas-merge/">
+<link rel="icon" href="../../assets/img/favicon.ico" sizes="16x16">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Tom">
+<link rel="prev" href="../pandas-query/" title="Pandas Tips：使用 query 实现优雅的查询" type="text/html">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:title" content="Pandas Tips：使用 merge 实现关系型合并">
+<meta property="og:url" content="https://example.com/posts/pandas-merge/">
+<meta property="og:description" content="Pandas 中提供了 merge 函数实现关系型合并。
+df1.merge(df2, how='inner', on=None, left_on=None, right_on=None, left_index=False, right_index=False, sort=False, suffixes=('_x', '_y'), copy=None, indicator=False, valid">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-08-03T00:00:00Z">
+<meta property="article:tag" content="data analysis">
+<meta property="article:tag" content="Pandas Tips">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+<body>
+<!-- Menubar -->
+
+<nav class="navbar navbar-expand-md static-top mb-4
+navbar-light
+bg-white
+"><div class="container py-2" style="border-bottom:1px solid #e5e5e5;">
+<!-- This keeps the margins nice -->
+        <a class="navbar-brand" href="../../">
+            <img src="../../files/assets/img/logo.jpg" alt="RoundedTom" id="logo" class="d-inline-block align-top"><span id="blog-title">RoundedTom</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto"><li class="nav-item">
+<a href="../../categories/index.html" class="nav-link">Categories &amp; Tags</a>
+
+                
+            </li></ul>
+<!-- Google custom search --><form method="get" action="https://www.google.com/search" class="form-inline my-2 my-lg-0" role="search">
+<div class="form-group">
+<input type="text" name="q" class="form-control my-sm-2" placeholder="Search">
+</div>
+<button type="submit" class="btn btn-secondary my-sm-2">
+	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewbox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path></svg></button>
+<input type="hidden" name="sitesearch" value="https://example.com/">
+</form>
+<!-- End of custom search -->
+
+
+            <ul class="navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title py-2" itemprop="headline name"><a href="." class="u-url">Pandas Tips：使用 merge 实现关系型合并</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard p-author h-card font-italic"><span class="byline-name fn p-name" itemprop="author">Posted by
+                    Tom
+            </span></p>
+            <p class="dateline font-italic">
+            <a href="." rel="bookmark">
+            <time class="published dt-published" datetime="2023-08-03T00:00:00Z" itemprop="datePublished" title="2023-08-03">2023-08-03</time></a>
+            </p>
+
+            <p>
+                    <a class="fa fa-tags p-category" href="../../categories/data-analysis/" rel="tag">data analysis</a>
+                    <a class="fa fa-tags p-category" href="../../categories/pandas-tips/" rel="tag">Pandas Tips</a>
+            </p>
+
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pandas 中提供了 <code>merge</code> 函数实现关系型合并。</p>
+<div class="highlight"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'inner'</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">'_x'</span><span class="p">,</span> <span class="s1">'_y'</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indicator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+<!-- TEASER_END -->
+<p>主要参数含义：</p>
+<ul>
+<li>
+<code>df2</code>：待合并的 DataFrame 或者 Series</li>
+<li>
+<code>how</code>：合并方式<ul>
+<li>
+<code>left</code>：左连接，合并后显示 df1 的所有行</li>
+<li>
+<code>right</code>：右连接，合并后显示 df2 的所有行</li>
+<li>
+<code>outer</code>：外连接，合并后显示 df1、df2 的所有行</li>
+<li>
+<code>inner</code>：内连接，合并后显示 df1、df2 的共有行</li>
+<li>
+<code>cross</code>：交叉连接，合并后显示 df1、df2 的笛卡尔积</li>
+</ul>
+</li>
+<li>
+<code>on</code>：列名或者索引名，df1 和 df2 合并的键</li>
+<li>
+<code>left_on</code>、<code>right_on</code>：当 df1 和 df2 待合并的键在表中的名称不一样时，可分别指定</li>
+<li>
+<code>left_index</code>、<code>right_index</code>：布尔变量，是否使用索引进行合并</li>
+<li>
+<code>suffixes</code>：列表类型。如果两张表中有相同的列名，<code>suffixes</code> 为合并表的列名提供了后缀</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create some toy data</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'Date'</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">'2023-08-01'</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+                    <span class="s1">'Company'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'A'</span><span class="p">,</span> <span class="s1">'B'</span><span class="p">,</span> <span class="s1">'C'</span><span class="p">,</span> <span class="s1">'D'</span><span class="p">,</span> <span class="s1">'E'</span><span class="p">],</span>
+                    <span class="s1">'Close'</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">20</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'Date'</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">'2023-08-03'</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+                    <span class="s1">'Firm'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'C'</span><span class="p">,</span> <span class="s1">'D'</span><span class="p">,</span> <span class="s1">'E'</span><span class="p">,</span> <span class="s1">'F'</span><span class="p">,</span> <span class="s1">'G'</span><span class="p">],</span>
+                    <span class="s1">'Volume'</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">105</span><span class="p">]})</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date</th>
+      <th>Company</th>
+      <th>Close</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df2</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>2023-08-06</td>
+      <td>F</td>
+      <td>110</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>2023-08-07</td>
+      <td>G</td>
+      <td>105</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>merge</code> 默认使用内连接（<code>inner</code>），如果不指定合并的键，默认使用两张表中共同的列作合并，df1 和 df2 共同的列是 date，合并后显示共有的 date：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[5]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>使用 <code>left_on</code> 和 <code>right_on</code> 参数可以指定两张表做合并的键，下面指定使用 df1 中的 Company 和 df2 中的 Firm 来做合并：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> 
+          <span class="n">left_on</span><span class="o">=</span><span class="s1">'Company'</span><span class="p">,</span> 
+          <span class="n">right_on</span><span class="o">=</span><span class="s1">'Firm'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date_x</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Date_y</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>由于 df1 和 df2 中都有 Date 这一列，为了加以区分，Pandas 自动给两张表中的 Date 加了后缀，我们可以使用 <code>suffixes</code> 参数来自定义后缀：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span>
+          <span class="n">left_on</span><span class="o">=</span><span class="s1">'Company'</span><span class="p">,</span> 
+          <span class="n">right_on</span><span class="o">=</span><span class="s1">'Firm'</span><span class="p">,</span>
+          <span class="n">suffixes</span><span class="o">=</span><span class="p">[</span><span class="s1">'_1'</span><span class="p">,</span> <span class="s1">'_2'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date_1</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Date_2</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>但是既然两张表里都有 Date 这一列，最好的方式是使用多键合并：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> 
+          <span class="n">left_on</span><span class="o">=</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">,</span> <span class="s1">'Company'</span><span class="p">],</span> 
+          <span class="n">right_on</span><span class="o">=</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">,</span><span class="s1">'Firm'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>使用 <code>how</code> 参数可以指定合并的方式，<code>left</code> 表示左连接，合并后显示 df1 的所有行，df2 中没有 2023-08-01 和 2023-08-02 两天，则对应的 Firm 和 Volume 显示为空值。</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>C</td>
+      <td>100.0</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>D</td>
+      <td>101.0</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>E</td>
+      <td>120.0</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>right</code> 表示右连接，合并后显示 df2 的所有行：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'right'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21.0</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22.0</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20.0</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>2023-08-06</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F</td>
+      <td>110</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>2023-08-07</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>G</td>
+      <td>105</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>outer</code> 表示外连接，合并后显示 df1 和 df2 的所有行：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'outer'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21.0</td>
+      <td>C</td>
+      <td>100.0</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22.0</td>
+      <td>D</td>
+      <td>101.0</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20.0</td>
+      <td>E</td>
+      <td>120.0</td>
+    </tr>
+<tr>
+<th>5</th>
+      <td>2023-08-06</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>F</td>
+      <td>110.0</td>
+    </tr>
+<tr>
+<th>6</th>
+      <td>2023-08-07</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>G</td>
+      <td>105.0</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>cross</code> 表示交叉合并，合并后显示 df1 和 df2 的笛卡尔积：</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'cross'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead><tr style="text-align: right;">
+<th></th>
+      <th>Date_x</th>
+      <th>Company</th>
+      <th>Close</th>
+      <th>Date_y</th>
+      <th>Firm</th>
+      <th>Volume</th>
+    </tr></thead>
+<tbody>
+<tr>
+<th>0</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20</td>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>1</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20</td>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>2</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20</td>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+<tr>
+<th>3</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20</td>
+      <td>2023-08-06</td>
+      <td>F</td>
+      <td>110</td>
+    </tr>
+<tr>
+<th>4</th>
+      <td>2023-08-01</td>
+      <td>A</td>
+      <td>20</td>
+      <td>2023-08-07</td>
+      <td>G</td>
+      <td>105</td>
+    </tr>
+<tr>
+<th>5</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23</td>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>6</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23</td>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>7</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23</td>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+<tr>
+<th>8</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23</td>
+      <td>2023-08-06</td>
+      <td>F</td>
+      <td>110</td>
+    </tr>
+<tr>
+<th>9</th>
+      <td>2023-08-02</td>
+      <td>B</td>
+      <td>23</td>
+      <td>2023-08-07</td>
+      <td>G</td>
+      <td>105</td>
+    </tr>
+<tr>
+<th>10</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>11</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>12</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+<tr>
+<th>13</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>2023-08-06</td>
+      <td>F</td>
+      <td>110</td>
+    </tr>
+<tr>
+<th>14</th>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>21</td>
+      <td>2023-08-07</td>
+      <td>G</td>
+      <td>105</td>
+    </tr>
+<tr>
+<th>15</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>16</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>17</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+<tr>
+<th>18</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>2023-08-06</td>
+      <td>F</td>
+      <td>110</td>
+    </tr>
+<tr>
+<th>19</th>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>22</td>
+      <td>2023-08-07</td>
+      <td>G</td>
+      <td>105</td>
+    </tr>
+<tr>
+<th>20</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>2023-08-03</td>
+      <td>C</td>
+      <td>100</td>
+    </tr>
+<tr>
+<th>21</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>2023-08-04</td>
+      <td>D</td>
+      <td>101</td>
+    </tr>
+<tr>
+<th>22</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>120</td>
+    </tr>
+<tr>
+<th>23</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>2023-08-06</td>
+      <td>F</td>
+      <td>110</td>
+    </tr>
+<tr>
+<th>24</th>
+      <td>2023-08-05</td>
+      <td>E</td>
+      <td>20</td>
+      <td>2023-08-07</td>
+      <td>G</td>
+      <td>105</td>
+    </tr>
+</tbody>
+</table>
+</div></div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="../pandas-query/" rel="prev" title="Pandas Tips：使用 query 实现优雅的查询">Previous post</a>
+            </li>
+        </ul></nav></aside><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js" integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script><script>
+                renderMathInElement(document.body,
+                    {
+                        
+delimiters: [
+    {left: "$$", right: "$$", display: true},
+    {left: "\\[", right: "\\]", display: true},
+    {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+    {left: "$", right: "$", display: false},
+    {left: "\\(", right: "\\)", display: false}
+]
+
+                    }
+                );
+            </script></article><script>
+    function loadStyle(url) {
+      var link = document.createElement('link')
+      link.type = 'text/css'
+      link.rel = 'stylesheet'
+      link.href = url
+      var head = document.getElementsByTagName('head')[0]
+      head.appendChild(link)
+    }
+
+    var id = document.getElementById("toc0_")
+    if (!id) {
+    }else{
+        loadStyle("/assets/css/post_ipynb.css")
+    }
+</script><!--End of body content--><footer id="footer">
+            Contents © 2023         <a href="mailto:roundedtom@qq.com">Tom</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/jquery.min.js"></script><script src="../../assets/js/popper.min.js"></script><script src="../../assets/js/bootstrap.min.js"></script><script src="../../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element){var i=element.getElementsByTagName('img')[0];return i===undefined?'':i.alt;}});
+    </script>
+</body>
+</html>

@@ -19,7 +19,7 @@
 <link rel="canonical" href="https://example.com/">
 <link rel="icon" href="assets/img/favicon.ico" sizes="16x16">
 <link rel="next" href="index-4.html" type="text/html">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/pandas-query/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="posts/pandas-merge/" type="text/html">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <link href="assets/css/index.css" rel="stylesheet" type="text/css">
 <style>
@@ -104,7 +104,32 @@ bg-white
     </div>
     <div class="row">
         <div class="col-md-8 blog-main postindex">
-                <article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/pandas-query/" class="u-url">Pandas Tips：使用 query 实现优雅的查询</a></h1>
+                <article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/pandas-merge/" class="u-url">Pandas Tips：使用 merge 实现关系型合并</a></h1>
+                    <div class="metadata">
+                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
+                            Tom
+                        </span></p>
+                        <p class="dateline font-italic">
+                        <a href="posts/pandas-merge/" rel="bookmark">
+                        <time class="published dt-published" datetime="2023-08-03T00:00:00Z" itemprop="datePublished" title="2023-08-03">2023-08-03</time></a>
+                        </p>
+                    </div>
+                </header><div class="p-summary entry-summary">
+                <div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Pandas 中提供了 <code>merge</code> 函数实现关系型合并。</p>
+<div class="highlight"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'inner'</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">'_x'</span><span class="p">,</span> <span class="s1">'_y'</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indicator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+<p class="more"><a href="posts/pandas-merge/">Read more…</a></p>
+</div>
+</div>
+</div>
+                </div>
+                </article><hr style="border: 0; border-top: 1px solid #eee;">
+<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/pandas-query/" class="u-url">Pandas Tips：使用 query 实现优雅的查询</a></h1>
                     <div class="metadata">
                         <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
                             Tom
@@ -210,35 +235,6 @@ bg-white
                 <div>
 <p>三门问题也被称为蒙提霍尔问题，传言出自于美国的电视游戏节目 Let's Make a Deal。游戏是这样设置的，参赛者会面对三扇门，其中一扇门后面有一辆汽车，另外两扇门后面是两头羊。参赛者自由选择一扇门，然后主持人会开启剩下两扇门中的一扇，露出其中一头羊。这时候，主持人会询问参赛者要不要改变选择。如果是你，你会改变选择么？</p>
 <p class="more"><a href="posts/monty-hall-problem/">Read more…</a></p>
-</div>
-                </div>
-                </article><hr style="border: 0; border-top: 1px solid #eee;">
-<article class="h-entry post-text mb-2" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" style="font-size: 24px;"><a href="posts/event-study-tutorial-car-significance-test/" class="u-url">手把手教你做事件研究——CAR计算与显著性检验</a></h1>
-                    <div class="metadata">
-                        <p class="byline author vcard"><span class="byline-name fn font-italic" itemprop="author">Posted by
-                            Tom
-                        </span></p>
-                        <p class="dateline font-italic">
-                        <a href="posts/event-study-tutorial-car-significance-test/" rel="bookmark">
-                        <time class="published dt-published" datetime="2023-02-02T00:00:00Z" itemprop="datePublished" title="2023-02-02">2023-02-02</time></a>
-                        </p>
-                    </div>
-                </header><div class="p-summary entry-summary">
-                <div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="https://www.bilibili.com/video/BV12Y411S76h/?spm_id_from=333.999.0.0"><strong>事件研究法基本步骤</strong></a></p>
-<ul>
-<li>定义事件与事件窗口</li>
-<li>研究样本选择与数据准备</li>
-<li>估计正常收益率与计算异常收益率</li>
-<li>累计异常收益率计算与显著性检验</li>
-</ul>
-<p class="more"><a href="posts/event-study-tutorial-car-significance-test/">Read more…</a></p>
-</div>
-</div>
 </div>
                 </div>
                 </article><hr style="border: 0; border-top: 1px solid #eee;">

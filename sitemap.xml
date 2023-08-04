@@ -31,7 +31,7 @@
  </url>
  <url>
   <loc>https://example.com/archive/archive.html</loc>
-  <lastmod>2023-08-01T06:09:00Z</lastmod>
+  <lastmod>2023-08-04T05:46:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/categories/</loc>
@@ -207,7 +207,7 @@
  </url>
  <url>
   <loc>https://example.com/index-4.html</loc>
-  <lastmod>2023-08-01T06:09:00Z</lastmod>
+  <lastmod>2023-08-04T05:46:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/listings/</loc>
@@ -274,6 +274,10 @@
   <lastmod>2022-12-31T13:55:00Z</lastmod>
  </url>
  <url>
+  <loc>https://example.com/posts/pandas-merge/</loc>
+  <lastmod>2023-08-04T05:46:00Z</lastmod>
+ </url>
+ <url>
   <loc>https://example.com/posts/pandas-query/</loc>
   <lastmod>2023-08-01T06:11:00Z</lastmod>
  </url>
@@ -288,10 +292,6 @@
  <url>
   <loc>https://example.com/posts/query-and-filter-data-using-pandas/</loc>
   <lastmod>2023-04-13T00:24:00Z</lastmod>
- </url>
- <url>
-  <loc>https://example.com/posts/query/</loc>
-  <lastmod>2023-08-01T06:09:00Z</lastmod>
  </url>
  <url>
   <loc>https://example.com/posts/scraping-debug-connectionreseterror%28100504%29/</loc>
