@@ -1,0 +1,18 @@
+---
+# title: "quietly brilliant"
+# description: Self-improvement is masturbation and self-destruction.
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: numbered
+  page-size: 5
+  sort-ui: true
+  filter-ui: true
+  max-description-length: 100
+  # image-placeholder: images/img-placeholder.png
+  fields: [image, date, title, author, description]
+  date-format: iso
+page-layout: full
+title-block-banner: False
+---

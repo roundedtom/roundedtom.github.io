@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tom">
+<meta name="dcterms.date" content="2023-02-02">
+
+<title>手把手教你做事件研究-CAR计算与显著性检验 – 球形汤姆</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../logo.jpg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">球形汤姆</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">主页</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html"> 
+<span class="menu-text">博客</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../data.html"> 
+<span class="menu-text">数据</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">手把手教你做事件研究-CAR计算与显著性检验</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">计量分析</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Tom </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 2, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p><a href="https://www.bilibili.com/video/BV12Y411S76h/?spm_id_from=333.999.0.0"><strong>事件研究法基本步骤</strong></a></p>
+<ul>
+<li>定义事件与事件窗口</li>
+<li>研究样本选择与数据准备</li>
+<li>估计正常收益率与计算异常收益率</li>
+<li>累计异常收益率计算与显著性检验</li>
+</ul>
+<div id="06d2a92a-acfd-4a21-9631-36f9697f78fb" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tushare <span class="im">as</span> ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>日个股回报率：国泰安数据库（Tushare、Baostock）</li>
+<li>3 因子数据：国泰安数据库</li>
+<li>无风险利率：3 个月定期存款利率</li>
+</ul>
+<div id="b562a431-196d-4587-aff1-99165ee52516" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_2013_2017 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2013_2017/TRD_Dalyr.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data_2013_2017_1 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2013_2017/TRD_Dalyr1.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data_2013_2017_2 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2013_2017/TRD_Dalyr2.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>data_2013_2017_3 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2013_2017/TRD_Dalyr3.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>data_2018_2022 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2018_2022/TRD_Dalyr.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>data_2018_2022_1 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2018_2022/TRD_Dalyr1.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>data_2018_2022_2 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2018_2022/TRD_Dalyr2.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>data_2018_2022_3 <span class="op">=</span> pd.read_csv(<span class="st">'./data/日个股回报率文件2018_2022/TRD_Dalyr3.csv'</span>, dtype<span class="op">=</span>{<span class="st">'Stkcd'</span>:<span class="bu">str</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="011018a7-769d-4d57-83c2-bd238eeb3e0e" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># data:按流通市值加权的A股日收益率数据</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.concat([data_2013_2017, data_2013_2017_1, data_2013_2017_2, data_2013_2017_3,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                  data_2018_2022, data_2018_2022_1, data_2018_2022_2, data_2018_2022_3])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="a61285ad-9bf1-4ad3-9ceb-c86ab75421db" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>7012621</code></pre>
+</div>
+</div>
+<div id="9a367580-25c8-4204-9453-2c5fe68c19ec" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Stkcd</th>
+<th data-quarto-table-cell-role="th">Trddt</th>
+<th data-quarto-table-cell-role="th">Dretwd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>000001</td>
+<td>2013-01-04</td>
+<td>-0.001873</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>000001</td>
+<td>2013-01-07</td>
+<td>0.019387</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>000001</td>
+<td>2013-01-08</td>
+<td>-0.018405</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>000001</td>
+<td>2013-01-09</td>
+<td>-0.008750</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>000001</td>
+<td>2013-01-10</td>
+<td>0.000631</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="78e3fbdd-af8a-4921-bc72-929b36dbddfd" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> data.rename(columns<span class="op">=</span>{<span class="st">'Trddt'</span>:<span class="st">'TradingDate'</span>}) <span class="co"># 更改列名，方便后续做比较合并</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="da17ff68-88b2-43ab-8796-ed22ad4cc212" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 整理 3因子数据</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ff_factor <span class="op">=</span> pd.read_csv(<span class="st">'./data/3factor.csv'</span>, skiprows<span class="op">=</span>[<span class="dv">1</span>,<span class="dv">2</span>], converters<span class="op">=</span> {<span class="st">'TradingDate'</span>: pd.to_datetime})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8095f4a4-aa6b-42db-a825-d37514d2e717" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ff_factor.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MarkettypeID</th>
+<th data-quarto-table-cell-role="th">TradingDate</th>
+<th data-quarto-table-cell-role="th">RiskPremium1</th>
+<th data-quarto-table-cell-role="th">SMB1</th>
+<th data-quarto-table-cell-role="th">HML1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>P9706</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>P9710</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>P9709</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>P9712</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>P9713</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="46446491-769d-4355-8d30-8d09eba41f94" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 无风险利率数据</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>risk_free_rate <span class="op">=</span> pd.read_excel(<span class="st">'./data/定期存款利率_3个月.xlsx'</span>, dtype<span class="op">=</span>{<span class="st">'指标名称'</span>:datetime.date})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="41f6d1d4-a7de-42bb-9775-38f1a4968796" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>risk_free_rate.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">指标名称</th>
+<th data-quarto-table-cell-role="th">定期存款利率:3个月(月)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1989-02-28</td>
+<td>7.56</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1989-03-31</td>
+<td>7.56</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1989-04-30</td>
+<td>7.56</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1989-05-31</td>
+<td>7.56</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1989-06-30</td>
+<td>7.56</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="548c556b-5c74-427d-8c5b-cc8c90ca260e" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>r_dict <span class="op">=</span> {}</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t,r <span class="kw">in</span> <span class="bu">zip</span>(risk_free_rate.iloc[:,<span class="dv">0</span>], risk_free_rate.iloc[:,<span class="dv">1</span>]):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    t_temp <span class="op">=</span> t <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">10</span>) <span class="co"># 月底公布下月三月定期存款利率，+10天将日期对应到下月</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    r_dict[<span class="bu">str</span>(t_temp.year) <span class="op">+</span> <span class="bu">str</span>(t_temp.month)] <span class="op">=</span> r<span class="op">/</span><span class="dv">100</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>r_list <span class="op">=</span> []</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ff_factor.iloc[:,<span class="dv">1</span>]:</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> r_dict[<span class="bu">str</span>(t.year)<span class="op">+</span><span class="bu">str</span>(t.month)]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    r_list.append(r)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>ff_factor[[<span class="st">'r'</span>]] <span class="op">=</span> np.array(r_list).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="co"># 将无风险利率添加到 ff 三因子表格内，方便后续回归拟合|</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="78a20f69-9903-46dd-93ef-9c44587e24ec" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ff_factor.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">MarkettypeID</th>
+<th data-quarto-table-cell-role="th">TradingDate</th>
+<th data-quarto-table-cell-role="th">RiskPremium1</th>
+<th data-quarto-table-cell-role="th">SMB1</th>
+<th data-quarto-table-cell-role="th">HML1</th>
+<th data-quarto-table-cell-role="th">r</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>P9706</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0432</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>P9710</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0432</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>P9709</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0432</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>P9712</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0432</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>P9713</td>
+<td>1990-12-19</td>
+<td>2.473374</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.0432</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cc963309-a9d7-4385-be8a-b16bc7f3e4cd" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ff_factor[<span class="st">'TradingDate'</span>] <span class="op">=</span> ff_factor[<span class="st">'TradingDate'</span>].astype(<span class="bu">str</span>) <span class="co"># 将时间列转化为字符串类型，方便后续做判断合并</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="26e0e38a-7a5f-4fb8-9ba2-8d76b23370fe" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> pd.read_csv(<span class="st">'./data/final.csv'</span>, dtype<span class="op">=</span>{<span class="st">'secCode'</span>:<span class="bu">str</span>})</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sample.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">secCode</th>
+<th data-quarto-table-cell-role="th">secName</th>
+<th data-quarto-table-cell-role="th">orgId</th>
+<th data-quarto-table-cell-role="th">announcementTitle</th>
+<th data-quarto-table-cell-role="th">announcementTime</th>
+<th data-quarto-table-cell-role="th">adjunctUrl</th>
+<th data-quarto-table-cell-role="th">announcementContent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>002152</td>
+<td>广电运通</td>
+<td>9900003423</td>
+<td>广电运通：2016年4月1日投资者关系活动记录表</td>
+<td>2016-04-06</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>9、公司提过有储备区块链技术，是否可以介绍？</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>002177</td>
+<td>御银股份</td>
+<td>9900003781</td>
+<td>御银股份：2016年4月21日投资者关系活动记录表</td>
+<td>2016-04-21</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>4、公司在区块链技术上未来有什么规划？</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>300386</td>
+<td>飞天诚信</td>
+<td>9900023058</td>
+<td>飞天诚信：2016年4月22日投资者关系活动记录表</td>
+<td>2016-04-25</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>公司在区块链部分如何布局?</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>300423</td>
+<td>鲁亿通</td>
+<td>9900028812</td>
+<td>鲁亿通：关于本次交易前12个月内购买、出售资产的说明</td>
+<td>2016-06-09</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>同时，上市公司拟采用定价发行的方式向纪法清、孔剑平、孙奇锋、王麒诚和中信建投-数贝泽华人工智...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>000961</td>
+<td>中南建设</td>
+<td>gssz0000961</td>
+<td>中南建设：关于本公司投资上海承泰信息科技股份有限公司的进展公告</td>
+<td>2016-06-23</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>，以区块链技术处理玛娜花园不同版本的个人数据，形成对数据信息的安全保护。</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="01a29669-299a-4834-9c7b-bc17fb6cda51" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pro <span class="op">=</span> ts.pro_api()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 查询当前所有正常上市交易和退市的股票列表</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>stocks_L <span class="op">=</span> pro.stock_basic(exchange<span class="op">=</span><span class="st">''</span>, list_status<span class="op">=</span><span class="st">'L'</span>, fields<span class="op">=</span><span class="st">'symbol,name,area,industry,list_date,market'</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>stocks_D <span class="op">=</span> pro.stock_basic(exchange<span class="op">=</span><span class="st">''</span>, list_status<span class="op">=</span><span class="st">'D'</span>, fields<span class="op">=</span><span class="st">'symbol,name,area,industry,list_date,market'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="f3bcd767-3c9f-468f-be45-fb5bb8e9397a" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>stocks_L.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">symbol</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">area</th>
+<th data-quarto-table-cell-role="th">industry</th>
+<th data-quarto-table-cell-role="th">market</th>
+<th data-quarto-table-cell-role="th">list_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>000001</td>
+<td>平安银行</td>
+<td>深圳</td>
+<td>银行</td>
+<td>主板</td>
+<td>19910403</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>000002</td>
+<td>万科A</td>
+<td>深圳</td>
+<td>全国地产</td>
+<td>主板</td>
+<td>19910129</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>000004</td>
+<td>ST国华</td>
+<td>深圳</td>
+<td>软件服务</td>
+<td>主板</td>
+<td>19910114</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>000005</td>
+<td>ST星源</td>
+<td>深圳</td>
+<td>环境保护</td>
+<td>主板</td>
+<td>19901210</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>000006</td>
+<td>深振业A</td>
+<td>深圳</td>
+<td>区域地产</td>
+<td>主板</td>
+<td>19920427</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="b6784bda-a950-4a40-851b-06fb143cc327" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>stocks_D.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">symbol</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">area</th>
+<th data-quarto-table-cell-role="th">industry</th>
+<th data-quarto-table-cell-role="th">market</th>
+<th data-quarto-table-cell-role="th">list_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>000003</td>
+<td>PT金田A(退)</td>
+<td>None</td>
+<td>None</td>
+<td>主板</td>
+<td>19910703</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>000013</td>
+<td>*ST石化A(退)</td>
+<td>None</td>
+<td>None</td>
+<td>主板</td>
+<td>19920506</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>000015</td>
+<td>PT中浩A(退)</td>
+<td>None</td>
+<td>None</td>
+<td>主板</td>
+<td>19920625</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>000018</td>
+<td>神城A退(退)</td>
+<td>None</td>
+<td>None</td>
+<td>主板</td>
+<td>19920616</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>000024</td>
+<td>招商地产(退)</td>
+<td>None</td>
+<td>None</td>
+<td>主板</td>
+<td>19930607</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="81d5676f-0558-41b1-a6c5-6592ac167eaf" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>stocks <span class="op">=</span> pd.concat([stocks_L, stocks_D])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="ac3789f5-2165-4d0e-978d-5cc6790211d3" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 构造一个 code:market 字典</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>cm_dict <span class="op">=</span> {}</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c,m <span class="kw">in</span> <span class="bu">zip</span>(stocks.loc[:,<span class="st">'symbol'</span>], stocks.loc[:,<span class="st">'market'</span>]):</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    cm_dict[c] <span class="op">=</span> m</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>market_l <span class="op">=</span> []</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> code <span class="kw">in</span> sample.loc[:, <span class="st">'secCode'</span>]:</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> cm_dict[code]</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    market_l.append(m)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>sample[[<span class="st">'market'</span>]] <span class="op">=</span> np.array(market_l).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="047713f5-d1f3-4994-b9ec-8ee75ef1fdc6" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sample.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">secCode</th>
+<th data-quarto-table-cell-role="th">secName</th>
+<th data-quarto-table-cell-role="th">orgId</th>
+<th data-quarto-table-cell-role="th">announcementTitle</th>
+<th data-quarto-table-cell-role="th">announcementTime</th>
+<th data-quarto-table-cell-role="th">adjunctUrl</th>
+<th data-quarto-table-cell-role="th">announcementContent</th>
+<th data-quarto-table-cell-role="th">market</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>002152</td>
+<td>广电运通</td>
+<td>9900003423</td>
+<td>广电运通：2016年4月1日投资者关系活动记录表</td>
+<td>2016-04-06</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>9、公司提过有储备区块链技术，是否可以介绍？</td>
+<td>中小板</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>002177</td>
+<td>御银股份</td>
+<td>9900003781</td>
+<td>御银股份：2016年4月21日投资者关系活动记录表</td>
+<td>2016-04-21</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>4、公司在区块链技术上未来有什么规划？</td>
+<td>中小板</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>300386</td>
+<td>飞天诚信</td>
+<td>9900023058</td>
+<td>飞天诚信：2016年4月22日投资者关系活动记录表</td>
+<td>2016-04-25</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>公司在区块链部分如何布局?</td>
+<td>创业板</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>300423</td>
+<td>鲁亿通</td>
+<td>9900028812</td>
+<td>鲁亿通：关于本次交易前12个月内购买、出售资产的说明</td>
+<td>2016-06-09</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>同时，上市公司拟采用定价发行的方式向纪法清、孔剑平、孙奇锋、王麒诚和中信建投-数贝泽华人工智...</td>
+<td>创业板</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>000961</td>
+<td>中南建设</td>
+<td>gssz0000961</td>
+<td>中南建设：关于本公司投资上海承泰信息科技股份有限公司的进展公告</td>
+<td>2016-06-23</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>，以区块链技术处理玛娜花园不同版本的个人数据，形成对数据信息的安全保护。</td>
+<td>主板</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="d7813219-14e6-451f-a2a9-a769c74af557" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MarkettypeID [股票市场类型编码] - P9705：创业板;P9706：综合A股市场（不包含科创板、创业板）;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># P9707：综合B股市场;P9709：综合A股和创业板; P9710：综合AB股和创业板；P9711：科创板；</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 构造一个 market:markettypeID 字典</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>mm_dict <span class="op">=</span> {<span class="st">'中小板'</span>:<span class="st">'P9706'</span>, <span class="st">'主板'</span>:<span class="st">'P9706'</span>, <span class="st">'创业板'</span>:<span class="st">'P9705'</span>, <span class="st">'科创板'</span>:<span class="st">'P9711'</span>}</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>markettypeID <span class="op">=</span> []</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> sample.loc[:,<span class="st">'market'</span>]:</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    m_id <span class="op">=</span> mm_dict[m]</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    markettypeID.append(m_id)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>sample[[<span class="st">'markettypeID'</span>]] <span class="op">=</span> np.array(markettypeID).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="698a88a9-413b-40d6-8312-ae93ef34e9c5" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sample</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">secCode</th>
+<th data-quarto-table-cell-role="th">secName</th>
+<th data-quarto-table-cell-role="th">orgId</th>
+<th data-quarto-table-cell-role="th">announcementTitle</th>
+<th data-quarto-table-cell-role="th">announcementTime</th>
+<th data-quarto-table-cell-role="th">adjunctUrl</th>
+<th data-quarto-table-cell-role="th">announcementContent</th>
+<th data-quarto-table-cell-role="th">market</th>
+<th data-quarto-table-cell-role="th">markettypeID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>002152</td>
+<td>广电运通</td>
+<td>9900003423</td>
+<td>广电运通：2016年4月1日投资者关系活动记录表</td>
+<td>2016-04-06</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>9、公司提过有储备区块链技术，是否可以介绍？</td>
+<td>中小板</td>
+<td>P9706</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>002177</td>
+<td>御银股份</td>
+<td>9900003781</td>
+<td>御银股份：2016年4月21日投资者关系活动记录表</td>
+<td>2016-04-21</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>4、公司在区块链技术上未来有什么规划？</td>
+<td>中小板</td>
+<td>P9706</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>300386</td>
+<td>飞天诚信</td>
+<td>9900023058</td>
+<td>飞天诚信：2016年4月22日投资者关系活动记录表</td>
+<td>2016-04-25</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>公司在区块链部分如何布局?</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>300423</td>
+<td>鲁亿通</td>
+<td>9900028812</td>
+<td>鲁亿通：关于本次交易前12个月内购买、出售资产的说明</td>
+<td>2016-06-09</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>同时，上市公司拟采用定价发行的方式向纪法清、孔剑平、孙奇锋、王麒诚和中信建投-数贝泽华人工智...</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>000961</td>
+<td>中南建设</td>
+<td>gssz0000961</td>
+<td>中南建设：关于本公司投资上海承泰信息科技股份有限公司的进展公告</td>
+<td>2016-06-23</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>，以区块链技术处理玛娜花园不同版本的个人数据，形成对数据信息的安全保护。</td>
+<td>主板</td>
+<td>P9706</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">325</td>
+<td>300133</td>
+<td>华策影视</td>
+<td>9900013428</td>
+<td>华策影视：关于全资子公司增资扩股暨关联交易的公告</td>
+<td>2021-12-17</td>
+<td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+<td>影业上海基于节目库搭建的正版影视素材库“华策新视界”已进入正式运营，目前正在推进基于区块链技...</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">326</td>
+<td>300235</td>
+<td>方直科技</td>
+<td>9900011849</td>
+<td>方直科技：关于对深圳证券交易所关注函的回复公告</td>
+<td>2021-12-20</td>
+<td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+<td>元宇宙是整合多种新技术而产生的新型虚实相融的互联网应用和社会形态，它基于扩展现实技术提供沉浸...</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">327</td>
+<td>300649</td>
+<td>杭州园林</td>
+<td>9900023811</td>
+<td>杭州园林：关于收购参股公司部分股权的公告</td>
+<td>2021-12-24</td>
+<td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+<td>一般项目：网络技术服务；物联网技术服务；技术服务、技术开发、技术咨询、技术交流、技术转让、技...</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">328</td>
+<td>300533</td>
+<td>冰川网络</td>
+<td>9900027730</td>
+<td>冰川网络：关于全资子公司设立三家子公司并完成工商注册登记的公告</td>
+<td>2021-12-24</td>
+<td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+<td>人工智能通用应用系统；智能控制系统集成；量子计算技术服务；电竞信息科技；云计算装备技术服务；...</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">329</td>
+<td>301116</td>
+<td>益客食品</td>
+<td>9900028946</td>
+<td>益客食品：法律意见书及补充法律意见书</td>
+<td>2021-12-27</td>
+<td>http://static.cninfo.com.cn/finalpage/2021-12-...</td>
+<td>不含特种设备制造）；液气密元件及系统制造；工业自动控制系统装置销售；物料搬运装备销售；非居住...</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+</tbody>
+</table>
+
+<p>330 rows × 9 columns</p>
+</div>
+</div>
+</div>
+<div id="99a521ba-2bd3-4faa-8dd8-f61f6e0ee1b8" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>daily_returns <span class="op">=</span> data.loc[data.iloc[:,<span class="dv">0</span>] <span class="op">==</span> <span class="st">'002152'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="82f3a9a0-c8ca-4c78-91b9-21ee7e7c50e5" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>daily_returns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Stkcd</th>
+<th data-quarto-table-cell-role="th">TradingDate</th>
+<th data-quarto-table-cell-role="th">Dretwd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">676981</td>
+<td>002152</td>
+<td>2013-01-04</td>
+<td>-0.019027</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">676982</td>
+<td>002152</td>
+<td>2013-01-07</td>
+<td>-0.008621</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">676983</td>
+<td>002152</td>
+<td>2013-01-08</td>
+<td>0.011594</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">676984</td>
+<td>002152</td>
+<td>2013-01-09</td>
+<td>0.002865</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">676985</td>
+<td>002152</td>
+<td>2013-01-10</td>
+<td>-0.003571</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">612679</td>
+<td>002152</td>
+<td>2022-03-10</td>
+<td>0.008427</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">612680</td>
+<td>002152</td>
+<td>2022-03-11</td>
+<td>0.016713</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">612681</td>
+<td>002152</td>
+<td>2022-03-14</td>
+<td>-0.011872</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">612682</td>
+<td>002152</td>
+<td>2022-03-15</td>
+<td>-0.046211</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">612683</td>
+<td>002152</td>
+<td>2022-03-16</td>
+<td>0.023256</td>
+</tr>
+</tbody>
+</table>
+
+<p>2173 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<div id="7c5af2a2-c308-4c2f-8149-dd38335f22c5" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_window(code, t, m_id):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""获取事件期和理论收益率估计期</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">        code (str): stock code</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">        t (str): announcement date</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">        m_id (str): MarkettypeID</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">        eventWD (DataFrame): event window</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co">        estimationWD (DataFrame): estimation window</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 个股日收益率数据</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    daily_returns <span class="op">=</span> data.loc[data.iloc[:,<span class="dv">0</span>] <span class="op">==</span> code]</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 交易日数据</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    trading_dates <span class="op">=</span> daily_returns.loc[:, <span class="st">'TradingDate'</span>] </span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    t_1 <span class="op">=</span> (datetime.date.fromisoformat(t) <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">1</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    t_2 <span class="op">=</span> (datetime.date.fromisoformat(t) <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">2</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    t_3 <span class="op">=</span> (datetime.date.fromisoformat(t) <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">3</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    t_4 <span class="op">=</span> (datetime.date.fromisoformat(t) <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">4</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    t_5 <span class="op">=</span> (datetime.date.fromisoformat(t) <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">5</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    t_6 <span class="op">=</span> (datetime.date.fromisoformat(t) <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">6</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    t_7 <span class="op">=</span> (datetime.date.fromisoformat(t) <span class="op">+</span> datetime.timedelta(days<span class="op">=</span><span class="dv">7</span>)).strftime(<span class="st">'%Y-%m-</span><span class="sc">%d</span><span class="st">'</span>)</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 判断公告日是否为交易日，年假最长 7 天</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="kw">in</span> <span class="bu">list</span>(trading_dates): </span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t)</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t_1 <span class="kw">in</span> <span class="bu">list</span>(trading_dates):</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t_1)</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t_2 <span class="kw">in</span> <span class="bu">list</span>(trading_dates):</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t_2)</span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t_3 <span class="kw">in</span> <span class="bu">list</span>(trading_dates):</span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t_3)</span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t_4 <span class="kw">in</span> <span class="bu">list</span>(trading_dates):</span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t_4)</span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t_5 <span class="kw">in</span> <span class="bu">list</span>(trading_dates):</span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t_5)</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t_6 <span class="kw">in</span> <span class="bu">list</span>(trading_dates):</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t_6)</span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t_7 <span class="kw">in</span> <span class="bu">list</span>(trading_dates):</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="bu">list</span>(trading_dates).index(t_7)</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>        i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 估计期为 200 天   </span></span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 公司上市时间较短时，估计期数据不够</span></span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">210</span>:</span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>        eventWD <span class="op">=</span> daily_returns.iloc[i<span class="op">-</span><span class="dv">1</span>:i<span class="op">+</span><span class="dv">2</span>, :]</span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>        estimationWD <span class="op">=</span> daily_returns.iloc[i<span class="op">-</span><span class="dv">210</span>:i<span class="op">-</span><span class="dv">10</span>, :]</span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>        eventWD.insert(<span class="dv">0</span>,<span class="st">'MarkettypeID'</span>, m_id)</span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>        estimationWD.insert(<span class="dv">0</span>, <span class="st">'MarkettypeID'</span>, m_id)</span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> estimationWD, eventWD</span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="7abfdd16-f8af-42dc-a2f2-516f6cb447c8" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> abnormal_return(estimationWD, eventWD, ff_factor):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""获取异常收益率</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">        estimationWD (DataFrame): estimation window</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">        eventWD (DataFrame): event window</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="co">        ff_factor (DataFrame): fama-french factors</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">        ar (array): abnormal returns</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    estimation_data <span class="op">=</span> pd.merge(estimationWD, ff_factor, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span>[<span class="st">'MarkettypeID'</span>, <span class="st">'TradingDate'</span>])</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    event_data <span class="op">=</span> pd.merge(eventWD, ff_factor, how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span>[<span class="st">'MarkettypeID'</span>, <span class="st">'TradingDate'</span>])</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> estimation_data.loc[:,[<span class="st">'RiskPremium1'</span>,<span class="st">'SMB1'</span>,<span class="st">'HML1'</span>]].values</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> sm.add_constant(X)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> np.array(estimation_data.loc[:,<span class="st">'Dretwd'</span>]<span class="op">-</span>estimation_data.loc[:,<span class="st">'r'</span>]).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> sm.OLS(y, X)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> model.fit()</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rr: 理论收益率</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>    rr <span class="op">=</span> (np.dot(</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>        sm.add_constant(event_data.loc[:,[<span class="st">'RiskPremium1'</span>,<span class="st">'SMB1'</span>,<span class="st">'HML1'</span>]].values),</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>        result.params.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)) </span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> event_data.loc[:,<span class="st">'r'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ar: 异常收益率，每只股票在事件期的收益率 array</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>    ar <span class="op">=</span> event_data.loc[:,<span class="st">'Dretwd'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="op">-</span> rr</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="42961eb2-44c8-4f93-b658-34f113c3863d" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sample.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">secCode</th>
+<th data-quarto-table-cell-role="th">secName</th>
+<th data-quarto-table-cell-role="th">orgId</th>
+<th data-quarto-table-cell-role="th">announcementTitle</th>
+<th data-quarto-table-cell-role="th">announcementTime</th>
+<th data-quarto-table-cell-role="th">adjunctUrl</th>
+<th data-quarto-table-cell-role="th">announcementContent</th>
+<th data-quarto-table-cell-role="th">market</th>
+<th data-quarto-table-cell-role="th">markettypeID</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>002152</td>
+<td>广电运通</td>
+<td>9900003423</td>
+<td>广电运通：2016年4月1日投资者关系活动记录表</td>
+<td>2016-04-06</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>9、公司提过有储备区块链技术，是否可以介绍？</td>
+<td>中小板</td>
+<td>P9706</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>002177</td>
+<td>御银股份</td>
+<td>9900003781</td>
+<td>御银股份：2016年4月21日投资者关系活动记录表</td>
+<td>2016-04-21</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>4、公司在区块链技术上未来有什么规划？</td>
+<td>中小板</td>
+<td>P9706</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>300386</td>
+<td>飞天诚信</td>
+<td>9900023058</td>
+<td>飞天诚信：2016年4月22日投资者关系活动记录表</td>
+<td>2016-04-25</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-04-...</td>
+<td>公司在区块链部分如何布局?</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>300423</td>
+<td>鲁亿通</td>
+<td>9900028812</td>
+<td>鲁亿通：关于本次交易前12个月内购买、出售资产的说明</td>
+<td>2016-06-09</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>同时，上市公司拟采用定价发行的方式向纪法清、孔剑平、孙奇锋、王麒诚和中信建投-数贝泽华人工智...</td>
+<td>创业板</td>
+<td>P9705</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>000961</td>
+<td>中南建设</td>
+<td>gssz0000961</td>
+<td>中南建设：关于本公司投资上海承泰信息科技股份有限公司的进展公告</td>
+<td>2016-06-23</td>
+<td>http://static.cninfo.com.cn/finalpage/2016-06-...</td>
+<td>，以区块链技术处理玛娜花园不同版本的个人数据，形成对数据信息的安全保护。</td>
+<td>主板</td>
+<td>P9706</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="730db654-741b-4c89-9987-e352bd358133" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ar_l <span class="op">=</span> []</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>delete_code <span class="op">=</span> []</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> code,t,m_id <span class="kw">in</span> <span class="bu">zip</span>(sample.loc[:,<span class="st">'secCode'</span>], sample.loc[:,<span class="st">'announcementTime'</span>], sample.loc[:,<span class="st">'markettypeID'</span>]):</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        estimationWD, eventWD <span class="op">=</span> get_window(code, t, m_id)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        delete_code.append(code)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    ar_array <span class="op">=</span> abnormal_return(estimationWD, eventWD, ff_factor)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    ar <span class="op">=</span> <span class="bu">sum</span>(ar_array)[<span class="dv">0</span>]</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    ar_l.append(ar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="31b7d969-6dee-4152-a2f5-5dd7cecc99b3" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>AR <span class="op">=</span> pd.DataFrame(np.array(ar_l).reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fff65f56-7526-4887-adcd-7c7cbe0dd1c2" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>AR.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">0</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>304.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>0.014020</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>0.068285</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>-0.173427</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>-0.018811</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>0.003446</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>0.032451</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>0.337091</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="57921a51-e0de-41ad-ac4b-059e6c9daa8b" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="197beb47-be62-4d39-a47d-fff5230e71b2" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>stats.ttest_1samp(ar_l, <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>Ttest_1sampResult(statistic=3.579861379325141, pvalue=0.00040021773286985055)</code></pre>
+</div>
+</div>
+<div id="0fdf02d5-3969-46ac-832a-b8d27230599c" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>stats.wilcoxon(ar_l, <span class="bu">len</span>(ar_l)<span class="op">*</span>[<span class="dv">0</span>], correction<span class="op">=</span><span class="va">True</span>,alternative<span class="op">=</span><span class="st">'two-sided'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<pre><code>WilcoxonResult(statistic=19144.0, pvalue=0.008515412037149648)</code></pre>
+</div>
+</div>
+<div id="f7fc81d9-468e-400c-a40c-2dca4b0c8503" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>delete_code</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<pre><code>['300423',
+ '603106',
+ '300612',
+ '000793',
+ '601619',
+ '000038',
+ '300654',
+ '300525',
+ '000061',
+ '601066',
+ '300773',
+ '300788',
+ '601512',
+ '688158',
+ '688051',
+ '688096',
+ '300975',
+ '003040',
+ '300996',
+ '300889',
+ '601686',
+ '003032',
+ '688135',
+ '300949',
+ '301213',
+ '301116']</code></pre>
+</div>
+</div>
+<div id="43ce1294-3a57-44c6-930a-1e17e1213374" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(delete_code)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<pre><code>26</code></pre>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

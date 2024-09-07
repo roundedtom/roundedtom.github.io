@@ -1,0 +1,3418 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tom">
+<meta name="dcterms.date" content="2023-08-01">
+
+<title>Pandas Tips: 使用query实现优雅的查询 – 球形汤姆</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../logo.jpg" rel="icon" type="image/jpeg">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../logo.jpg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">球形汤姆</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">主页</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../posts.html"> 
+<span class="menu-text">博客</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../data.html"> 
+<span class="menu-text">数据</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Pandas Tips: 使用query实现优雅的查询</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Pandas</div>
+                <div class="quarto-category">数据分析</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Tom </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 1, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>这篇博客介绍 Pandas <code>query</code> 函数的使用。</p>
+<p><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html"><code>DataFrame.query(expr, *, inplace=False, **kwargs)</code></a> 函数使用布尔表达式对列进行查询，可以简化我们使用 <code>loc</code> 进行查询的写法。</p>
+<div id="cell-2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> ak.stock_zh_a_spot_em()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>301299</td>
+<td>卓创资讯</td>
+<td>73.80</td>
+<td>20.00</td>
+<td>12.30</td>
+<td>68867.0</td>
+<td>4.661717e+08</td>
+<td>21.89</td>
+<td>73.80</td>
+<td>...</td>
+<td>3.59</td>
+<td>45.91</td>
+<td>65.23</td>
+<td>6.69</td>
+<td>4.428000e+09</td>
+<td>1.107000e+09</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>42.88</td>
+<td>50.31</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>300380</td>
+<td>安硕信息</td>
+<td>23.72</td>
+<td>19.98</td>
+<td>3.95</td>
+<td>165635.0</td>
+<td>3.832872e+08</td>
+<td>17.96</td>
+<td>23.72</td>
+<td>...</td>
+<td>2.23</td>
+<td>13.29</td>
+<td>-62.17</td>
+<td>8.48</td>
+<td>3.315132e+09</td>
+<td>2.955271e+09</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>33.48</td>
+<td>34.01</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3</td>
+<td>301316</td>
+<td>慧博云通</td>
+<td>35.28</td>
+<td>16.44</td>
+<td>4.98</td>
+<td>243204.0</td>
+<td>8.215963e+08</td>
+<td>15.48</td>
+<td>36.36</td>
+<td>...</td>
+<td>2.83</td>
+<td>60.79</td>
+<td>272.02</td>
+<td>14.93</td>
+<td>1.411235e+10</td>
+<td>1.411551e+09</td>
+<td>-0.93</td>
+<td>-0.62</td>
+<td>56.24</td>
+<td>84.62</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>4</td>
+<td>300803</td>
+<td>指南针</td>
+<td>72.98</td>
+<td>15.86</td>
+<td>9.99</td>
+<td>472593.0</td>
+<td>3.234342e+09</td>
+<td>16.49</td>
+<td>74.40</td>
+<td>...</td>
+<td>2.17</td>
+<td>11.71</td>
+<td>129.84</td>
+<td>16.85</td>
+<td>2.979597e+10</td>
+<td>2.944736e+10</td>
+<td>-0.44</td>
+<td>-0.14</td>
+<td>43.63</td>
+<td>59.62</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>5</td>
+<td>830799</td>
+<td>艾融软件</td>
+<td>9.48</td>
+<td>15.61</td>
+<td>1.28</td>
+<td>65994.0</td>
+<td>5.974540e+07</td>
+<td>14.76</td>
+<td>9.58</td>
+<td>...</td>
+<td>3.25</td>
+<td>5.62</td>
+<td>75.60</td>
+<td>6.17</td>
+<td>1.997327e+09</td>
+<td>1.113238e+09</td>
+<td>0.00</td>
+<td>-0.32</td>
+<td>17.62</td>
+<td>60.14</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p>如上所示，data 数据集是沪深京 A 股行情数据。如果我们要查询股票代码为 300380 的股票，使用 <code>loc</code> 方法我们应该利用逻辑运算传入一个布尔表达式：</p>
+<div id="cell-5" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data.loc[data.代码 <span class="op">==</span> <span class="st">"300380"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>300380</td>
+<td>安硕信息</td>
+<td>23.72</td>
+<td>19.98</td>
+<td>3.95</td>
+<td>165635.0</td>
+<td>3.832872e+08</td>
+<td>17.96</td>
+<td>23.72</td>
+<td>...</td>
+<td>2.23</td>
+<td>13.29</td>
+<td>-62.17</td>
+<td>8.48</td>
+<td>3.315132e+09</td>
+<td>2.955271e+09</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>33.48</td>
+<td>34.01</td>
+</tr>
+</tbody>
+</table>
+
+<p>1 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p>使用 <code>query</code>，我们可以这样写：</p>
+<div id="cell-7" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"代码 == '300380'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2</td>
+<td>300380</td>
+<td>安硕信息</td>
+<td>23.72</td>
+<td>19.98</td>
+<td>3.95</td>
+<td>165635.0</td>
+<td>3.832872e+08</td>
+<td>17.96</td>
+<td>23.72</td>
+<td>...</td>
+<td>2.23</td>
+<td>13.29</td>
+<td>-62.17</td>
+<td>8.48</td>
+<td>3.315132e+09</td>
+<td>2.955271e+09</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>33.48</td>
+<td>34.01</td>
+</tr>
+</tbody>
+</table>
+
+<p>1 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p><code>query</code> 函数接受一个查询字符串，然后利用 <code>eval()</code> 函数对该字符串进行计算，获得一个布尔表达式，再利用布尔表达式实现查询。</p>
+<p><code>query</code> 本质与 <code>loc</code> 相同，但写法上更清晰、简洁了。同样，<code>query</code> 也接受包含复杂逻辑运算的查询字符串，比如筛选市净率大于 10 ，同时换手率大于 5%的股票：</p>
+<div id="cell-9" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"市净率 &gt; 10 and 换手率 &gt; 5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3</td>
+<td>301316</td>
+<td>慧博云通</td>
+<td>35.28</td>
+<td>16.44</td>
+<td>4.98</td>
+<td>243204.0</td>
+<td>8.215963e+08</td>
+<td>15.48</td>
+<td>36.36</td>
+<td>...</td>
+<td>2.83</td>
+<td>60.79</td>
+<td>272.02</td>
+<td>14.93</td>
+<td>1.411235e+10</td>
+<td>1.411551e+09</td>
+<td>-0.93</td>
+<td>-0.62</td>
+<td>56.24</td>
+<td>84.62</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>4</td>
+<td>300803</td>
+<td>指南针</td>
+<td>72.98</td>
+<td>15.86</td>
+<td>9.99</td>
+<td>472593.0</td>
+<td>3.234342e+09</td>
+<td>16.49</td>
+<td>74.40</td>
+<td>...</td>
+<td>2.17</td>
+<td>11.71</td>
+<td>129.84</td>
+<td>16.85</td>
+<td>2.979597e+10</td>
+<td>2.944736e+10</td>
+<td>-0.44</td>
+<td>-0.14</td>
+<td>43.63</td>
+<td>59.62</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">41</td>
+<td>42</td>
+<td>300085</td>
+<td>银之杰</td>
+<td>15.15</td>
+<td>7.83</td>
+<td>1.10</td>
+<td>717622.0</td>
+<td>1.066523e+09</td>
+<td>7.97</td>
+<td>15.30</td>
+<td>...</td>
+<td>2.23</td>
+<td>13.61</td>
+<td>2190.93</td>
+<td>13.54</td>
+<td>1.070560e+10</td>
+<td>7.985455e+09</td>
+<td>1.00</td>
+<td>0.07</td>
+<td>6.32</td>
+<td>62.90</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">57</td>
+<td>58</td>
+<td>300169</td>
+<td>天晟新材</td>
+<td>9.07</td>
+<td>6.96</td>
+<td>0.59</td>
+<td>1223194.0</td>
+<td>1.075750e+09</td>
+<td>14.03</td>
+<td>9.30</td>
+<td>...</td>
+<td>2.12</td>
+<td>40.54</td>
+<td>-52.88</td>
+<td>11.54</td>
+<td>2.956678e+09</td>
+<td>2.736744e+09</td>
+<td>-0.11</td>
+<td>-1.09</td>
+<td>124.50</td>
+<td>119.61</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">73</td>
+<td>74</td>
+<td>601519</td>
+<td>大智慧</td>
+<td>9.80</td>
+<td>6.18</td>
+<td>0.57</td>
+<td>2269647.0</td>
+<td>2.135727e+09</td>
+<td>8.67</td>
+<td>9.84</td>
+<td>...</td>
+<td>1.81</td>
+<td>11.33</td>
+<td>16.23</td>
+<td>10.35</td>
+<td>1.979034e+10</td>
+<td>1.963788e+10</td>
+<td>0.10</td>
+<td>0.62</td>
+<td>23.12</td>
+<td>70.43</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">107</td>
+<td>108</td>
+<td>603000</td>
+<td>人民网</td>
+<td>33.33</td>
+<td>5.11</td>
+<td>1.62</td>
+<td>900203.0</td>
+<td>2.976598e+09</td>
+<td>8.83</td>
+<td>34.14</td>
+<td>...</td>
+<td>1.82</td>
+<td>8.14</td>
+<td>335.03</td>
+<td>10.77</td>
+<td>3.685268e+10</td>
+<td>3.685268e+10</td>
+<td>-0.24</td>
+<td>0.03</td>
+<td>49.53</td>
+<td>99.46</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">165</td>
+<td>166</td>
+<td>300033</td>
+<td>同花顺</td>
+<td>202.36</td>
+<td>4.36</td>
+<td>8.46</td>
+<td>151911.0</td>
+<td>3.033564e+09</td>
+<td>5.98</td>
+<td>203.60</td>
+<td>...</td>
+<td>1.56</td>
+<td>5.59</td>
+<td>118.43</td>
+<td>17.01</td>
+<td>1.087887e+11</td>
+<td>5.495009e+10</td>
+<td>0.29</td>
+<td>0.65</td>
+<td>16.46</td>
+<td>110.55</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">195</td>
+<td>196</td>
+<td>002703</td>
+<td>浙江世宝</td>
+<td>18.28</td>
+<td>4.10</td>
+<td>0.72</td>
+<td>988900.0</td>
+<td>1.768065e+09</td>
+<td>10.19</td>
+<td>18.90</td>
+<td>...</td>
+<td>1.39</td>
+<td>17.88</td>
+<td>397.86</td>
+<td>10.30</td>
+<td>1.443470e+10</td>
+<td>1.010994e+10</td>
+<td>0.33</td>
+<td>0.33</td>
+<td>131.39</td>
+<td>97.20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">200</td>
+<td>201</td>
+<td>002316</td>
+<td>亚联发展</td>
+<td>5.87</td>
+<td>4.08</td>
+<td>0.23</td>
+<td>597904.0</td>
+<td>3.513069e+08</td>
+<td>8.51</td>
+<td>6.04</td>
+<td>...</td>
+<td>1.55</td>
+<td>18.98</td>
+<td>-117.32</td>
+<td>45.51</td>
+<td>2.307614e+09</td>
+<td>1.849094e+09</td>
+<td>-0.17</td>
+<td>-0.17</td>
+<td>36.83</td>
+<td>67.24</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">216</td>
+<td>217</td>
+<td>300116</td>
+<td>保力新</td>
+<td>1.85</td>
+<td>3.93</td>
+<td>0.07</td>
+<td>3001463.0</td>
+<td>5.501457e+08</td>
+<td>8.43</td>
+<td>1.91</td>
+<td>...</td>
+<td>1.24</td>
+<td>7.31</td>
+<td>-224.78</td>
+<td>28.38</td>
+<td>8.187344e+09</td>
+<td>7.592120e+09</td>
+<td>-0.54</td>
+<td>-0.54</td>
+<td>18.59</td>
+<td>12.80</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">392</td>
+<td>393</td>
+<td>300364</td>
+<td>中文在线</td>
+<td>15.94</td>
+<td>2.91</td>
+<td>0.45</td>
+<td>359913.0</td>
+<td>5.705417e+08</td>
+<td>5.23</td>
+<td>16.18</td>
+<td>...</td>
+<td>1.78</td>
+<td>5.54</td>
+<td>-78.15</td>
+<td>10.42</td>
+<td>1.163524e+10</td>
+<td>1.036182e+10</td>
+<td>0.06</td>
+<td>-0.06</td>
+<td>-29.93</td>
+<td>60.69</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">610</td>
+<td>611</td>
+<td>300264</td>
+<td>佳创视讯</td>
+<td>6.81</td>
+<td>2.10</td>
+<td>0.14</td>
+<td>288241.0</td>
+<td>1.955477e+08</td>
+<td>3.90</td>
+<td>6.91</td>
+<td>...</td>
+<td>2.06</td>
+<td>8.09</td>
+<td>-60.95</td>
+<td>19.70</td>
+<td>2.934140e+09</td>
+<td>2.427766e+09</td>
+<td>-0.15</td>
+<td>-0.15</td>
+<td>7.24</td>
+<td>12.94</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">787</td>
+<td>788</td>
+<td>002647</td>
+<td>仁东控股</td>
+<td>6.46</td>
+<td>1.73</td>
+<td>0.11</td>
+<td>520722.0</td>
+<td>3.352200e+08</td>
+<td>4.88</td>
+<td>6.58</td>
+<td>...</td>
+<td>1.97</td>
+<td>9.30</td>
+<td>-28.71</td>
+<td>23.19</td>
+<td>3.617191e+09</td>
+<td>3.617191e+09</td>
+<td>0.00</td>
+<td>-0.31</td>
+<td>9.86</td>
+<td>-4.01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1297</td>
+<td>1298</td>
+<td>002269</td>
+<td>美邦服饰</td>
+<td>2.02</td>
+<td>1.00</td>
+<td>0.02</td>
+<td>1593140.0</td>
+<td>3.243042e+08</td>
+<td>6.50</td>
+<td>2.10</td>
+<td>...</td>
+<td>1.05</td>
+<td>6.34</td>
+<td>28.95</td>
+<td>17.46</td>
+<td>5.075250e+09</td>
+<td>5.075250e+09</td>
+<td>0.50</td>
+<td>0.00</td>
+<td>16.76</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1378</td>
+<td>1379</td>
+<td>000908</td>
+<td>景峰医药</td>
+<td>3.28</td>
+<td>0.92</td>
+<td>0.03</td>
+<td>1327803.0</td>
+<td>4.356034e+08</td>
+<td>11.69</td>
+<td>3.52</td>
+<td>...</td>
+<td>4.97</td>
+<td>16.98</td>
+<td>564.21</td>
+<td>16.13</td>
+<td>2.885660e+09</td>
+<td>2.564876e+09</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>15.49</td>
+<td>3.14</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1467</td>
+<td>1468</td>
+<td>688525</td>
+<td>佰维存储</td>
+<td>68.23</td>
+<td>0.84</td>
+<td>0.57</td>
+<td>35769.0</td>
+<td>2.428135e+08</td>
+<td>4.29</td>
+<td>69.50</td>
+<td>...</td>
+<td>1.11</td>
+<td>9.78</td>
+<td>-58.25</td>
+<td>12.79</td>
+<td>2.936136e+10</td>
+<td>2.495715e+09</td>
+<td>0.04</td>
+<td>0.59</td>
+<td>-7.86</td>
+<td>324.84</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1721</td>
+<td>1722</td>
+<td>000721</td>
+<td>西安饮食</td>
+<td>14.84</td>
+<td>0.61</td>
+<td>0.09</td>
+<td>638512.0</td>
+<td>9.559054e+08</td>
+<td>4.41</td>
+<td>15.28</td>
+<td>...</td>
+<td>1.04</td>
+<td>14.59</td>
+<td>-68.41</td>
+<td>16.80</td>
+<td>8.516888e+09</td>
+<td>6.492528e+09</td>
+<td>0.20</td>
+<td>-0.13</td>
+<td>24.60</td>
+<td>-14.22</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2056</td>
+<td>2057</td>
+<td>001337</td>
+<td>四川黄金</td>
+<td>33.65</td>
+<td>0.39</td>
+<td>0.13</td>
+<td>47121.0</td>
+<td>1.583902e+08</td>
+<td>1.67</td>
+<td>33.86</td>
+<td>...</td>
+<td>0.71</td>
+<td>7.85</td>
+<td>57.12</td>
+<td>11.68</td>
+<td>1.413300e+10</td>
+<td>2.019000e+09</td>
+<td>-0.06</td>
+<td>-0.03</td>
+<td>-10.86</td>
+<td>388.39</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3063</td>
+<td>3064</td>
+<td>002229</td>
+<td>鸿博股份</td>
+<td>37.60</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>820189.0</td>
+<td>3.127857e+09</td>
+<td>7.63</td>
+<td>39.48</td>
+<td>...</td>
+<td>1.59</td>
+<td>16.63</td>
+<td>-256.67</td>
+<td>11.84</td>
+<td>1.873774e+10</td>
+<td>1.854298e+10</td>
+<td>0.21</td>
+<td>-0.19</td>
+<td>80.86</td>
+<td>465.41</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3347</td>
+<td>3348</td>
+<td>000638</td>
+<td>万方发展</td>
+<td>6.92</td>
+<td>-0.14</td>
+<td>-0.01</td>
+<td>161058.0</td>
+<td>1.116545e+08</td>
+<td>2.31</td>
+<td>7.04</td>
+<td>...</td>
+<td>0.63</td>
+<td>5.22</td>
+<td>-145.75</td>
+<td>12.06</td>
+<td>2.145308e+09</td>
+<td>2.136720e+09</td>
+<td>0.14</td>
+<td>-0.14</td>
+<td>18.49</td>
+<td>-2.12</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4294</td>
+<td>4295</td>
+<td>301205</td>
+<td>联特科技</td>
+<td>119.71</td>
+<td>-0.70</td>
+<td>-0.84</td>
+<td>31659.0</td>
+<td>3.829029e+08</td>
+<td>2.85</td>
+<td>122.80</td>
+<td>...</td>
+<td>1.12</td>
+<td>9.76</td>
+<td>146.62</td>
+<td>10.93</td>
+<td>1.553165e+10</td>
+<td>3.882914e+09</td>
+<td>-0.23</td>
+<td>-0.41</td>
+<td>43.66</td>
+<td>471.68</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5165</td>
+<td>5166</td>
+<td>002188</td>
+<td>中天服务</td>
+<td>7.03</td>
+<td>-1.95</td>
+<td>-0.14</td>
+<td>123300.0</td>
+<td>8.737047e+07</td>
+<td>4.04</td>
+<td>7.28</td>
+<td>...</td>
+<td>0.81</td>
+<td>5.12</td>
+<td>61.35</td>
+<td>16.00</td>
+<td>2.056546e+09</td>
+<td>1.693409e+09</td>
+<td>-0.42</td>
+<td>-0.14</td>
+<td>15.82</td>
+<td>-1.82</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5320</td>
+<td>5321</td>
+<td>000980</td>
+<td>众泰汽车</td>
+<td>4.54</td>
+<td>-2.78</td>
+<td>-0.13</td>
+<td>3177677.0</td>
+<td>1.477481e+09</td>
+<td>5.57</td>
+<td>4.77</td>
+<td>...</td>
+<td>0.91</td>
+<td>7.41</td>
+<td>-30.50</td>
+<td>10.18</td>
+<td>2.289317e+10</td>
+<td>1.946503e+10</td>
+<td>0.00</td>
+<td>0.22</td>
+<td>50.33</td>
+<td>6.57</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5356</td>
+<td>5357</td>
+<td>600322</td>
+<td>天房发展</td>
+<td>2.57</td>
+<td>-3.02</td>
+<td>-0.08</td>
+<td>1192838.0</td>
+<td>3.113317e+08</td>
+<td>10.57</td>
+<td>2.80</td>
+<td>...</td>
+<td>1.19</td>
+<td>10.79</td>
+<td>-5.06</td>
+<td>52.99</td>
+<td>2.841649e+09</td>
+<td>2.841649e+09</td>
+<td>0.00</td>
+<td>0.39</td>
+<td>32.47</td>
+<td>13.72</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5482</td>
+<td>5483</td>
+<td>000890</td>
+<td>法尔胜</td>
+<td>4.97</td>
+<td>-6.93</td>
+<td>-0.37</td>
+<td>784183.0</td>
+<td>3.950609e+08</td>
+<td>5.43</td>
+<td>5.21</td>
+<td>...</td>
+<td>1.45</td>
+<td>18.69</td>
+<td>-42.15</td>
+<td>152.54</td>
+<td>2.084935e+09</td>
+<td>2.084870e+09</td>
+<td>-0.20</td>
+<td>-0.20</td>
+<td>14.78</td>
+<td>29.09</td>
+</tr>
+</tbody>
+</table>
+
+<p>25 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p><code>query</code> 也支持传入变量，使用 <code>@</code> 传入：</p>
+<div id="cell-11" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pbr <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tr <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"市净率 &gt; @pbr &amp; 换手率 &gt; @tr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3</td>
+<td>301316</td>
+<td>慧博云通</td>
+<td>35.28</td>
+<td>16.44</td>
+<td>4.98</td>
+<td>243204.0</td>
+<td>8.215963e+08</td>
+<td>15.48</td>
+<td>36.36</td>
+<td>...</td>
+<td>2.83</td>
+<td>60.79</td>
+<td>272.02</td>
+<td>14.93</td>
+<td>1.411235e+10</td>
+<td>1.411551e+09</td>
+<td>-0.93</td>
+<td>-0.62</td>
+<td>56.24</td>
+<td>84.62</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>4</td>
+<td>300803</td>
+<td>指南针</td>
+<td>72.98</td>
+<td>15.86</td>
+<td>9.99</td>
+<td>472593.0</td>
+<td>3.234342e+09</td>
+<td>16.49</td>
+<td>74.40</td>
+<td>...</td>
+<td>2.17</td>
+<td>11.71</td>
+<td>129.84</td>
+<td>16.85</td>
+<td>2.979597e+10</td>
+<td>2.944736e+10</td>
+<td>-0.44</td>
+<td>-0.14</td>
+<td>43.63</td>
+<td>59.62</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">41</td>
+<td>42</td>
+<td>300085</td>
+<td>银之杰</td>
+<td>15.15</td>
+<td>7.83</td>
+<td>1.10</td>
+<td>717622.0</td>
+<td>1.066523e+09</td>
+<td>7.97</td>
+<td>15.30</td>
+<td>...</td>
+<td>2.23</td>
+<td>13.61</td>
+<td>2190.93</td>
+<td>13.54</td>
+<td>1.070560e+10</td>
+<td>7.985455e+09</td>
+<td>1.00</td>
+<td>0.07</td>
+<td>6.32</td>
+<td>62.90</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">57</td>
+<td>58</td>
+<td>300169</td>
+<td>天晟新材</td>
+<td>9.07</td>
+<td>6.96</td>
+<td>0.59</td>
+<td>1223194.0</td>
+<td>1.075750e+09</td>
+<td>14.03</td>
+<td>9.30</td>
+<td>...</td>
+<td>2.12</td>
+<td>40.54</td>
+<td>-52.88</td>
+<td>11.54</td>
+<td>2.956678e+09</td>
+<td>2.736744e+09</td>
+<td>-0.11</td>
+<td>-1.09</td>
+<td>124.50</td>
+<td>119.61</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">73</td>
+<td>74</td>
+<td>601519</td>
+<td>大智慧</td>
+<td>9.80</td>
+<td>6.18</td>
+<td>0.57</td>
+<td>2269647.0</td>
+<td>2.135727e+09</td>
+<td>8.67</td>
+<td>9.84</td>
+<td>...</td>
+<td>1.81</td>
+<td>11.33</td>
+<td>16.23</td>
+<td>10.35</td>
+<td>1.979034e+10</td>
+<td>1.963788e+10</td>
+<td>0.10</td>
+<td>0.62</td>
+<td>23.12</td>
+<td>70.43</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">107</td>
+<td>108</td>
+<td>603000</td>
+<td>人民网</td>
+<td>33.33</td>
+<td>5.11</td>
+<td>1.62</td>
+<td>900203.0</td>
+<td>2.976598e+09</td>
+<td>8.83</td>
+<td>34.14</td>
+<td>...</td>
+<td>1.82</td>
+<td>8.14</td>
+<td>335.03</td>
+<td>10.77</td>
+<td>3.685268e+10</td>
+<td>3.685268e+10</td>
+<td>-0.24</td>
+<td>0.03</td>
+<td>49.53</td>
+<td>99.46</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">165</td>
+<td>166</td>
+<td>300033</td>
+<td>同花顺</td>
+<td>202.36</td>
+<td>4.36</td>
+<td>8.46</td>
+<td>151911.0</td>
+<td>3.033564e+09</td>
+<td>5.98</td>
+<td>203.60</td>
+<td>...</td>
+<td>1.56</td>
+<td>5.59</td>
+<td>118.43</td>
+<td>17.01</td>
+<td>1.087887e+11</td>
+<td>5.495009e+10</td>
+<td>0.29</td>
+<td>0.65</td>
+<td>16.46</td>
+<td>110.55</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">195</td>
+<td>196</td>
+<td>002703</td>
+<td>浙江世宝</td>
+<td>18.28</td>
+<td>4.10</td>
+<td>0.72</td>
+<td>988900.0</td>
+<td>1.768065e+09</td>
+<td>10.19</td>
+<td>18.90</td>
+<td>...</td>
+<td>1.39</td>
+<td>17.88</td>
+<td>397.86</td>
+<td>10.30</td>
+<td>1.443470e+10</td>
+<td>1.010994e+10</td>
+<td>0.33</td>
+<td>0.33</td>
+<td>131.39</td>
+<td>97.20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">200</td>
+<td>201</td>
+<td>002316</td>
+<td>亚联发展</td>
+<td>5.87</td>
+<td>4.08</td>
+<td>0.23</td>
+<td>597904.0</td>
+<td>3.513069e+08</td>
+<td>8.51</td>
+<td>6.04</td>
+<td>...</td>
+<td>1.55</td>
+<td>18.98</td>
+<td>-117.32</td>
+<td>45.51</td>
+<td>2.307614e+09</td>
+<td>1.849094e+09</td>
+<td>-0.17</td>
+<td>-0.17</td>
+<td>36.83</td>
+<td>67.24</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">216</td>
+<td>217</td>
+<td>300116</td>
+<td>保力新</td>
+<td>1.85</td>
+<td>3.93</td>
+<td>0.07</td>
+<td>3001463.0</td>
+<td>5.501457e+08</td>
+<td>8.43</td>
+<td>1.91</td>
+<td>...</td>
+<td>1.24</td>
+<td>7.31</td>
+<td>-224.78</td>
+<td>28.38</td>
+<td>8.187344e+09</td>
+<td>7.592120e+09</td>
+<td>-0.54</td>
+<td>-0.54</td>
+<td>18.59</td>
+<td>12.80</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">392</td>
+<td>393</td>
+<td>300364</td>
+<td>中文在线</td>
+<td>15.94</td>
+<td>2.91</td>
+<td>0.45</td>
+<td>359913.0</td>
+<td>5.705417e+08</td>
+<td>5.23</td>
+<td>16.18</td>
+<td>...</td>
+<td>1.78</td>
+<td>5.54</td>
+<td>-78.15</td>
+<td>10.42</td>
+<td>1.163524e+10</td>
+<td>1.036182e+10</td>
+<td>0.06</td>
+<td>-0.06</td>
+<td>-29.93</td>
+<td>60.69</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">610</td>
+<td>611</td>
+<td>300264</td>
+<td>佳创视讯</td>
+<td>6.81</td>
+<td>2.10</td>
+<td>0.14</td>
+<td>288241.0</td>
+<td>1.955477e+08</td>
+<td>3.90</td>
+<td>6.91</td>
+<td>...</td>
+<td>2.06</td>
+<td>8.09</td>
+<td>-60.95</td>
+<td>19.70</td>
+<td>2.934140e+09</td>
+<td>2.427766e+09</td>
+<td>-0.15</td>
+<td>-0.15</td>
+<td>7.24</td>
+<td>12.94</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">787</td>
+<td>788</td>
+<td>002647</td>
+<td>仁东控股</td>
+<td>6.46</td>
+<td>1.73</td>
+<td>0.11</td>
+<td>520722.0</td>
+<td>3.352200e+08</td>
+<td>4.88</td>
+<td>6.58</td>
+<td>...</td>
+<td>1.97</td>
+<td>9.30</td>
+<td>-28.71</td>
+<td>23.19</td>
+<td>3.617191e+09</td>
+<td>3.617191e+09</td>
+<td>0.00</td>
+<td>-0.31</td>
+<td>9.86</td>
+<td>-4.01</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1297</td>
+<td>1298</td>
+<td>002269</td>
+<td>美邦服饰</td>
+<td>2.02</td>
+<td>1.00</td>
+<td>0.02</td>
+<td>1593140.0</td>
+<td>3.243042e+08</td>
+<td>6.50</td>
+<td>2.10</td>
+<td>...</td>
+<td>1.05</td>
+<td>6.34</td>
+<td>28.95</td>
+<td>17.46</td>
+<td>5.075250e+09</td>
+<td>5.075250e+09</td>
+<td>0.50</td>
+<td>0.00</td>
+<td>16.76</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1378</td>
+<td>1379</td>
+<td>000908</td>
+<td>景峰医药</td>
+<td>3.28</td>
+<td>0.92</td>
+<td>0.03</td>
+<td>1327803.0</td>
+<td>4.356034e+08</td>
+<td>11.69</td>
+<td>3.52</td>
+<td>...</td>
+<td>4.97</td>
+<td>16.98</td>
+<td>564.21</td>
+<td>16.13</td>
+<td>2.885660e+09</td>
+<td>2.564876e+09</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>15.49</td>
+<td>3.14</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1467</td>
+<td>1468</td>
+<td>688525</td>
+<td>佰维存储</td>
+<td>68.23</td>
+<td>0.84</td>
+<td>0.57</td>
+<td>35769.0</td>
+<td>2.428135e+08</td>
+<td>4.29</td>
+<td>69.50</td>
+<td>...</td>
+<td>1.11</td>
+<td>9.78</td>
+<td>-58.25</td>
+<td>12.79</td>
+<td>2.936136e+10</td>
+<td>2.495715e+09</td>
+<td>0.04</td>
+<td>0.59</td>
+<td>-7.86</td>
+<td>324.84</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1721</td>
+<td>1722</td>
+<td>000721</td>
+<td>西安饮食</td>
+<td>14.84</td>
+<td>0.61</td>
+<td>0.09</td>
+<td>638512.0</td>
+<td>9.559054e+08</td>
+<td>4.41</td>
+<td>15.28</td>
+<td>...</td>
+<td>1.04</td>
+<td>14.59</td>
+<td>-68.41</td>
+<td>16.80</td>
+<td>8.516888e+09</td>
+<td>6.492528e+09</td>
+<td>0.20</td>
+<td>-0.13</td>
+<td>24.60</td>
+<td>-14.22</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2056</td>
+<td>2057</td>
+<td>001337</td>
+<td>四川黄金</td>
+<td>33.65</td>
+<td>0.39</td>
+<td>0.13</td>
+<td>47121.0</td>
+<td>1.583902e+08</td>
+<td>1.67</td>
+<td>33.86</td>
+<td>...</td>
+<td>0.71</td>
+<td>7.85</td>
+<td>57.12</td>
+<td>11.68</td>
+<td>1.413300e+10</td>
+<td>2.019000e+09</td>
+<td>-0.06</td>
+<td>-0.03</td>
+<td>-10.86</td>
+<td>388.39</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3063</td>
+<td>3064</td>
+<td>002229</td>
+<td>鸿博股份</td>
+<td>37.60</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>820189.0</td>
+<td>3.127857e+09</td>
+<td>7.63</td>
+<td>39.48</td>
+<td>...</td>
+<td>1.59</td>
+<td>16.63</td>
+<td>-256.67</td>
+<td>11.84</td>
+<td>1.873774e+10</td>
+<td>1.854298e+10</td>
+<td>0.21</td>
+<td>-0.19</td>
+<td>80.86</td>
+<td>465.41</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3347</td>
+<td>3348</td>
+<td>000638</td>
+<td>万方发展</td>
+<td>6.92</td>
+<td>-0.14</td>
+<td>-0.01</td>
+<td>161058.0</td>
+<td>1.116545e+08</td>
+<td>2.31</td>
+<td>7.04</td>
+<td>...</td>
+<td>0.63</td>
+<td>5.22</td>
+<td>-145.75</td>
+<td>12.06</td>
+<td>2.145308e+09</td>
+<td>2.136720e+09</td>
+<td>0.14</td>
+<td>-0.14</td>
+<td>18.49</td>
+<td>-2.12</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4294</td>
+<td>4295</td>
+<td>301205</td>
+<td>联特科技</td>
+<td>119.71</td>
+<td>-0.70</td>
+<td>-0.84</td>
+<td>31659.0</td>
+<td>3.829029e+08</td>
+<td>2.85</td>
+<td>122.80</td>
+<td>...</td>
+<td>1.12</td>
+<td>9.76</td>
+<td>146.62</td>
+<td>10.93</td>
+<td>1.553165e+10</td>
+<td>3.882914e+09</td>
+<td>-0.23</td>
+<td>-0.41</td>
+<td>43.66</td>
+<td>471.68</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5165</td>
+<td>5166</td>
+<td>002188</td>
+<td>中天服务</td>
+<td>7.03</td>
+<td>-1.95</td>
+<td>-0.14</td>
+<td>123300.0</td>
+<td>8.737047e+07</td>
+<td>4.04</td>
+<td>7.28</td>
+<td>...</td>
+<td>0.81</td>
+<td>5.12</td>
+<td>61.35</td>
+<td>16.00</td>
+<td>2.056546e+09</td>
+<td>1.693409e+09</td>
+<td>-0.42</td>
+<td>-0.14</td>
+<td>15.82</td>
+<td>-1.82</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5320</td>
+<td>5321</td>
+<td>000980</td>
+<td>众泰汽车</td>
+<td>4.54</td>
+<td>-2.78</td>
+<td>-0.13</td>
+<td>3177677.0</td>
+<td>1.477481e+09</td>
+<td>5.57</td>
+<td>4.77</td>
+<td>...</td>
+<td>0.91</td>
+<td>7.41</td>
+<td>-30.50</td>
+<td>10.18</td>
+<td>2.289317e+10</td>
+<td>1.946503e+10</td>
+<td>0.00</td>
+<td>0.22</td>
+<td>50.33</td>
+<td>6.57</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5356</td>
+<td>5357</td>
+<td>600322</td>
+<td>天房发展</td>
+<td>2.57</td>
+<td>-3.02</td>
+<td>-0.08</td>
+<td>1192838.0</td>
+<td>3.113317e+08</td>
+<td>10.57</td>
+<td>2.80</td>
+<td>...</td>
+<td>1.19</td>
+<td>10.79</td>
+<td>-5.06</td>
+<td>52.99</td>
+<td>2.841649e+09</td>
+<td>2.841649e+09</td>
+<td>0.00</td>
+<td>0.39</td>
+<td>32.47</td>
+<td>13.72</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5482</td>
+<td>5483</td>
+<td>000890</td>
+<td>法尔胜</td>
+<td>4.97</td>
+<td>-6.93</td>
+<td>-0.37</td>
+<td>784183.0</td>
+<td>3.950609e+08</td>
+<td>5.43</td>
+<td>5.21</td>
+<td>...</td>
+<td>1.45</td>
+<td>18.69</td>
+<td>-42.15</td>
+<td>152.54</td>
+<td>2.084935e+09</td>
+<td>2.084870e+09</td>
+<td>-0.20</td>
+<td>-0.20</td>
+<td>14.78</td>
+<td>29.09</td>
+</tr>
+</tbody>
+</table>
+
+<p>25 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p>需要注意的是，对于非有效的 Python 变量名，可以用反引号（``）来使用。比如，如果查询列名为 Python 关键字，列名以数字开头等等：</p>
+<div id="cell-13" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"`5分钟涨跌` &gt; 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21</td>
+<td>22</td>
+<td>002670</td>
+<td>国盛金控</td>
+<td>10.87</td>
+<td>10.02</td>
+<td>0.99</td>
+<td>1185508.0</td>
+<td>1.220417e+09</td>
+<td>9.82</td>
+<td>10.87</td>
+<td>...</td>
+<td>2.43</td>
+<td>7.30</td>
+<td>116.41</td>
+<td>1.91</td>
+<td>2.103437e+10</td>
+<td>1.764582e+10</td>
+<td>0.93</td>
+<td>2.74</td>
+<td>31.44</td>
+<td>46.69</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">173</td>
+<td>174</td>
+<td>000609</td>
+<td>中迪投资</td>
+<td>6.05</td>
+<td>4.31</td>
+<td>0.25</td>
+<td>355969.0</td>
+<td>2.107389e+08</td>
+<td>7.59</td>
+<td>6.19</td>
+<td>...</td>
+<td>1.20</td>
+<td>12.19</td>
+<td>-17.65</td>
+<td>3.31</td>
+<td>1.810556e+09</td>
+<td>1.767139e+09</td>
+<td>3.07</td>
+<td>3.07</td>
+<td>27.37</td>
+<td>-6.92</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">273</td>
+<td>274</td>
+<td>001227</td>
+<td>兰州银行</td>
+<td>3.29</td>
+<td>3.46</td>
+<td>0.11</td>
+<td>2066487.0</td>
+<td>6.604521e+08</td>
+<td>6.92</td>
+<td>3.34</td>
+<td>...</td>
+<td>1.60</td>
+<td>7.47</td>
+<td>9.74</td>
+<td>0.58</td>
+<td>1.873884e+10</td>
+<td>9.107180e+09</td>
+<td>0.61</td>
+<td>3.13</td>
+<td>9.30</td>
+<td>-9.86</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">669</td>
+<td>670</td>
+<td>603536</td>
+<td>惠发食品</td>
+<td>9.88</td>
+<td>1.96</td>
+<td>0.19</td>
+<td>426145.0</td>
+<td>4.303417e+08</td>
+<td>11.46</td>
+<td>10.66</td>
+<td>...</td>
+<td>6.82</td>
+<td>17.42</td>
+<td>-36.52</td>
+<td>5.05</td>
+<td>2.417066e+09</td>
+<td>2.417066e+09</td>
+<td>0.71</td>
+<td>2.60</td>
+<td>52.94</td>
+<td>23.81</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2123</td>
+<td>2124</td>
+<td>301505</td>
+<td>苏州规划</td>
+<td>68.62</td>
+<td>0.35</td>
+<td>0.24</td>
+<td>74915.0</td>
+<td>5.152134e+08</td>
+<td>10.92</td>
+<td>72.58</td>
+<td>...</td>
+<td>1.04</td>
+<td>38.00</td>
+<td>387.25</td>
+<td>6.27</td>
+<td>6.038560e+09</td>
+<td>1.352884e+09</td>
+<td>0.18</td>
+<td>3.09</td>
+<td>160.42</td>
+<td>160.42</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p>此外，根据官方文档，DataFrame 实例的 <code>DataFrame.index</code> 和 <code>DataFrame.columns</code> 属性也被放置在查询命名空间中，因此我们可以把表的索引当作列进行查询。如果索引命名了，可以使用索引的名称在查询中标识它，如果没有命名可以使用 <code>index</code>。比如，我们查询 data 数据集中索引为 0 的数据：</p>
+<div id="cell-15" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data.index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>RangeIndex(start=0, stop=5491, step=1)</code></pre>
+</div>
+</div>
+<div id="cell-16" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"index == 0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>301299</td>
+<td>卓创资讯</td>
+<td>73.8</td>
+<td>20.0</td>
+<td>12.3</td>
+<td>68867.0</td>
+<td>4.661717e+08</td>
+<td>21.89</td>
+<td>73.8</td>
+<td>...</td>
+<td>3.59</td>
+<td>45.91</td>
+<td>65.23</td>
+<td>6.69</td>
+<td>4.428000e+09</td>
+<td>1.107000e+09</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>42.88</td>
+<td>50.31</td>
+</tr>
+</tbody>
+</table>
+
+<p>1 rows × 23 columns</p>
+</div>
+</div>
+</div>
+<p>列名的命名空间下的方法也可以在查询字符串中使用。比如，我们查询股票名称中包含银行的股票：</p>
+<div id="cell-18" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"@data.名称.str.contains('银行')"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">序号</th>
+<th data-quarto-table-cell-role="th">代码</th>
+<th data-quarto-table-cell-role="th">名称</th>
+<th data-quarto-table-cell-role="th">最新价</th>
+<th data-quarto-table-cell-role="th">涨跌幅</th>
+<th data-quarto-table-cell-role="th">涨跌额</th>
+<th data-quarto-table-cell-role="th">成交量</th>
+<th data-quarto-table-cell-role="th">成交额</th>
+<th data-quarto-table-cell-role="th">振幅</th>
+<th data-quarto-table-cell-role="th">最高</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">量比</th>
+<th data-quarto-table-cell-role="th">换手率</th>
+<th data-quarto-table-cell-role="th">市盈率-动态</th>
+<th data-quarto-table-cell-role="th">市净率</th>
+<th data-quarto-table-cell-role="th">总市值</th>
+<th data-quarto-table-cell-role="th">流通市值</th>
+<th data-quarto-table-cell-role="th">涨速</th>
+<th data-quarto-table-cell-role="th">5分钟涨跌</th>
+<th data-quarto-table-cell-role="th">60日涨跌幅</th>
+<th data-quarto-table-cell-role="th">年初至今涨跌幅</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">140</td>
+<td>141</td>
+<td>601528</td>
+<td>瑞丰银行</td>
+<td>6.12</td>
+<td>4.62</td>
+<td>0.27</td>
+<td>473989.0</td>
+<td>2.803784e+08</td>
+<td>6.84</td>
+<td>6.16</td>
+<td>...</td>
+<td>1.93</td>
+<td>6.01</td>
+<td>8.22</td>
+<td>0.77</td>
+<td>1.200843e+10</td>
+<td>4.828292e+09</td>
+<td>0.00</td>
+<td>0.82</td>
+<td>6.07</td>
+<td>29.11</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">273</td>
+<td>274</td>
+<td>001227</td>
+<td>兰州银行</td>
+<td>3.29</td>
+<td>3.46</td>
+<td>0.11</td>
+<td>2066487.0</td>
+<td>6.604521e+08</td>
+<td>6.92</td>
+<td>3.34</td>
+<td>...</td>
+<td>1.60</td>
+<td>7.47</td>
+<td>9.74</td>
+<td>0.58</td>
+<td>1.873884e+10</td>
+<td>9.107180e+09</td>
+<td>0.61</td>
+<td>3.13</td>
+<td>9.30</td>
+<td>-9.86</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">533</td>
+<td>534</td>
+<td>601577</td>
+<td>长沙银行</td>
+<td>8.40</td>
+<td>2.31</td>
+<td>0.19</td>
+<td>126677.0</td>
+<td>1.058156e+08</td>
+<td>2.56</td>
+<td>8.43</td>
+<td>...</td>
+<td>1.69</td>
+<td>0.61</td>
+<td>4.27</td>
+<td>0.62</td>
+<td>3.378105e+10</td>
+<td>1.736789e+10</td>
+<td>0.24</td>
+<td>0.12</td>
+<td>6.87</td>
+<td>31.05</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">642</td>
+<td>643</td>
+<td>601860</td>
+<td>紫金银行</td>
+<td>3.04</td>
+<td>2.01</td>
+<td>0.06</td>
+<td>1491979.0</td>
+<td>4.473756e+08</td>
+<td>3.36</td>
+<td>3.06</td>
+<td>...</td>
+<td>0.82</td>
+<td>4.25</td>
+<td>7.23</td>
+<td>0.66</td>
+<td>1.112937e+10</td>
+<td>1.066369e+10</td>
+<td>0.66</td>
+<td>1.00</td>
+<td>13.01</td>
+<td>22.09</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">754</td>
+<td>755</td>
+<td>601658</td>
+<td>邮储银行</td>
+<td>5.07</td>
+<td>1.81</td>
+<td>0.09</td>
+<td>1068495.0</td>
+<td>5.420461e+08</td>
+<td>2.41</td>
+<td>5.13</td>
+<td>...</td>
+<td>1.09</td>
+<td>0.16</td>
+<td>4.78</td>
+<td>0.69</td>
+<td>5.027467e+11</td>
+<td>3.403105e+11</td>
+<td>0.20</td>
+<td>0.40</td>
+<td>-1.17</td>
+<td>16.28</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1002</td>
+<td>1003</td>
+<td>601998</td>
+<td>中信银行</td>
+<td>5.95</td>
+<td>1.36</td>
+<td>0.08</td>
+<td>328951.0</td>
+<td>1.952749e+08</td>
+<td>2.21</td>
+<td>6.01</td>
+<td>...</td>
+<td>0.80</td>
+<td>0.10</td>
+<td>3.80</td>
+<td>0.52</td>
+<td>2.913528e+11</td>
+<td>2.028040e+11</td>
+<td>0.34</td>
+<td>0.34</td>
+<td>-16.32</td>
+<td>27.96</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1006</td>
+<td>1007</td>
+<td>600036</td>
+<td>招商银行</td>
+<td>35.15</td>
+<td>1.36</td>
+<td>0.47</td>
+<td>559887.0</td>
+<td>1.967354e+09</td>
+<td>2.25</td>
+<td>35.50</td>
+<td>...</td>
+<td>1.02</td>
+<td>0.27</td>
+<td>5.71</td>
+<td>1.07</td>
+<td>8.864776e+11</td>
+<td>7.251074e+11</td>
+<td>0.34</td>
+<td>0.26</td>
+<td>7.62</td>
+<td>-1.04</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1219</td>
+<td>1220</td>
+<td>601916</td>
+<td>浙商银行</td>
+<td>2.78</td>
+<td>1.09</td>
+<td>0.03</td>
+<td>1486583.0</td>
+<td>4.107013e+08</td>
+<td>1.45</td>
+<td>2.78</td>
+<td>...</td>
+<td>1.02</td>
+<td>0.69</td>
+<td>3.39</td>
+<td>0.51</td>
+<td>7.635169e+10</td>
+<td>5.989353e+10</td>
+<td>0.72</td>
+<td>0.72</td>
+<td>-1.42</td>
+<td>8.17</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1223</td>
+<td>1224</td>
+<td>603323</td>
+<td>苏农银行</td>
+<td>4.65</td>
+<td>1.09</td>
+<td>0.05</td>
+<td>183906.0</td>
+<td>8.525758e+07</td>
+<td>1.30</td>
+<td>4.66</td>
+<td>...</td>
+<td>0.88</td>
+<td>1.19</td>
+<td>5.86</td>
+<td>0.59</td>
+<td>8.384290e+09</td>
+<td>7.178346e+09</td>
+<td>0.22</td>
+<td>0.22</td>
+<td>-0.85</td>
+<td>2.88</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1291</td>
+<td>1292</td>
+<td>600928</td>
+<td>西安银行</td>
+<td>4.01</td>
+<td>1.01</td>
+<td>0.04</td>
+<td>446377.0</td>
+<td>1.771269e+08</td>
+<td>2.77</td>
+<td>4.03</td>
+<td>...</td>
+<td>1.08</td>
+<td>1.32</td>
+<td>6.77</td>
+<td>0.61</td>
+<td>1.782222e+10</td>
+<td>1.354336e+10</td>
+<td>0.75</td>
+<td>1.01</td>
+<td>-12.64</td>
+<td>19.35</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1298</td>
+<td>1299</td>
+<td>002807</td>
+<td>江阴银行</td>
+<td>4.05</td>
+<td>1.00</td>
+<td>0.04</td>
+<td>234650.0</td>
+<td>9.476750e+07</td>
+<td>1.50</td>
+<td>4.07</td>
+<td>...</td>
+<td>0.93</td>
+<td>1.08</td>
+<td>7.09</td>
+<td>0.62</td>
+<td>8.796812e+09</td>
+<td>8.785079e+09</td>
+<td>0.00</td>
+<td>0.25</td>
+<td>2.53</td>
+<td>6.86</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1320</td>
+<td>1321</td>
+<td>002966</td>
+<td>苏州银行</td>
+<td>7.23</td>
+<td>0.98</td>
+<td>0.07</td>
+<td>254350.0</td>
+<td>1.842539e+08</td>
+<td>1.40</td>
+<td>7.28</td>
+<td>...</td>
+<td>1.67</td>
+<td>0.71</td>
+<td>5.11</td>
+<td>0.75</td>
+<td>2.651050e+10</td>
+<td>2.576672e+10</td>
+<td>0.00</td>
+<td>0.28</td>
+<td>0.84</td>
+<td>-2.95</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1330</td>
+<td>1331</td>
+<td>601128</td>
+<td>常熟银行</td>
+<td>7.28</td>
+<td>0.97</td>
+<td>0.07</td>
+<td>137774.0</td>
+<td>9.975656e+07</td>
+<td>1.39</td>
+<td>7.29</td>
+<td>...</td>
+<td>0.71</td>
+<td>0.52</td>
+<td>6.28</td>
+<td>0.91</td>
+<td>1.995362e+10</td>
+<td>1.924374e+10</td>
+<td>0.14</td>
+<td>0.14</td>
+<td>0.55</td>
+<td>-0.27</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1333</td>
+<td>1334</td>
+<td>601665</td>
+<td>齐鲁银行</td>
+<td>4.18</td>
+<td>0.97</td>
+<td>0.04</td>
+<td>192115.0</td>
+<td>8.002992e+07</td>
+<td>1.21</td>
+<td>4.19</td>
+<td>...</td>
+<td>0.99</td>
+<td>0.83</td>
+<td>4.71</td>
+<td>0.66</td>
+<td>1.914836e+10</td>
+<td>9.696622e+09</td>
+<td>0.24</td>
+<td>0.24</td>
+<td>0.97</td>
+<td>5.03</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1335</td>
+<td>1336</td>
+<td>601818</td>
+<td>光大银行</td>
+<td>3.14</td>
+<td>0.96</td>
+<td>0.03</td>
+<td>948768.0</td>
+<td>2.970643e+08</td>
+<td>1.29</td>
+<td>3.15</td>
+<td>...</td>
+<td>1.07</td>
+<td>0.20</td>
+<td>3.75</td>
+<td>0.44</td>
+<td>1.855286e+11</td>
+<td>1.457174e+11</td>
+<td>0.32</td>
+<td>0.32</td>
+<td>-2.48</td>
+<td>9.03</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1409</td>
+<td>1410</td>
+<td>002142</td>
+<td>宁波银行</td>
+<td>28.36</td>
+<td>0.89</td>
+<td>0.25</td>
+<td>350928.0</td>
+<td>1.004189e+09</td>
+<td>3.77</td>
+<td>29.09</td>
+<td>...</td>
+<td>0.98</td>
+<td>0.54</td>
+<td>7.10</td>
+<td>1.20</td>
+<td>1.872778e+11</td>
+<td>1.850048e+11</td>
+<td>0.14</td>
+<td>0.28</td>
+<td>5.66</td>
+<td>-11.24</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1435</td>
+<td>1436</td>
+<td>601997</td>
+<td>贵阳银行</td>
+<td>5.78</td>
+<td>0.87</td>
+<td>0.05</td>
+<td>266014.0</td>
+<td>1.533668e+08</td>
+<td>1.22</td>
+<td>5.80</td>
+<td>...</td>
+<td>0.96</td>
+<td>0.75</td>
+<td>3.29</td>
+<td>0.40</td>
+<td>2.113282e+10</td>
+<td>2.062897e+10</td>
+<td>0.52</td>
+<td>0.52</td>
+<td>1.40</td>
+<td>11.37</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1458</td>
+<td>1459</td>
+<td>601166</td>
+<td>兴业银行</td>
+<td>16.65</td>
+<td>0.85</td>
+<td>0.14</td>
+<td>432148.0</td>
+<td>7.205170e+08</td>
+<td>1.70</td>
+<td>16.80</td>
+<td>...</td>
+<td>0.94</td>
+<td>0.21</td>
+<td>3.44</td>
+<td>0.53</td>
+<td>3.458918e+11</td>
+<td>3.458918e+11</td>
+<td>0.12</td>
+<td>0.12</td>
+<td>3.29</td>
+<td>1.52</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1465</td>
+<td>1466</td>
+<td>002936</td>
+<td>郑州银行</td>
+<td>2.39</td>
+<td>0.84</td>
+<td>0.02</td>
+<td>896346.0</td>
+<td>2.139654e+08</td>
+<td>2.95</td>
+<td>2.42</td>
+<td>...</td>
+<td>0.93</td>
+<td>1.34</td>
+<td>4.57</td>
+<td>0.52</td>
+<td>2.173010e+10</td>
+<td>1.599653e+10</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>7.17</td>
+<td>11.68</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1609</td>
+<td>1610</td>
+<td>600908</td>
+<td>无锡银行</td>
+<td>5.69</td>
+<td>0.71</td>
+<td>0.04</td>
+<td>93411.0</td>
+<td>5.296709e+07</td>
+<td>1.42</td>
+<td>5.71</td>
+<td>...</td>
+<td>0.77</td>
+<td>0.50</td>
+<td>5.59</td>
+<td>0.72</td>
+<td>1.223984e+10</td>
+<td>1.062139e+10</td>
+<td>0.35</td>
+<td>0.35</td>
+<td>2.34</td>
+<td>12.23</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1616</td>
+<td>1617</td>
+<td>601187</td>
+<td>厦门银行</td>
+<td>5.76</td>
+<td>0.70</td>
+<td>0.04</td>
+<td>107438.0</td>
+<td>6.153116e+07</td>
+<td>2.45</td>
+<td>5.81</td>
+<td>...</td>
+<td>0.67</td>
+<td>0.90</td>
+<td>5.27</td>
+<td>0.70</td>
+<td>1.520138e+10</td>
+<td>6.861415e+09</td>
+<td>0.35</td>
+<td>0.35</td>
+<td>3.23</td>
+<td>5.88</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1628</td>
+<td>1629</td>
+<td>600015</td>
+<td>华夏银行</td>
+<td>5.82</td>
+<td>0.69</td>
+<td>0.04</td>
+<td>169188.0</td>
+<td>9.833719e+07</td>
+<td>1.56</td>
+<td>5.86</td>
+<td>...</td>
+<td>0.83</td>
+<td>0.13</td>
+<td>3.96</td>
+<td>0.36</td>
+<td>9.262488e+10</td>
+<td>7.462804e+10</td>
+<td>0.17</td>
+<td>0.34</td>
+<td>2.11</td>
+<td>21.00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1656</td>
+<td>1657</td>
+<td>600000</td>
+<td>浦发银行</td>
+<td>7.61</td>
+<td>0.66</td>
+<td>0.05</td>
+<td>246799.0</td>
+<td>1.875023e+08</td>
+<td>1.46</td>
+<td>7.65</td>
+<td>...</td>
+<td>1.00</td>
+<td>0.08</td>
+<td>3.53</td>
+<td>0.38</td>
+<td>2.233701e+11</td>
+<td>2.233701e+11</td>
+<td>0.13</td>
+<td>0.00</td>
+<td>3.12</td>
+<td>9.34</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1763</td>
+<td>1764</td>
+<td>601009</td>
+<td>南京银行</td>
+<td>8.63</td>
+<td>0.58</td>
+<td>0.05</td>
+<td>146409.0</td>
+<td>1.261561e+08</td>
+<td>1.28</td>
+<td>8.66</td>
+<td>...</td>
+<td>1.04</td>
+<td>0.16</td>
+<td>4.11</td>
+<td>0.72</td>
+<td>8.926642e+10</td>
+<td>7.950495e+10</td>
+<td>0.00</td>
+<td>0.12</td>
+<td>-1.15</td>
+<td>-12.74</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1779</td>
+<td>1780</td>
+<td>002948</td>
+<td>青岛银行</td>
+<td>3.51</td>
+<td>0.57</td>
+<td>0.02</td>
+<td>188059.0</td>
+<td>6.581560e+07</td>
+<td>1.43</td>
+<td>3.52</td>
+<td>...</td>
+<td>0.84</td>
+<td>0.60</td>
+<td>5.61</td>
+<td>0.69</td>
+<td>2.042945e+10</td>
+<td>1.091510e+10</td>
+<td>0.29</td>
+<td>0.29</td>
+<td>4.46</td>
+<td>9.69</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1784</td>
+<td>1785</td>
+<td>601288</td>
+<td>农业银行</td>
+<td>3.57</td>
+<td>0.56</td>
+<td>0.02</td>
+<td>2066464.0</td>
+<td>7.379460e+08</td>
+<td>1.41</td>
+<td>3.60</td>
+<td>...</td>
+<td>0.94</td>
+<td>0.06</td>
+<td>4.37</td>
+<td>0.56</td>
+<td>1.249439e+12</td>
+<td>1.139702e+12</td>
+<td>0.28</td>
+<td>0.28</td>
+<td>5.31</td>
+<td>32.71</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1873</td>
+<td>1874</td>
+<td>600016</td>
+<td>民生银行</td>
+<td>4.02</td>
+<td>0.50</td>
+<td>0.02</td>
+<td>758438.0</td>
+<td>3.045515e+08</td>
+<td>1.50</td>
+<td>4.04</td>
+<td>...</td>
+<td>1.29</td>
+<td>0.21</td>
+<td>3.09</td>
+<td>0.34</td>
+<td>1.760053e+11</td>
+<td>1.425577e+11</td>
+<td>0.50</td>
+<td>0.50</td>
+<td>1.26</td>
+<td>24.07</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1881</td>
+<td>1882</td>
+<td>601939</td>
+<td>建设银行</td>
+<td>6.06</td>
+<td>0.50</td>
+<td>0.03</td>
+<td>616958.0</td>
+<td>3.739653e+08</td>
+<td>1.49</td>
+<td>6.11</td>
+<td>...</td>
+<td>1.04</td>
+<td>0.64</td>
+<td>4.27</td>
+<td>0.54</td>
+<td>1.515067e+12</td>
+<td>5.813757e+10</td>
+<td>0.17</td>
+<td>0.00</td>
+<td>-2.73</td>
+<td>15.65</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1897</td>
+<td>1898</td>
+<td>601229</td>
+<td>上海银行</td>
+<td>6.19</td>
+<td>0.49</td>
+<td>0.03</td>
+<td>185581.0</td>
+<td>1.146588e+08</td>
+<td>0.97</td>
+<td>6.20</td>
+<td>...</td>
+<td>0.90</td>
+<td>0.13</td>
+<td>3.64</td>
+<td>0.44</td>
+<td>8.793927e+10</td>
+<td>8.571674e+10</td>
+<td>0.00</td>
+<td>0.16</td>
+<td>3.51</td>
+<td>12.34</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1901</td>
+<td>1902</td>
+<td>601963</td>
+<td>重庆银行</td>
+<td>8.32</td>
+<td>0.48</td>
+<td>0.04</td>
+<td>31049.0</td>
+<td>2.578411e+07</td>
+<td>1.21</td>
+<td>8.35</td>
+<td>...</td>
+<td>0.94</td>
+<td>0.45</td>
+<td>4.88</td>
+<td>0.64</td>
+<td>2.890833e+10</td>
+<td>5.752542e+09</td>
+<td>0.12</td>
+<td>0.36</td>
+<td>7.08</td>
+<td>30.20</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1982</td>
+<td>1983</td>
+<td>601169</td>
+<td>北京银行</td>
+<td>4.66</td>
+<td>0.43</td>
+<td>0.02</td>
+<td>368826.0</td>
+<td>1.717469e+08</td>
+<td>1.08</td>
+<td>4.68</td>
+<td>...</td>
+<td>0.99</td>
+<td>0.17</td>
+<td>3.29</td>
+<td>0.42</td>
+<td>9.852631e+10</td>
+<td>9.852631e+10</td>
+<td>0.22</td>
+<td>0.22</td>
+<td>4.25</td>
+<td>16.50</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2028</td>
+<td>2029</td>
+<td>000001</td>
+<td>平安银行</td>
+<td>12.38</td>
+<td>0.41</td>
+<td>0.05</td>
+<td>894323.0</td>
+<td>1.106321e+09</td>
+<td>2.60</td>
+<td>12.53</td>
+<td>...</td>
+<td>0.99</td>
+<td>0.46</td>
+<td>4.11</td>
+<td>0.65</td>
+<td>2.402453e+11</td>
+<td>2.402407e+11</td>
+<td>0.16</td>
+<td>0.24</td>
+<td>-1.43</td>
+<td>-3.88</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2276</td>
+<td>2277</td>
+<td>601988</td>
+<td>中国银行</td>
+<td>3.88</td>
+<td>0.26</td>
+<td>0.01</td>
+<td>1194744.0</td>
+<td>4.630856e+08</td>
+<td>1.55</td>
+<td>3.91</td>
+<td>...</td>
+<td>0.93</td>
+<td>0.06</td>
+<td>4.95</td>
+<td>0.55</td>
+<td>1.142225e+12</td>
+<td>8.177702e+11</td>
+<td>0.52</td>
+<td>0.26</td>
+<td>-4.90</td>
+<td>32.42</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2351</td>
+<td>2352</td>
+<td>601398</td>
+<td>工商银行</td>
+<td>4.73</td>
+<td>0.21</td>
+<td>0.01</td>
+<td>1482475.0</td>
+<td>7.027839e+08</td>
+<td>1.69</td>
+<td>4.78</td>
+<td>...</td>
+<td>0.98</td>
+<td>0.05</td>
+<td>4.67</td>
+<td>0.54</td>
+<td>1.685802e+12</td>
+<td>1.275266e+12</td>
+<td>0.21</td>
+<td>0.21</td>
+<td>0.00</td>
+<td>17.08</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2426</td>
+<td>2427</td>
+<td>601328</td>
+<td>交通银行</td>
+<td>5.72</td>
+<td>0.18</td>
+<td>0.01</td>
+<td>625151.0</td>
+<td>3.581830e+08</td>
+<td>1.58</td>
+<td>5.78</td>
+<td>...</td>
+<td>0.96</td>
+<td>0.16</td>
+<td>4.31</td>
+<td>0.50</td>
+<td>4.247828e+11</td>
+<td>2.245149e+11</td>
+<td>0.18</td>
+<td>0.18</td>
+<td>2.88</td>
+<td>30.89</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2496</td>
+<td>2497</td>
+<td>600919</td>
+<td>江苏银行</td>
+<td>7.26</td>
+<td>0.14</td>
+<td>0.01</td>
+<td>1205236.0</td>
+<td>8.765527e+08</td>
+<td>1.38</td>
+<td>7.32</td>
+<td>...</td>
+<td>1.19</td>
+<td>0.78</td>
+<td>3.31</td>
+<td>0.50</td>
+<td>1.126687e+11</td>
+<td>1.120762e+11</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>1.97</td>
+<td>6.76</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2580</td>
+<td>2581</td>
+<td>600926</td>
+<td>杭州银行</td>
+<td>12.07</td>
+<td>0.08</td>
+<td>0.01</td>
+<td>169713.0</td>
+<td>2.048641e+08</td>
+<td>2.40</td>
+<td>12.23</td>
+<td>...</td>
+<td>1.12</td>
+<td>0.32</td>
+<td>4.22</td>
+<td>0.87</td>
+<td>7.157853e+10</td>
+<td>6.472832e+10</td>
+<td>0.42</td>
+<td>0.58</td>
+<td>-1.55</td>
+<td>-4.81</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3346</td>
+<td>3347</td>
+<td>601838</td>
+<td>成都银行</td>
+<td>13.84</td>
+<td>-0.14</td>
+<td>-0.02</td>
+<td>173413.0</td>
+<td>2.414914e+08</td>
+<td>2.60</td>
+<td>14.10</td>
+<td>...</td>
+<td>0.74</td>
+<td>0.46</td>
+<td>5.22</td>
+<td>0.97</td>
+<td>5.278453e+10</td>
+<td>5.267222e+10</td>
+<td>0.14</td>
+<td>0.22</td>
+<td>8.72</td>
+<td>-4.75</td>
+</tr>
+</tbody>
+</table>
+
+<p>38 rows × 23 columns</p>
+</div>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2024, 球形汤姆</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Powered by Quarto!</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

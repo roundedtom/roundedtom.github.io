@@ -1,0 +1,410 @@
+{
+  "index.qmd": {
+    "index.html": "c6e39f23"
+  },
+  "about.qmd": {
+    "about.html": "2a141065"
+  },
+  "targets.qmd": {
+    "targets.html": "fd1849f5"
+  },
+  "talks.qmd": {
+    "talks.html": "0084dd6d"
+  },
+  "posts.qmd": {
+    "posts.html": "0ebf24a9"
+  },
+  "posts/一键计算CAR/一键计算CAR.ipynb": {
+    "一键计算CAR.html": "98b86792"
+  },
+  "posts/WSL2+OhMyZsh+VSCode开发环境搭建/WSL2+OhMyZsh+VSCode开发环境搭建.md": {
+    "WSL2+OhMyZsh+VSCode开发环境搭建.html": "a2546513"
+  },
+  "posts/爬虫踩坑-ConnectionResetError（10054）/爬虫踩坑-ConnectionResetError（10054）.ipynb": {
+    "爬虫踩坑-ConnectionResetError（10054）.html": "a4be8a07"
+  },
+  "posts/matplotlib科研绘图笔记/matplotlib科研绘图笔记.ipynb": {
+    "matplotlib科研绘图笔记.html": "78be85a4"
+  },
+  "posts/手把手教你做事件研究-数据清洗Part1/手把手教你做事件研究-数据清洗Part1.ipynb": {
+    "手把手教你做事件研究-数据清洗Part1.html": "6aebb4ee"
+  },
+  "posts/三门问题/三门问题.md": {
+    "三门问题.html": "6e2c3729"
+  },
+  "posts/在-Pandas-中如何实现复杂的筛选/在 Pandas 中如何实现复杂的筛选.ipynb": {
+    "在 Pandas 中如何实现复杂的筛选.html": "c9cb387b"
+  },
+  "posts/手把手教你做事件研究-数据清洗Part2/手把手教你做事件研究-数据清洗Part2.ipynb": {
+    "手把手教你做事件研究-数据清洗Part2.html": "b5233ad6"
+  },
+  "posts/quarto-notes/quarto-notes.ipynb": {
+    "quarto-notes.html": "79e34198"
+  },
+  "posts/Ubuntu-18/Ubuntu 18.04 安装与配置.md": {
+    "Ubuntu 18.04 安装与配置.html": "85570555"
+  },
+  "posts/独立均值独立与线性不相关/独立均值独立与线性不相关.ipynb": {
+    "独立均值独立与线性不相关.html": "5a183c42"
+  },
+  "posts/Pandas-Tips：使用-query-实现优雅的查询/Pandas Tips：使用 query 实现优雅的查询.ipynb": {
+    "Pandas Tips：使用 query 实现优雅的查询.html": "e0500ef5"
+  },
+  "posts/Plotting-with-Pandas/Plotting with Pandas.ipynb": {
+    "Plotting with Pandas.html": "54dddb92"
+  },
+  "posts/seaborn-notes/seaborn-notes.ipynb": {
+    "seaborn-notes.html": "2754686a"
+  },
+  "posts/Pygraphviz安装记录/Pygraphviz安装记录.ipynb": {
+    "Pygraphviz安装记录.html": "1139aa7c"
+  },
+  "posts/Pandas-Tips：使用merge实现关系型合并/Pandas Tips：使用merge实现关系型合并.ipynb": {
+    "Pandas Tips：使用merge实现关系型合并.html": "0e719e4c"
+  },
+  "posts/决策树/decision-tree.ipynb": {
+    "decision-tree.html": "ef3a17f4"
+  },
+  "posts/Numpy-notes-Python-data-analysis/Numpy notes-Python data analysis.ipynb": {
+    "Numpy notes-Python data analysis.html": "9b2cb02a"
+  },
+  "posts/Blog-with-Nikola-and-WSL2/Blog with Nikola and WSL2.md": {
+    "Blog with Nikola and WSL2.html": "c0e019c6"
+  },
+  "posts/matplotlib-plotting-workflow/matplotlib 绘图工作流.ipynb": {
+    "matplotlib 绘图工作流.html": "501423a6"
+  },
+  "posts/Pandas-Tips：使用groupby/pandas-group.ipynb": {
+    "pandas-group.html": "115bbeed"
+  },
+  "posts/See-Theory/See Theory.md": {
+    "See Theory.html": "a393aeea"
+  },
+  "posts/cleaning-and-tidy-data/Cleaning_and_Tidying_Data_in_Pandas.ipynb": {
+    "Cleaning_and_Tidying_Data_in_Pandas.html": "f47709ff"
+  },
+  "posts/golang-learning-notes/golang-learning-notes.md": {
+    "golang-learning-notes.html": "8dd3fb30"
+  },
+  "posts/手把手教你做事件研究-公告爬取/手把手教你做事件研究-公告爬取.ipynb": {
+    "手把手教你做事件研究-公告爬取.html": "a564fca5"
+  },
+  "posts/Pandas常用操作/pandas常用技巧.ipynb": {
+    "pandas常用技巧.html": "be0afbab"
+  },
+  "posts/Hyperledger-Fabric-Install/Hyperledger-Fabric-Install.md": {
+    "Hyperledger-Fabric-Install.html": "6670c0b2"
+  },
+  "posts/statistics-notes/statistics_notes.ipynb": {
+    "statistics_notes.html": "4206c7f7"
+  },
+  "posts/线性相关与显著性检验/线性相关与显著性检验.ipynb": {
+    "线性相关与显著性检验.html": "0e204cec"
+  },
+  "posts/Pandas-Tips：使用Pipe方法/Pandas-Tips：使用Pipe方法.ipynb": {
+    "Pandas-Tips：使用Pipe方法.html": "a03d9051"
+  },
+  "posts/手把手教你做事件研究-爬取巨潮资讯公告PDF文件/手把手教你做事件研究-爬取巨潮资讯公告PDF文件.ipynb": {
+    "手把手教你做事件研究-爬取巨潮资讯公告PDF文件.html": "eb4f5dfe"
+  },
+  "posts/手把手教你做事件研究-事件研究/手把手教你做事件研究-事件研究.ipynb": {
+    "手把手教你做事件研究-事件研究.html": "1a1cc92b"
+  },
+  "posts/爬取新浪财经ESG评级指数/爬取新浪财经ESG评级指数.ipynb": {
+    "爬取新浪财经ESG评级指数.html": "0bf98897"
+  },
+  "posts/matplotlib中的figure对象/matplotlib中的Figure对象.ipynb": {
+    "matplotlib中的Figure对象.html": "c94b972a"
+  },
+  "posts/从0到1的爬虫教程/从0到1的爬虫教程.md": {
+    "从0到1的爬虫教程.html": "e0712a3a"
+  },
+  "posts/using-else-statement-in-a-loop/using-else-statement-in-a-loop.ipynb": {
+    "using-else-statement-in-a-loop.html": "6349b727"
+  },
+  "posts/numpy-random-notes/numpy_random.ipynb": {
+    "numpy_random.html": "85fbd7bc"
+  },
+  "posts/手把手教你做事件研究-导论/手把手教你做事件研究-导论.md": {
+    "手把手教你做事件研究-导论.html": "972be9f2"
+  },
+  "posts/matplotlib-常用绘图/matplotlib 常用绘图.ipynb": {
+    "matplotlib 常用绘图.html": "e8409187"
+  },
+  "data.qmd": {
+    "data.html": "6e0c4e2c"
+  },
+  "posts/20200203-golang-learning-notes/index.md": {
+    "index.html": "58431897"
+  },
+  "posts/20220429-Blog-with-Nikola-and-WSL2/index.md": {
+    "index.html": "b092bd0f"
+  },
+  "posts/20220209-Hyperledger-Fabric-Install/index.md": {
+    "index.html": "0ecfc9aa"
+  },
+  "posts/20230312-cleaning-and-tidy-data/index.ipynb": {
+    "index.html": "177de71e"
+  },
+  "posts/20210522-matplotlib-plotting-workflow/index.ipynb": {
+    "index.html": "c5f000d7"
+  },
+  "posts/20231013-matplotlib中的figure对象/index.ipynb": {
+    "index.html": "916de738"
+  },
+  "posts/20230801-Pandas-Tips-使用query实现优雅的查询/index.ipynb": {
+    "index.html": "ebfe555b"
+  },
+  "posts/20230803-Pandas-Tips-使用merge实现关系型合并/index.ipynb": {
+    "index.html": "97263637"
+  },
+  "posts/2024-02-05-WSL2-OhMyZsh-VSCode开发环境搭建/index.md": {
+    "index.html": "0ca0ddea"
+  },
+  "posts/2022-09-15-matplotlib-常用绘图/index.ipynb": {
+    "index.html": "d8eca9e8"
+  },
+  "posts/2023-12-31-线性相关与显著性检验/index.ipynb": {
+    "index.html": "17accec5"
+  },
+  "posts/2022-05-01-Plotting-with-Pandas/index.ipynb": {
+    "index.html": "e56e6b17"
+  },
+  "posts/2023-12-23-numpy-random-notes/index.ipynb": {
+    "index.html": "6f139507"
+  },
+  "posts/2023-08-04-seaborn-notes/index.ipynb": {
+    "index.html": "ff5af235"
+  },
+  "posts/2024-02-26-Pandas-Tips-使用Pipe方法/index.ipynb": {
+    "index.html": "087d2ac2"
+  },
+  "posts/2023-02-02-手把手教你做事件研究-事件研究/index.ipynb": {
+    "index.html": "6e11da89"
+  },
+  "posts/2023-04-11-在-Pandas-中如何实现复杂的筛选/index.ipynb": {
+    "index.html": "07b6a557"
+  },
+  "posts/2023-11-09-quarto-notes/index.ipynb": {
+    "index.html": "9a10fe06"
+  },
+  "posts/2023-01-13-爬取新浪财经ESG评级指数/index.ipynb": {
+    "index.html": "c484038e"
+  },
+  "posts/2023-10-13-matplotlib中的figure对象/index.ipynb": {
+    "index.html": "767fef63"
+  },
+  "posts/2023-03-15-三门问题/index.md": {
+    "index.html": "add642a6"
+  },
+  "posts/2023-02-01-手把手教你做事件研究-数据清洗Part2/index.ipynb": {
+    "index.html": "77f5efc3"
+  },
+  "posts/2024-02-05-一键计算CAR/index.ipynb": {
+    "index.html": "97b596ea"
+  },
+  "posts/2021-05-22-matplotlib-plotting-workflow/index.ipynb": {
+    "index.html": "a4812ff8"
+  },
+  "posts/2023-12-23-Pandas-Tips-使用groupby/index.ipynb": {
+    "index.html": "d3192da6"
+  },
+  "posts/2024-01-16-Pandas-备忘录/index.ipynb": {
+    "index.html": "b25843f2"
+  },
+  "posts/2022-04-29-Blog-with-Nikola-and-WSL2/index.md": {
+    "index.html": "5ae3ed03"
+  },
+  "posts/2024-01-08-matplotlib-科研绘图笔记/index.ipynb": {
+    "index.html": "2600b69b"
+  },
+  "posts/2023-01-31-手把手教你做事件研究-数据清洗Part1/index.ipynb": {
+    "index.html": "176704e8"
+  },
+  "posts/2023-12-23-statistics-notes/index.ipynb": {
+    "index.html": "6390ffa3"
+  },
+  "posts/2023-01-05-在循环中使用else语句/index.ipynb": {
+    "index.html": "81c1978c"
+  },
+  "posts/2023-01-27-爬虫踩坑-ConnectionResetError-10054/index.ipynb": {
+    "index.html": "7d0a0360"
+  },
+  "posts/2019-04-09-Ubuntu1804-安装与配置/index.md": {
+    "index.html": "86044302"
+  },
+  "posts/2023-11-09-Pygraphviz安装记录/index.ipynb": {
+    "index.html": "8ab7f359"
+  },
+  "posts/2023-12-29-独立均值独立与线性不相关/index.ipynb": {
+    "index.html": "4f9995af"
+  },
+  "posts/2023-04-05-手把手教你做事件研究-爬取巨潮资讯公告PDF文件/index.ipynb": {
+    "index.html": "a552c9c2"
+  },
+  "posts/2021-09-20-Numpy-notes-Python-data-analysis/index.ipynb": {
+    "index.html": "7700dde3"
+  },
+  "posts/2023-01-28-手把手教你做事件研究-导论/index.md": {
+    "index.html": "97218d4c"
+  },
+  "posts/2023-08-03-Pandas-Tips-使用merge实现关系型合并/index.ipynb": {
+    "index.html": "48db290c"
+  },
+  "posts/2023-03-12-cleaning-and-tidy-data/index.ipynb": {
+    "index.html": "2361ffc1"
+  },
+  "posts/2020-02-03-golang-learning-notes/index.md": {
+    "index.html": "646a544c"
+  },
+  "posts/2023-01-30-手把手教你做事件研究-公告爬取/index.ipynb": {
+    "index.html": "34b4088c"
+  },
+  "posts/2021-01-08-从0到1的爬虫教程/index.md": {
+    "index.html": "911715d2"
+  },
+  "posts/2023-10-17-决策树算法/index.ipynb": {
+    "index.html": "f3ede1da"
+  },
+  "posts/2022-02-09-Hyperledger-Fabric-Install/index.md": {
+    "index.html": "ea2a126d"
+  },
+  "posts/2023-08-01-Pandas-Tips-使用query实现优雅的查询/index.ipynb": {
+    "index.html": "189cb5ee"
+  },
+  "posts/index.qmd": {
+    "index.html": "a8a60841"
+  },
+  "posts/2024-08-14-熵值法的原理及Python实现/index.ipynb": {
+    "index.html": "c177028b"
+  },
+  "posts/2023-12-23-Numpy中的random详解/index.ipynb": {
+    "index.html": "39d8250e"
+  },
+  "posts/2023-11-09-quarto使用笔记/index.ipynb": {
+    "index.html": "0b9e2303"
+  },
+  "posts/posts/2024-02-05-WSL2-OhMyZsh-VSCode开发环境搭建/index.md": {
+    "index.html": "5e6fc4ae"
+  },
+  "posts/posts/2022-09-15-matplotlib-常用绘图/index.ipynb": {
+    "index.html": "29731add"
+  },
+  "posts/posts/2023-12-31-线性相关与显著性检验/index.ipynb": {
+    "index.html": "0169775c"
+  },
+  "posts/posts/2022-05-01-Plotting-with-Pandas/index.ipynb": {
+    "index.html": "5002bd53"
+  },
+  "posts/posts/2023-08-04-seaborn-notes/index.ipynb": {
+    "index.html": "91a913cc"
+  },
+  "posts/posts/2024-02-26-Pandas-Tips-使用Pipe方法/index.ipynb": {
+    "index.html": "6279059e"
+  },
+  "posts/posts/2023-02-02-手把手教你做事件研究-事件研究/index.ipynb": {
+    "index.html": "5874ef59"
+  },
+  "posts/posts/2023-04-11-在-Pandas-中如何实现复杂的筛选/index.ipynb": {
+    "index.html": "fb461700"
+  },
+  "posts/posts/2023-01-13-爬取新浪财经ESG评级指数/index.ipynb": {
+    "index.html": "e39010f5"
+  },
+  "posts/posts/2023-10-13-matplotlib中的figure对象/index.ipynb": {
+    "index.html": "e298040a"
+  },
+  "posts/posts/2023-03-15-三门问题/index.md": {
+    "index.html": "b1b8c912"
+  },
+  "posts/posts/2023-12-23-Numpy中的random详解/index.ipynb": {
+    "index.html": "bdbdb87c"
+  },
+  "posts/posts/2023-02-01-手把手教你做事件研究-数据清洗Part2/index.ipynb": {
+    "index.html": "e6b6c56f"
+  },
+  "posts/posts/2024-02-05-一键计算CAR/index.ipynb": {
+    "index.html": "7168e812"
+  },
+  "posts/posts/2021-05-22-matplotlib-plotting-workflow/index.ipynb": {
+    "index.html": "cd532679"
+  },
+  "posts/posts/2023-12-23-Pandas-Tips-使用groupby/index.ipynb": {
+    "index.html": "9d39bbac"
+  },
+  "posts/posts/2024-01-16-Pandas-备忘录/index.ipynb": {
+    "index.html": "22adcb7b"
+  },
+  "posts/posts/2023-11-09-quarto使用笔记/index.ipynb": {
+    "index.html": "c1748717"
+  },
+  "posts/posts/2022-04-29-Blog-with-Nikola-and-WSL2/index.md": {
+    "index.html": "3ad63d1b"
+  },
+  "posts/posts/2024-01-08-matplotlib-科研绘图笔记/index.ipynb": {
+    "index.html": "d1c9d893"
+  },
+  "posts/posts/2023-01-31-手把手教你做事件研究-数据清洗Part1/index.ipynb": {
+    "index.html": "64aa7586"
+  },
+  "posts/posts/2023-12-23-statistics-notes/index.ipynb": {
+    "index.html": "5146fa1f"
+  },
+  "posts/posts/2023-01-05-在循环中使用else语句/index.ipynb": {
+    "index.html": "8900440a"
+  },
+  "posts/posts/2023-01-27-爬虫踩坑-ConnectionResetError-10054/index.ipynb": {
+    "index.html": "939663a3"
+  },
+  "posts/posts/2019-04-09-Ubuntu1804-安装与配置/index.md": {
+    "index.html": "9dcd5eec"
+  },
+  "posts/posts/2023-11-09-Pygraphviz安装记录/index.ipynb": {
+    "index.html": "4678c538"
+  },
+  "posts/posts/2023-12-29-独立均值独立与线性不相关/index.ipynb": {
+    "index.html": "2edd2116"
+  },
+  "posts/posts/2023-04-05-手把手教你做事件研究-爬取巨潮资讯公告PDF文件/index.ipynb": {
+    "index.html": "273654bf"
+  },
+  "posts/posts/2021-09-20-Numpy-notes-Python-data-analysis/index.ipynb": {
+    "index.html": "98b15103"
+  },
+  "posts/posts/2023-01-28-手把手教你做事件研究-导论/index.md": {
+    "index.html": "45eb2377"
+  },
+  "posts/posts/2023-08-03-Pandas-Tips-使用merge实现关系型合并/index.ipynb": {
+    "index.html": "46f4af19"
+  },
+  "posts/posts/2023-03-12-cleaning-and-tidy-data/index.ipynb": {
+    "index.html": "44564ba8"
+  },
+  "posts/posts/2020-02-03-golang-learning-notes/index.md": {
+    "index.html": "72972fbf"
+  },
+  "posts/posts/2024-08-14-熵值法的原理及Python实现/index.ipynb": {
+    "index.html": "ae5dc214"
+  },
+  "posts/posts/2023-01-30-手把手教你做事件研究-公告爬取/index.ipynb": {
+    "index.html": "d0ebe15b"
+  },
+  "posts/posts/2021-01-08-从0到1的爬虫教程/index.md": {
+    "index.html": "81a786a2"
+  },
+  "posts/posts/2023-10-17-决策树算法/index.ipynb": {
+    "index.html": "299b2bc0"
+  },
+  "posts/posts/2023-08-01-Pandas-Tips-使用query实现优雅的查询/index.ipynb": {
+    "index.html": "3e716baa"
+  },
+  "posts/2021-05-22-matplotlib绘图工作流/index.ipynb": {
+    "index.html": "409221fa"
+  },
+  "posts/2019-04-09-Ubuntu1804安装与配置/index.md": {
+    "index.html": "c4473f3f"
+  },
+  "posts/2024-09-07-使用Glob模块快速查找文件/index.ipynb": {
+    "index.html": "f895fdbb"
+  }
+}

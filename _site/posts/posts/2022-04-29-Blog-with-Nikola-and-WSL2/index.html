@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tom">
+<meta name="dcterms.date" content="2022-04-29">
+
+<title>如何使用 Nikola 搭建个人博客 – 球形汤姆</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../logo.jpg" rel="icon" type="image/jpeg">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../logo.jpg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">球形汤姆</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">主页</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../posts.html"> 
+<span class="menu-text">博客</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../data.html"> 
+<span class="menu-text">数据</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">如何使用 Nikola 搭建个人博客</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">博客</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Tom </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 29, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#nikola-安装与博客搭建" id="toc-nikola-安装与博客搭建" class="nav-link active" data-scroll-target="#nikola-安装与博客搭建">Nikola 安装与博客搭建</a>
+  <ul class="collapse">
+  <li><a href="#nikola-安装" id="toc-nikola-安装" class="nav-link" data-scroll-target="#nikola-安装">Nikola 安装</a></li>
+  <li><a href="#初始化博客" id="toc-初始化博客" class="nav-link" data-scroll-target="#初始化博客">初始化博客</a></li>
+  <li><a href="#新建博客" id="toc-新建博客" class="nav-link" data-scroll-target="#新建博客">新建博客</a>
+  <ul class="collapse">
+  <li><a href="#添加第一篇博客" id="toc-添加第一篇博客" class="nav-link" data-scroll-target="#添加第一篇博客">添加第一篇博客</a></li>
+  <li><a href="#生成静态文件" id="toc-生成静态文件" class="nav-link" data-scroll-target="#生成静态文件">生成静态文件</a></li>
+  <li><a href="#本地调试" id="toc-本地调试" class="nav-link" data-scroll-target="#本地调试">本地调试</a></li>
+  </ul></li>
+  <li><a href="#让-nikola-支持-jupyter-notebook" id="toc-让-nikola-支持-jupyter-notebook" class="nav-link" data-scroll-target="#让-nikola-支持-jupyter-notebook">让 Nikola 支持 Jupyter Notebook</a></li>
+  <li><a href="#markdown-支持" id="toc-markdown-支持" class="nav-link" data-scroll-target="#markdown-支持">markdown 支持</a></li>
+  <li><a href="#数学公式支持" id="toc-数学公式支持" class="nav-link" data-scroll-target="#数学公式支持">数学公式支持</a></li>
+  </ul></li>
+  <li><a href="#博客美化" id="toc-博客美化" class="nav-link" data-scroll-target="#博客美化">博客美化</a>
+  <ul class="collapse">
+  <li><a href="#更换主题" id="toc-更换主题" class="nav-link" data-scroll-target="#更换主题">更换主题</a></li>
+  <li><a href="#导航栏配置" id="toc-导航栏配置" class="nav-link" data-scroll-target="#导航栏配置">导航栏配置</a></li>
+  <li><a href="#网页图标与-logo" id="toc-网页图标与-logo" class="nav-link" data-scroll-target="#网页图标与-logo">网页图标与 logo</a></li>
+  <li><a href="#代码显示风格" id="toc-代码显示风格" class="nav-link" data-scroll-target="#代码显示风格">代码显示风格</a></li>
+  <li><a href="#目录美化" id="toc-目录美化" class="nav-link" data-scroll-target="#目录美化">目录美化</a></li>
+  <li><a href="#定制样式" id="toc-定制样式" class="nav-link" data-scroll-target="#定制样式">定制样式</a></li>
+  <li><a href="#个性化首页" id="toc-个性化首页" class="nav-link" data-scroll-target="#个性化首页">个性化首页</a></li>
+  </ul></li>
+  <li><a href="#部署到-github" id="toc-部署到-github" class="nav-link" data-scroll-target="#部署到-github">部署到 Github</a></li>
+  <li><a href="#参考资料" id="toc-参考资料" class="nav-link" data-scroll-target="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>一直希望搭建一个博客，一方面是希望能有一个地方记录整理自己学过的知识，另一方面也希望能交到一些志同道合的朋友（有人可以讨论真是太棒了！）在各种鼓捣之后，我选择了 <a href="https://getnikola.com/">Nikola</a>，因为它原生支持 Jupyter notebook。至于为什么选择静态博客，Nikola 官网这篇<a href="https://getnikola.com/handbook.html#why-static">文章</a>写的很好。</p>
+<p>关于如何使用 Nikola 搭建博客和个人网站，相关的中文资源比较少，这篇文章是我个人，来自一个非科班背景的踩坑经历。博客在 WSL2 上搭建，Windows 与 Mac 上搭建也类似，环境如下：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">WLS2</span> Ubuntu 20.04.3 LTS</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Nikola</span> Version: 8.2.1</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Python</span> 3.8.10</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> 20.0.2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="nikola-安装与博客搭建" class="level1">
+<h1>Nikola 安装与博客搭建</h1>
+<p>这部分内容是对官方文档 <a href="https://getnikola.com/getting-started.html">getting started</a> 的一个梳理。其实官方文档写的非常清晰，强烈建议大家去瞅一瞅。</p>
+<section id="nikola-安装" class="level2">
+<h2 class="anchored" data-anchor-id="nikola-安装">Nikola 安装</h2>
+<p>官方文档推荐使用虚拟环境来安装 Nikola，我们可以使用 Python 自带的 venv 模块来创建虚拟环境。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 首先新建一个博客目录</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> myblog</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 然后进入到 myblog 目录下，创建虚拟环境</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> myblog</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv blog</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 进入到虚拟环境目录，激活虚拟环境</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> blog</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ./bin/activate</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用 pip 安装 Nikola</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-U</span> pip setuptools wheel</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-U</span> <span class="st">"Nikola[extras]"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>官方文档推荐在安装时选择 Nikola[extras] 版本（可以体验一些额外的功能），但是你也可以选择安装 Nikola 版本。</p>
+</section>
+<section id="初始化博客" class="level2">
+<h2 class="anchored" data-anchor-id="初始化博客">初始化博客</h2>
+<p>在安装完 Nikola 之后，我们就可以使用 Nikola 提供的命令初始化博客了。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nikola</span> init <span class="at">--demo</span> my_blog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>这条命令会在当前目录下创建一个新的目录 <code>my_blog</code>，<code>--demo my_blog</code> 参数表示在初始化目录的时候创建一些 demo 文件（当然你也可以选择不创建 demo 文件，使用 <code>--quiet</code> 参数）。你会看到如下输出和提问：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> Nikola Site</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">====================</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">This</span> is Nikola v8.2.1.  We will now ask you a few easy questions about your new site.</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">If</span> you do not want to answer and want to go with the defaults instead, simply restart with the <span class="kw">`</span><span class="ex">-q</span><span class="kw">`</span> parameter.</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span> Questions about the site <span class="at">---</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Site</span> title [My Nikola Site]:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>回答命令行中的提问：</p>
+<ul>
+<li>Site title：网站名</li>
+<li>Site author：网站作者</li>
+<li>Site author’s e-mail：联系邮箱</li>
+<li>Site description：网站描述，生成网站的 <a href="https://moz.com/learn/seo/meta-description">meta description</a></li>
+<li>Site URL：网页 URL</li>
+<li>Enable pretty URLs (/page/ instead of /page.html) that don’t need web server configuration? [Y/n]：是否开启 <a href="https://en.wikipedia.org/wiki/Clean_URL">pretty URLs</a></li>
+<li>Language(s) to use [en]：选择网站显示语言</li>
+<li>Time zone [Asia/Shanghai]：选择时区</li>
+<li>Comment system：选择评论系统</li>
+</ul>
+<p>当你看到以下提示时，就说明博客初始化成功了。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">That</span><span class="st">'s it, Nikola is now configured.  Make sure to edit conf.py to your liking.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">If you are looking for themes and addons, check out https://themes.getnikola.com/ and https://plugins.getnikola.com/.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">Have fun!</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">[2022-04-29 16:09:00] INFO: init: A new site with example data has been created at my_blog.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">[2022-04-29 16:09:00] INFO: init: See README.txt in that folder for more information.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>我们可以看一下 <code>my_blog</code> 目录，这是我们的博客根目录。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> files</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> galleries</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> images  <span class="co"># 图片存放目录</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> listings</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── __pycache__</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> pages  <span class="co"># 页面存放目录</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> posts  <span class="co"># 文章存放目录</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> templates  <span class="co"># 生成站点的模板文件存放目录</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="新建博客" class="level2">
+<h2 class="anchored" data-anchor-id="新建博客">新建博客</h2>
+<p>博客初始化完成之后，我们就可以添加第一篇博客了。</p>
+<section id="添加第一篇博客" class="level3">
+<h3 class="anchored" data-anchor-id="添加第一篇博客">添加第一篇博客</h3>
+<p>如果你习惯使用命令行，可以使用命令 <code>nikola new_post -f markdown</code> 添加第一篇博客：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> New Post</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-----------------</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Title:</span> First post</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Scanning</span> posts........done!</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[2022-04-29</span> 20:50:04] INFO: new_post: Your post<span class="st">'s text is at: posts/first-post.md</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-f</code> 参数指定文章格式，这里我们指定为 markdown 格式，该命令会在 posts 文件夹下新建一个 markdown 文件，你可以 <code>cd</code> 到 posts 目录下，继续编辑该博客。打开该博客，你会发现以下元信息：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>!--</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> title: First post</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> slug: first-post</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> date: 2022-12-30 19:30:43 UTC+08:00</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> tags: </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> category: </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> link: </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> description: </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">..</span> type: text</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">--</span><span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>title：文章标题</li>
+<li><a href="https://www.semrush.com/blog/what-is-a-url-slug/">slug</a>：固定链接地址，是 URL 最后一个反斜杠之后的那一部分。slug 如果不指定，Nikola 默认使用文章标题作为 slug。</li>
+<li>date：文章创建时间</li>
+<li>tags：文章标签</li>
+<li>category：文章分类</li>
+<li>link：Link to original source for content. May be displayed by some themes.（官方文档介绍，暂时没用过）</li>
+<li>description：页面描述</li>
+<li>type：文章类型</li>
+</ul>
+<p>除此之外，另一个常用的元信息字段是 <code>has_math</code>。如果文章中有 latex 公式，就需要添加该字段。一般常用的 metadata 字段就这些，如果你想深入了解，推荐<a href="https://getnikola.com/handbook.html#metadata-fields">官方文档</a>。</p>
+<p>如果你不习惯使用命令行，也可以直接在 posts 目录下新建 markdown 文件，然后利用你喜欢的编辑器进行编辑，但需要手动添加元信息。除了 markdown，Nikola 也支持如下格式：</p>
+<blockquote class="blockquote">
+<ul>
+<li>reStructuredText (default and pre-configured)</li>
+<li><a href="https://getnikola.com/handbook.html#markdown">Markdown</a> (pre-configured since v7.8.7)</li>
+<li><a href="https://getnikola.com/handbook.html#jupyter-notebook">Jupyter Notebook</a></li>
+<li><a href="https://getnikola.com/handbook.html#html">HTML</a></li>
+<li><a href="https://getnikola.com/handbook.html#php">PHP</a></li>
+<li>anything <a href="https://getnikola.com/handbook.html#pandoc">Pandoc</a> supports (including Textile, DocBook, LaTeX, MediaWiki, TWiki, OPML, Emacs Org-Mode, txt2tags, Microsoft Word .docx, EPUB, Haddock markup)</li>
+</ul>
+</blockquote>
+</section>
+<section id="生成静态文件" class="level3">
+<h3 class="anchored" data-anchor-id="生成静态文件">生成静态文件</h3>
+<p>写完博客之后，下面我们使用命令 <code>nikola build</code> 生成静态文件。<code>nikola build</code> 会在博客根目录下新建一个 output 目录，这个目录就是你的站点资源目录，你的博客网站里所有显示的内容都来自于这个目录。我们来看下这个目录：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> 2012  <span class="co"># 博客归档目录，Nikola demo 文件中有一篇是 2012 年写的</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> archive.html  <span class="co"># 显示博客归档页面</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> assets  <span class="co"># css js fonts img 等资源目录</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> categories  <span class="co"># 博客分类</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> favicon.ico</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> galleries</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> images</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> index.html <span class="co"># 博客首页</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> listings</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> pages</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> posts  <span class="co"># 博客目录</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> robots.txt</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> rss.xml</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> sitemap.xml</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> sitemapindex.xml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>这里，我们需要关注 posts 目录，<code>nikola build</code> 命令会将我们写的 markdown 文件转化为 html 文件并保存在该目录下。</p>
+</section>
+<section id="本地调试" class="level3">
+<h3 class="anchored" data-anchor-id="本地调试">本地调试</h3>
+<p>使用命令 <code>nikola serve -b</code> 会打开默认浏览器，方便我们进行本地调试。这里，由于我是在 WSL2 中搭建博客，键入 <code>nikola serve -b</code> 命令之后，<code>http://0.0.0.0:8000/</code> 显示拒绝访问，Windows 和 Mac 应该不存在这个问题。</p>
+<p>解决方法是在 windows <code>C:\Users\Me</code> 目录下新建 <code>.wslconfig</code> 配置文件，并输入以下内容：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[wsl2]</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="va">localhostForwarding</span><span class="op">=</span>true</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="让-nikola-支持-jupyter-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="让-nikola-支持-jupyter-notebook">让 Nikola 支持 Jupyter Notebook</h2>
+<p>下面我们让 Nikola 支持 Jupyter Notebook，毕竟这是数据科学家的博客:)</p>
+<p>首先我们需要在 <code>COMPILERS</code> 中定义 <code>ipynb</code> 文件。打开站点配置文件 <code>conf.py</code>，搜索 <code>COMPILERS</code>，如下定义 <code>ipynb</code> 文件：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>COMPILERS <span class="op">=</span> {                                                                               </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rest"</span>: [<span class="st">'.rst'</span>, <span class="st">'.txt'</span>],</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"markdown"</span>: [<span class="st">'.md'</span>, <span class="st">'.mdown'</span>, <span class="st">'.markdown'</span>],</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"textile"</span>: [<span class="st">'.textile'</span>],</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"txt2tags"</span>: [<span class="st">'.t2t'</span>],</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bbcode"</span>: [<span class="st">'.bb'</span>],</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wiki"</span>: [<span class="st">'.wiki'</span>],</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ipynb"</span>: [<span class="st">'.ipynb'</span>],</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"html"</span>: [<span class="st">'.html'</span>, <span class="st">'.htm'</span>],</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"php"</span>: [<span class="st">'.php'</span>],</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>其次，我们需要在 <code>POSTS</code> 中定义 <code>.ipynb</code> 插件。编辑站点配置文件 <code>conf.py</code>，搜索 <code>POSTS</code>，如下定义 <code>.ipynb</code> 插件：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a> POSTS <span class="op">=</span> (                                                                              </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>     (<span class="st">"posts/*.rst"</span>, <span class="st">"posts"</span>, <span class="st">"post.tmpl"</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>     (<span class="st">"posts/*.md"</span>, <span class="st">"posts"</span>, <span class="st">"post.tmpl"</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>     (<span class="st">"posts/*.txt"</span>, <span class="st">"posts"</span>, <span class="st">"post.tmpl"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>     (<span class="st">"posts/*.html"</span>, <span class="st">"posts"</span>, <span class="st">"post.tmpl"</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>     (<span class="st">"posts/*.ipynb"</span>, <span class="st">"posts"</span>, <span class="st">"post.tmpl"</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>使用 Jupyter Notebook 写博客与 markdown 类似，你可以在 posts 文件下新建 ipynb 文件，然后用 Jupyter Notebook 打开编辑。</p>
+<p>我们可以使用字典向 Jupyter Notebook 中添加博客文章必需的元信息，方法为打开 Jupyter Notebook，菜单栏选择 <em>Edit -&gt; Edit Notebook Metadata</em>，添加如下格式信息：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"nikola"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"title"</span><span class="fu">:</span> <span class="st">"Example for Jupyter Notebook metadata configuration"</span><span class="fu">,</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"slug"</span><span class="fu">:</span> <span class="st">"example-for-jupyter-notebook-metadata-configuration"</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"date"</span><span class="fu">:</span> <span class="st">"2022-04-29 19:52:05 UTC"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="markdown-支持" class="level2">
+<h2 class="anchored" data-anchor-id="markdown-支持">markdown 支持</h2>
+<p>Nikola 默认使用 <a href="https://python-markdown.github.io/reference/">python-markdown</a> 解析 markdown，你也可以选择使用 pandoc，这篇<a href="https://www.brainsorting.com/posts/create-a-blog-with-nikola/#using-markdown-for-your-post">博客</a>讲的非常清楚。</p>
+<p>另外，如果你喜欢使用 Pelican-style 风格添加博客元信息，需要添加 <code>markdown.extensions.meta</code> 插件。此外，你也可以使用 <code>markdown.extensions.toc</code> 插件自动解析文章目录。打开站点配置文件，编辑 markdown 插件配置选项：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a> MARKDOWN_EXTENSIONS <span class="op">=</span> [</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>     <span class="st">'markdown.extensions.meta'</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="st">'markdown.extensions.fenced_code'</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>     <span class="st">'markdown.extensions.codehilite'</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">'markdown.extensions.extra'</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">'markdown.extensions.toc'</span>,  <span class="co"># 自动解析文章目录</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a> ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="数学公式支持" class="level2">
+<h2 class="anchored" data-anchor-id="数学公式支持">数学公式支持</h2>
+<p>Nikola 默认使用 MathJax 显示数学公式，你可以使用 Katex。编辑站点配置文件，修改 <code>USE_KATEX=True</code>。Nikola 默认使用 <code>\(...\)</code> 渲染行内公式，使用 <code>\[...\]</code> 和 <code>$$...$$</code> 渲染行间公式。如果你习惯使用 <code>$...$</code> 渲染行内公式，需要修改配置文件，搜索 <code>KATEX_AUTO_RENDER</code> ，如下编辑：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>KATEX_AUTO_RENDER <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="st">delimiters: [</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">    {left: "$$", right: "$$", display: true},</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">    {left: "</span><span class="ch">\\\\</span><span class="st">[", right: "</span><span class="ch">\\\\</span><span class="st">]", display: true},</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">    {left: "</span><span class="ch">\\\\</span><span class="st">begin{equation*}", right: "</span><span class="ch">\\\\</span><span class="st">end{equation*}", display: true},</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="st">    {left: "$", right: "$", display: false},</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="st">    {left: "</span><span class="ch">\\\\</span><span class="st">(", right: "</span><span class="ch">\\\\</span><span class="st">)", display: false}</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="st">]</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="博客美化" class="level1">
+<h1>博客美化</h1>
+<p>相比于 Jekyll、Hugo 和 Hexo，Nikola 的不足是好看的主题比较少。官方提供了一些<a href="https://themes.getnikola.com/">主题</a>，这里我们以 <a href="https://themes.getnikola.com/v8/bootstrap4/">bootstrap4</a> 来演示。</p>
+<section id="更换主题" class="level2">
+<h2 class="anchored" data-anchor-id="更换主题">更换主题</h2>
+<p>首先，我们需要下载主题。利用 <code>nikola theme -i bootstrap4</code> 命令下载主题。然后我们编辑站点配置文件 <code>conf.py</code>，搜索 <code>THEME</code>，将主题修改为 <code>bootstrap4</code>。</p>
+</section>
+<section id="导航栏配置" class="level2">
+<h2 class="anchored" data-anchor-id="导航栏配置">导航栏配置</h2>
+<p>我们可以通过修改 <code>THEME_CONFIG</code> 来修改导航栏配色。bootstrap4 导航栏默认是暗底，也可以自定义背景颜色，配置文件如下：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a> THEME_CONFIG <span class="op">=</span> {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>      DEFAULT_LANG: {</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Use a light navbar with dark text. Defaults to False.                                   </span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>          <span class="st">'navbar_light'</span>: <span class="va">False</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>          <span class="co"># Use a custom navbar color. If unset, 'navbar_light' sets text +</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>          <span class="co"># background color. If set, navbar_light controls only background</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>          <span class="co"># color. Supported values: bg-dark, bg-light, bg-primary, bg-secondary,</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>          <span class="co"># bg-success, bg-danger, bg-warning, bg-info, bg-white, bg-transparent.</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>          <span class="st">'navbar_custom_bg'</span>: <span class="st">''</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>导航栏默认有博客归档、分类和 RSS 订阅栏目，我们可以通过修改 <code>NAVIGATION_LINKS</code> 来自定义导航栏目。其默认配置如下：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>NAVIGATION_LINKS <span class="op">=</span> {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    DEFAULT_LANG: (</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"/archive.html"</span>, <span class="st">"Archive"</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"/categories/"</span>, <span class="st">"Tags"</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"/rss.xml"</span>, <span class="st">"RSS feed"</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>这里 <code>/</code> 代表站点资源根目录，即 output 目录。我们可以通过指定资源目录，自定义导航栏。比如在 <code>categories/</code> 目录下，Nikola 生成了 <code>cat_nikola</code>、<code>cat_python</code> 等类别目录，我们可以指定这两个目录，新建一个多级 TECH 导航栏目。</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>NAVIGATION_LINKS <span class="op">=</span> {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    DEFAULT_LANG: (</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"/archive.html"</span>, <span class="st">"Archive"</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"/categories/"</span>, <span class="st">"Tags"</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"/rss.xml"</span>, <span class="st">"RSS feed"</span>),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        (</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>          (</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"/categories/cat_nikola/"</span>, <span class="st">"Nikola"</span>),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>            (<span class="st">"/categories/cat_python/"</span>, <span class="st">"Python"</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>          <span class="st">"TECH"</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="网页图标与-logo" class="level2">
+<h2 class="anchored" data-anchor-id="网页图标与-logo">网页图标与 logo</h2>
+<p>首先我们进入博客根目录中的 files 目录，新建 assets 目录，再新建 img 目录，然后将网页图标 favicon 和 logo 文件拷贝到 img 目录中。<code>nikola build</code> 在生成静态文件时会将 files 文件下的资源都复制到 output 目录。</p>
+<p>然后编辑站点配置文件 <code>conf.py</code> 搜索 <code>FAVICONS</code> 和 <code>LOGO</code>，如下配置：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>FAVICONS <span class="op">=</span> (</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"icon"</span>, <span class="st">"/assets/img/favicon.ico"</span>, <span class="st">"16x16"</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>LOGO_URL <span class="op">=</span> <span class="st">'/assets/img/logo.jpg'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="代码显示风格" class="level2">
+<h2 class="anchored" data-anchor-id="代码显示风格">代码显示风格</h2>
+<p>Nikola 使用 <a href="https://pygments.org/">Pygments</a> 进行语法高亮，你可以在 <a href="https://pygments.org/styles/">Pygments styles</a> 选择自己喜欢的配色风格。我比较喜欢 <code>zenburn</code>，编辑站点配置文件 <code>conf.py</code> ，搜索 <code>CODE_COLOR_SCHEME</code> ，如下配置：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>CODE_COLOR_SCHEME <span class="op">=</span> <span class="st">'zenburn'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="目录美化" class="level2">
+<h2 class="anchored" data-anchor-id="目录美化">目录美化</h2>
+<p>如果你使用了 <code>markdown.extensions.toc</code> 插件解析文章目录，你会发现这个目录比较丑。Nikola 使用 <code>post.tmpl</code> 模板文件来生成博客文章页面，我们可以修改这个模板文件，从而美化目录（这需要你懂一点前端和 Mako 模板引擎的知识:)</p>
+<p>首先，我们将 <code>post.tmpl</code> 文件复制到博客根目录，命令行输入 <code>nikola theme -c post.tmpl</code>，该命令会将 <code>post.tmpl</code> 文件复制 templates 目录下，然后我们编辑这个文件。因为我们只是希望美化博客文章页面的目录，所以可以使用内部样式表，在 <code>&lt;style&gt;</code> 标签中定义样式。比如，我是这样美化的：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="an">screen</span> <span class="kw">and</span> <span class="fu">(</span><span class="kw">min-width</span><span class="ch">:</span> <span class="dv">1024</span><span class="dt">px</span><span class="fu">)</span> {</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.e-content</span> {</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">display</span><span class="ch">:</span> <span class="dv">grid</span><span class="op">;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">grid-template-columns</span><span class="ch">:</span> <span class="dv">3</span><span class="dt">fr</span> <span class="dv">1</span><span class="dt">fr</span><span class="op">;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">column-gap</span><span class="ch">:</span> <span class="dv">30</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">position</span><span class="ch">:</span> <span class="dv">relative</span><span class="op">;</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.toc</span> {</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">grid-column</span><span class="ch">:</span> <span class="dv">2</span> / <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">grid-row</span><span class="ch">:</span> <span class="dv">1</span> / <span class="dv">span 999</span><span class="op">;</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">align-self</span><span class="ch">:</span> <span class="dv">start</span><span class="op">;</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">position</span><span class="ch">:</span> <span class="dv">sticky</span><span class="op">;</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">top</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.toc</span><span class="in">::before</span> {</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>        <span class="kw">content</span><span class="ch">:</span> <span class="st">"ON this page"</span><span class="op">;</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#ffe70e</span><span class="op">;</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">color</span><span class="ch">:</span> <span class="cn">#444</span><span class="op">;</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">16</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">bold</span><span class="op">;</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-style</span><span class="ch">:</span> <span class="dv">italic</span><span class="op">;</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>        <span class="kw">padding</span><span class="ch">:</span> <span class="dv">5</span><span class="dt">px</span> <span class="dv">5</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">margin-left</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="im">@media</span> <span class="an">screen</span> <span class="kw">and</span> <span class="fu">(</span><span class="kw">max-width</span><span class="ch">:</span> <span class="dv">767</span><span class="dt">px</span><span class="fu">)</span> {</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.e-content</span> {</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>        <span class="kw">display</span><span class="ch">:</span> <span class="dv">grid</span><span class="op">;</span></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>        <span class="kw">grid-template-columns</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">fr</span><span class="op">;</span></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.toc</span> {</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>        <span class="kw">grid-column</span><span class="ch">:</span> <span class="dv">1</span> / <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.toc</span><span class="in">::before</span> {</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>        <span class="kw">content</span><span class="ch">:</span> <span class="st">"ON this page"</span><span class="op">;</span></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>        <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#ffe70e</span><span class="op">;</span></span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>        <span class="kw">color</span><span class="ch">:</span> <span class="cn">#444</span><span class="op">;</span></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">16</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">bold</span><span class="op">;</span></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>        <span class="kw">font-style</span><span class="ch">:</span> <span class="dv">italic</span><span class="op">;</span></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>        <span class="kw">padding</span><span class="ch">:</span> <span class="dv">5</span><span class="dt">px</span> <span class="dv">5</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>        <span class="kw">margin-left</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="定制样式" class="level2">
+<h2 class="anchored" data-anchor-id="定制样式">定制样式</h2>
+<p>Nikola 支持定制样式，我们可以通过在 <code>files/assets/css/</code> 目录下，新建 <code>custom.css</code> 文件来定制全局字体，行距等样式。如果你觉得我的样式不错，也可以选择复制<a href="../../../listings/custom.css.html">我的</a>:)</p>
+</section>
+<section id="个性化首页" class="level2">
+<h2 class="anchored" data-anchor-id="个性化首页">个性化首页</h2>
+<p>Nikola 默认的首页是博客文章列表，并且是显示文章全部内容。我们可以通过修改配置文件 <code>INDEX_TEASERS=True</code>，然后在文章源文件中加入 <code>&lt;!--- TEASER_END ---&gt;</code> 来选择显示部分内容。</p>
+<p>首页默认显示 10 篇文章，我们可以通过编辑站点配置文件中的 <code>INDEX_DISPLAY_POST_COUNT</code> 来选择首页显示的文章数量。</p>
+<p>此外，如果你希望定制首页，比如首页是一个 Greeting 页面，显示个人信息等等（像我这样:) 我强烈建议修改 <code>index.tmpl</code> 模板文件。如果你懂一点前端，可以在这里大显身手。使用命令 <code>nikola theme -c index.tmpl</code> 将模板文件复制到 templates 目录下，进行修改。</p>
+</section>
+</section>
+<section id="部署到-github" class="level1">
+<h1>部署到 Github</h1>
+<ul>
+<li>在 Github 新建一个仓库，命名为 <code>[username].github.io</code>，username 就是你的 Github 账户名</li>
+<li>在博客根目录 <code>git init</code> 创建版本仓库</li>
+<li>添加远程仓库 <code>git remote add origin https://github.com/[username]/[username].github.io.git</code></li>
+<li>创建 <code>.gitignore</code> 文件</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cache</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.doit.db*</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">__pycache__</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="ex">output</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="ex">.ipynb_checkpoints</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="ex">.DS_Store</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>使用 <code>nikola github_deploy</code> 一键部署到 Github</li>
+</ul>
+<p>解释一下 <code>nikola github_deploy</code>，这个<a href="https://getnikola.com/handbook.html#deploying-to-github">命令</a>会创建一个 <code>src</code> 分支，用来保存博客目录的源文件，而 <code>master</code> 分支用来保存站点资源目录（即 output 目录）下的那些静态资源文件。这些配置也可以在站点配置文件 <code>conf.py</code> 中进行修改：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>GITHUB_SOURCE_BRANCH <span class="op">=</span> <span class="st">'src'</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>GITHUB_DEPLOY_BRANCH <span class="op">=</span> <span class="st">'master'</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The name of the remote where you wish to push to, using github_deploy.</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>GITHUB_REMOTE_NAME <span class="op">=</span> <span class="st">'origin'</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Whether or not github_deploy should commit to the source branch automatically</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># before deploying.</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>GITHUB_COMMIT_SOURCE <span class="op">=</span> <span class="va">True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="参考资料" class="level1">
+<h1>参考资料</h1>
+<ul>
+<li><a href="https://getnikola.com/handbook.html#">The Nikola Handbook</a></li>
+<li>https://randlow.github.io/posts/python/create-nikola-coding-blog/</li>
+<li>https://www.brainsorting.com/posts/create-a-blog-with-nikola/</li>
+<li>https://paulomarconi.github.io/blog/Nikola-guide/</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2024, 球形汤姆</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Powered by Quarto!</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
