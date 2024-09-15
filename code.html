@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Tom">
+<meta name="dcterms.date" content="2024-09-15">
 
-<title>data – 球形汤姆</title>
+<title>LIST|经管类实证研究常用代码实现清单 – 球形汤姆</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,11 +102,11 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">博客</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./data.html" aria-current="page"> 
+    <a class="nav-link" href="./data.html"> 
 <span class="menu-text">数据</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./code.html"> 
+    <a class="nav-link active" href="./code.html" aria-current="page"> 
 <span class="menu-text">代码</span></a>
   </li>  
 </ul>
@@ -118,22 +120,41 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#计量统计" id="toc-计量统计" class="nav-link active" data-scroll-target="#计量统计">计量统计</a></li>
+  <li><a href="#网络爬虫" id="toc-网络爬虫" class="nav-link" data-scroll-target="#网络爬虫">网络爬虫</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">data</h1>
+<h1 class="title">LIST|经管类实证研究常用代码实现清单</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Tom </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 15, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -143,9 +164,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Data page, stay tuned!</p>
+<p>这里是在各种项目中实现过的零零碎碎功能的汇总，主要是与数据分析、计量统计相关的 Python 代码。如果能对你有帮助，我很开心😁</p>
+<p><img src="./images/code.png" class="img-fluid"></p>
+<section id="计量统计" class="level1">
+<h1>计量统计</h1>
+<ul>
+<li><a href="./code/eventstudy.py">事件研究法：一键计算累计异常收益率，输出描述性统计和 t 检验结果</a></li>
+<li><a href="./posts/2024-08-14-熵值法的原理及Python实现/index.html">熵值法</a></li>
+</ul>
+</section>
+<section id="网络爬虫" class="level1">
+<h1>网络爬虫</h1>
+<ul>
+<li><a href="posts/2023-01-13-爬取新浪财经ESG评级指数/">使用 Selenium 爬取新浪财经 ESG 评级指数</a></li>
+<li><a href="posts/2023-04-05-手把手教你做事件研究-爬取巨潮资讯公告PDF文件/">使用多线程爬取巨潮资讯上市公司公告 PDF 文件</a></li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
