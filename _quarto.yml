@@ -17,6 +17,8 @@ website:
         text: 博客
       - href: data.qmd
         text: 数据
+      - href: code.qmd
+        text: 代码
   page-footer: 
     background: light
     left: "Copyright 2024, 球形汤姆" 

@@ -11,5 +11,5 @@ about:
       href: https://github.com
 ---
 
-欢迎来到球形汤姆，这是由Tom维护的个人网站。
+欢迎来到球形汤姆，这是由 Tom 维护的个人网站。
 
