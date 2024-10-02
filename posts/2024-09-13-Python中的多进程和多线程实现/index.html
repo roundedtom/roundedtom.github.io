@@ -9,7 +9,7 @@
 <meta name="author" content="Tom">
 <meta name="dcterms.date" content="2024-09-13">
 
-<title>Python中的多进程实现 – 球形汤姆</title>
+<title>Python中的多进程和多线程实现 – 球形汤姆</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -154,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Python中的多进程实现</h1>
+      <h1 class="title">Python中的多进程和多线程实现</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Python</div>
               </div>
@@ -386,172 +386,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="进程间通信" class="level2">
 <h2 class="anchored" data-anchor-id="进程间通信">进程间通信</h2>
-<p>multiprocessing 模块提供了多种方式实现进程间通信（IPC），包括队列（Queue）、管道（Pipe）、Value、Array 和 Manager 等等。其中队列和管道使用简单、灵活，也是官方文档推荐的进程间通信实现方法。</p>
-<section id="queue" class="level3">
-<h3 class="anchored" data-anchor-id="queue"><code>Queue</code></h3>
-<p><code>Queue</code> 是 multiprocessing 模块中提供的一种进程间通信机制，允许多个进程安全地传递消息。它实现了先进先出（FIFO）的数据结构，非常适合需要在多个进程之间共享数据的场景。</p>
-<p>我们可以使用 <code>Queue</code> 类来创建队列实例：</p>
-<div id="cell-8" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> multiprocessing <span class="im">import</span> Queue</span>
+<div id="cell-8" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> multiprocessing <span class="im">import</span> Process, Queue</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> Queue(maxsize<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>q.put(<span class="st">"Hello world!"</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q.get())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(q):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    q.put([<span class="dv">42</span>, <span class="va">None</span>, <span class="st">'hello'</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> Queue()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    p1 <span class="op">=</span> Process(target<span class="op">=</span>f, args<span class="op">=</span>(q,))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    p2 <span class="op">=</span> Process(target<span class="op">=</span>f, args<span class="op">=</span>(q,))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    p1.start()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    p2.start()</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(q.get())    <span class="co"># 打印 "[42, None, 'hello']"</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    p1.join()</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    p2.join()</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(q.get())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Hello world!</code></pre>
+<pre><code>[42, None, 'hello']
+[42, None, 'hello']</code></pre>
 </div>
 </div>
-<p>上面的示例代码使用 <code>Queue</code> 类创建了一个队列实例，<code>maxsize</code> 参数用来控制队列的大小，默认无限制。我们可以使用 <code>put</code> 方法将数据放入队列，使用 <code>get</code> 方法从队列中获取数据。</p>
-<p><code>put()</code> 和 <code>get()</code> 方法的默认行为是阻塞的。如果队列已满，<code>put()</code> 会等待，直到有空间可用；如果队列为空，<code>get()</code> 会等待，直到有数据可用。我们看下面的例子：</p>
-<div id="cell-10" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> multiprocessing <span class="im">import</span> Process, Queue</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> worker(q):</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        time.sleep(<span class="dv">1</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        q.put(<span class="ss">f"Messege</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> from worker."</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> Queue(maxsize<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> Process(target<span class="op">=</span>worker, args<span class="op">=</span>(q,))</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    p.start()</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(q.get())</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    p.join()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Messege0 from worker.
-Messege1 from worker.
-Messege2 from worker.
-Messege3 from worker.
-Messege4 from worker.</code></pre>
-</div>
-</div>
-<p>可以通过设置 <code>block=False</code> 参数来实现非阻塞操作，同时抛出标准库 <code>queue</code> 模块中的 <code>queue.Empty</code> 和 <code>queue.Full</code> 异常以指示超时。比如下面的例子：</p>
-<div id="cell-12" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> multiprocessing <span class="im">import</span> Process, Queue</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> queue <span class="im">import</span> Empty, Full</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> worker(q):</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 非阻塞放入</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            q.put(<span class="ss">f"Messege</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> from worker."</span>, block<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> Full:</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Queue is full, waiting ..."</span>, flush<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> Queue(maxsize<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> Process(target<span class="op">=</span>worker, args<span class="op">=</span>(q,))</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    p.start()</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 非阻塞取出</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(q.get(block<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> Empty:</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"Queue is empty."</span>, flush<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    p.join()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Queue is empty.
-Queue is empty.
-Queue is full, waiting ...
-Messege0 from worker.
-Messege1 from worker.
-Messege2 from worker.</code></pre>
-</div>
-</div>
-<p>总结一下，<code>Queue</code> 的特性如下：</p>
-<ul>
-<li>线程安全：<code>Queue</code> 内部实现了锁机制，可以安全地在多个进程间共享，避免数据竞争。</li>
-<li>阻塞与非阻塞：可以选择阻塞或非阻塞方式来接收或发送消息。</li>
-<li>灵活性：<code>Queue</code> 中可以放入任何可以被 pickle 序列化的对象，包括基本数据类型、列表、字典等。</li>
-</ul>
-</section>
-<section id="pipe" class="level3">
-<h3 class="anchored" data-anchor-id="pipe"><code>Pipe</code></h3>
-<p><code>Pipe</code> 是 multiprocessing 模块中提供的一种进程间通信机制，允许两个进程之间通过一个双向的管道进行数据交换。它非常适合需要两个进程直接通信的场景，使用简单且高效。</p>
-<p>我们可以使用 <code>Pipe</code> 类来创建连接实例：</p>
-<div id="cell-14" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> multiprocessing</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>parent_conn, child_conn <span class="op">=</span> multiprocessing.Pipe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>在上面的示例代码中，parent_conn 和 child_conn 是通过 <code>multiprocessing.Pipe()</code> 创建的两个连接对象，用于实现进程间的通信。其中：</p>
-<ul>
-<li><code>parent_conn</code> 代表管道的“父”端，通常用于主进程。主进程可以通过 <code>parent_conn</code> 来接收子进程发送的数据，使用 recv() 方法。</li>
-<li><code>child_conn</code> 代表管道的“子”端，通常用于子进程。子进程可以通过 <code>child_conn</code> 发送数据到主进程，使用 send() 方法。</li>
-</ul>
-<p>这两个连接是相互独立的，尽管它们连接在一起形成一个管道，但它们可以在不同的进程中独立使用。下面我们来看一个例子：</p>
-<div id="cell-16" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> multiprocessing</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> worker(pipe_conn):</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    pipe_conn.send(<span class="st">"Hello from worker!"</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">5</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    pipe_conn.send(<span class="st">"Another messege from worker."</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    pipe_conn.close() <span class="co"># 关闭链接</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    parent_conn, child_conn <span class="op">=</span> multiprocessing.Pipe()</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 创建并启动子进程</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> multiprocessing.Process(target<span class="op">=</span>worker, args<span class="op">=</span>(child_conn,))</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    p.start()</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 主进程接收消息</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(parent_conn.recv())</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(parent_conn.recv())</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    p.join()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Hello from worker!
-Another messege from worker.</code></pre>
-</div>
-</div>
-<p>在上面的代码中，子进程启动执行，向管道发送信息 “Hello from worker!”，然后 sleep，主进程获取信息打印出 “Hello from worker!”，然后阻塞。5 秒后子进程再次发送信息，主进程接受消息打印出 “Another messege from worker.”。</p>
-<p>可以发现，管道中接收和发送操作默认是阻塞的，意味着如果没有数据可读，接收操作会等待，直到有数据到来。不过我们可以通过设置 <code>timeout</code> 参数来处理阻塞情况，或者使用 <code>poll()</code> 方法来检查数据是否可读。</p>
-<div id="cell-18" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> multiprocessing</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> worker(pipe_conn):</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    pipe_conn.send(<span class="st">"Hello from worker!"</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="dv">10</span>)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    pipe_conn.send(<span class="st">"Messege after delay."</span>)</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    pipe_conn.close() <span class="co"># 关闭链接</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    parent_conn, child_conn <span class="op">=</span> multiprocessing.Pipe()</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 创建并启动子进程</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> multiprocessing.Process(target<span class="op">=</span>worker, args<span class="op">=</span>(child_conn,))</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    p.start()</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 主进程接收消息</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="dv">1</span>:</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> parent_conn.poll(timeout<span class="op">=</span><span class="dv">1</span>):  <span class="co"># 检查是否有数据可读</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(parent_conn.recv())</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">"No message received within timeout"</span>)</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    p.join()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Hello from worker!
-No message received within timeout</code></pre>
-</div>
-</div>
-<p>上面的示例代码使用 <code>poll</code> 方法对管道中的数据进行判断，检查是否有数据可读，从而避免了主进程阻塞。</p>
-<p>总结一下，<code>Pipe</code> 的特性如下：</p>
-<ul>
-<li>双向通信：通过管道的两个端点，可以实现双向数据传输。当两个进程需要频繁交换数据时，Pipe 是一个理想的选择</li>
-<li>接收和发送操作默认是阻塞的，意味着如果没有数据可读，接收操作会等待，直到有数据到来。</li>
-<li>对于小量数据的传输，Pipe 提供了较低的延迟和较高的传输速度。</li>
-</ul>
 
 
-</section>
 </section>
 </section>
 
@@ -648,7 +505,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/roundedtom\.github\.io\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
