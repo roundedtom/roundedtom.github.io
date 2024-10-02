@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://roundedtom.github.io/code.html</loc>
-    <lastmod>2024-09-15T05:05:27.080Z</lastmod>
+    <lastmod>2024-10-02T13:23:55.896Z</lastmod>
   </url>
   <url>
     <loc>https://roundedtom.github.io/index.html</loc>
@@ -77,28 +77,32 @@
     <lastmod>2024-08-23T14:34:43.313Z</lastmod>
   </url>
   <url>
-    <loc>https://roundedtom.github.io/posts/2023-12-31-线性相关与显著性检验/index.html</loc>
-    <lastmod>2024-09-07T07:54:40.378Z</lastmod>
+    <loc>https://roundedtom.github.io/posts/2024-10-02-计算20万个样本的CAR/index.html</loc>
+    <lastmod>2024-10-02T13:29:49.486Z</lastmod>
   </url>
   <url>
-    <loc>https://roundedtom.github.io/posts/2024-01-16-Pandas备忘录/index.html</loc>
-    <lastmod>2024-08-23T14:38:56.123Z</lastmod>
-  </url>
-  <url>
-    <loc>https://roundedtom.github.io/posts/2024-09-12-Pandas-tips切分DataFrame/index.html</loc>
-    <lastmod>2024-09-12T23:35:32.538Z</lastmod>
-  </url>
-  <url>
-    <loc>https://roundedtom.github.io/posts/2024-02-05-WSL2-OhMyZsh-VSCode开发环境搭建/index.html</loc>
-    <lastmod>2024-09-07T07:58:13.718Z</lastmod>
+    <loc>https://roundedtom.github.io/posts/2022-05-01-Plotting-with-Pandas/index.html</loc>
+    <lastmod>2024-09-07T07:26:53.758Z</lastmod>
   </url>
   <url>
     <loc>https://roundedtom.github.io/posts/2022-09-15-matplotlib-常用绘图/index.html</loc>
     <lastmod>2024-09-07T07:27:22.848Z</lastmod>
   </url>
   <url>
-    <loc>https://roundedtom.github.io/posts/2022-05-01-Plotting-with-Pandas/index.html</loc>
-    <lastmod>2024-09-07T07:26:53.758Z</lastmod>
+    <loc>https://roundedtom.github.io/posts/2024-02-05-WSL2-OhMyZsh-VSCode开发环境搭建/index.html</loc>
+    <lastmod>2024-09-07T07:58:13.718Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roundedtom.github.io/posts/2024-09-12-Pandas-tips切分DataFrame/index.html</loc>
+    <lastmod>2024-09-12T23:35:32.538Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roundedtom.github.io/posts/2024-01-16-Pandas备忘录/index.html</loc>
+    <lastmod>2024-08-23T14:38:56.123Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roundedtom.github.io/posts/2023-12-31-线性相关与显著性检验/index.html</loc>
+    <lastmod>2024-09-07T07:54:40.378Z</lastmod>
   </url>
   <url>
     <loc>https://roundedtom.github.io/posts/2023-04-11-在-Pandas-中如何实现复杂的筛选/index.html</loc>
@@ -114,7 +118,7 @@
   </url>
   <url>
     <loc>https://roundedtom.github.io/posts/2024-09-13-Python中的多进程实现/index.html</loc>
-    <lastmod>2024-10-02T12:14:09.316Z</lastmod>
+    <lastmod>2024-10-02T12:21:44.396Z</lastmod>
   </url>
   <url>
     <loc>https://roundedtom.github.io/posts/2022-04-29-Blog-with-Nikola-and-WSL2/index.html</loc>

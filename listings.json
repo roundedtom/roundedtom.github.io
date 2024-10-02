@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/2024-10-02-计算20万个样本的CAR/index.html",
       "/posts/2024-09-13-Python中的多进程实现/index.html",
       "/posts/2024-09-12-Pandas-tips切分DataFrame/index.html",
       "/posts/2024-09-11-Python中的生成器/index.html",
