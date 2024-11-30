@@ -139,7 +139,7 @@ ul.task-list li input[type="checkbox"] {
   </a>
 </div>
       <div class="about-contents"><main class="content" id="quarto-document-content">
-<p>欢迎来到球形汤姆，这是由Tom维护的个人网站。</p>
+<p>欢迎来到球形汤姆，这是由 Tom 维护的个人网站。</p>
 
 
 </main></div>
@@ -232,7 +232,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/roundedtom\.github\.io\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

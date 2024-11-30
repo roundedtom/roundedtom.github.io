@@ -418,5 +418,14 @@
   },
   "code.qmd": {
     "code.html": "053467dd"
+  },
+  "posts/2024-01-16-Pandas备忘录/index.ipynb": {
+    "index.html": "eb123910"
+  },
+  "posts/2024-09-13-Python中的多进程和多线程实现/index.ipynb": {
+    "index.html": "e497864a"
+  },
+  "posts/2024-10-02-计算20万个样本的CAR/index.ipynb": {
+    "index.html": "ea5b08b5"
   }
 }
