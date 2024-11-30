@@ -37,4 +37,14 @@ $h3-font-size: 1 !default;
     margin-top: 1em;
 }
 
+#quarto-header {
+    font-weight: bolder;
+}
 
+.navbar-title {
+    font-weight: bolder;
+}
+
+#listing-listing > div.list.quarto-listing-default > div:nth-child(1) > div.body > h3 {
+    font-weight: bolder;
+}
