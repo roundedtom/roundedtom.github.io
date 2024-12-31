@@ -1,17 +1,17 @@
 /*-- scss:default --*/
-$font-family-base:  -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial,
-    "PingFang SC", "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "Microsoft JhengHei",
-    "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", 
-    "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif !default;
+$headings-font-family:  STZhongsong, STSong, "Noto Serif CJK", "Noto Serif SC", PMingLiu,
+      SimSun, "WenQuanYi Bitmap Song", "Times New Roman", Times, serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 
-$headings-font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial,
-    "PingFang SC", "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "Microsoft JhengHei",
-    "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", 
-    "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif !default;
+$font-family-base: -apple-system, BlinkMacSystemFont, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Segoe UI", "PingFang SC",
+      HarmonyOS_Regular, "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue",
+      Helvetica, "Source Han Sans SC", "Noto Sans CJK SC", "WenQuanYi Micro Hei",
+      Arial, sans-serif !default;
 
 $font-family-code: "Fira Code", Menlo, Monaco, Consolas,"Courier New", monospace, 
-    ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Code",
-    "Segoe UI Mono", "Source Code Pro", "Liberation Mono" !default;
+      ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Code",
+      "Segoe UI Mono", "Source Code Pro", "Liberation Mono" !default;
 
 $line-height-base: 1.7 !default;
 
@@ -24,7 +24,7 @@ $h3-font-size: 1 !default;
     font-family: $font-family-base;
 }
 .navbar {
-    font-family: $font-family-base;
+    font-family: $headings-font-family;
     font-size: 1.2rem;
 }
 
