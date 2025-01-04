@@ -1,0 +1,7 @@
+{
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "notebook.defaultFormatter": "ms-python.black-formatter",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    }
+}
