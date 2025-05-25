@@ -8,9 +8,9 @@
 
 <meta name="author" content="Tom">
 <meta name="dcterms.date" content="2025-05-25">
-<meta name="description" content="记录数据分析中常用的 Pandas 函数和一些实用技巧。">
+<meta name="description" content="where 和 mask 提供类似 if-else 的替换功能，可以方便的在 DataFrame 中处理缺失值和异常值。">
 
-<title>Where和Mask：Pandas中强大的条件替换工具 – 球形汤姆</title>
+<title>where和mask：Pandas中强大的条件替换工具 – 球形汤姆</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -158,10 +158,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Where和Mask：Pandas中强大的条件替换工具</h1>
+      <h1 class="title">where和mask：Pandas中强大的条件替换工具</h1>
                   <div>
         <div class="description">
-          记录数据分析中常用的 Pandas 函数和一些实用技巧。
+          where 和 mask 提供类似 <code>if-else</code> 的替换功能，可以方便的在 DataFrame 中处理缺失值和异常值。
         </div>
       </div>
                           <div class="quarto-categories">
@@ -218,20 +218,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>在数据清洗中常常碰到需要根据某些条件对已有数据进行更新的情况，比如下面的例子中，需要根据修改后的论文题目对已有的论文数据进行更新。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>::: {<span class="co">#62f62c46 .cell execution_count=2}</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>``` {.python .cell<span class="op">-</span>code}</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"学号"</span>: [<span class="dv">123</span>, <span class="dv">234</span>, <span class="dv">345</span>, <span class="dv">456</span>],</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"论文题目"</span>: [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>],</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"修改后的题目"</span>: [<span class="st">"E"</span>, np.nan, np.nan, <span class="st">"F"</span>],</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>title</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="62f62c46" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>title <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"学号"</span>: [<span class="dv">123</span>, <span class="dv">234</span>, <span class="dv">345</span>, <span class="dv">456</span>],</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"论文题目"</span>: [<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>],</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"修改后的题目"</span>: [<span class="st">"E"</span>, np.nan, np.nan, <span class="st">"F"</span>],</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>title</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
@@ -275,7 +273,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </div>
 </div>
-<p>:::</p>
+</div>
 <p>Pandas 提供了一个 <code>where</code> 方法，可以根据条件对 DataFrame 中的值进行更新。对于需要更新的行，可以使用 <code>where</code> 方法来指定条件，并将满足条件的行更新为新的值。对于上面的例子：</p>
 <div id="2c3aa4ec" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>title</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -369,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>其中，<code>cond</code> 是一个布尔条件，用于指定哪些行需要更新，<code>other</code> 是用于替换的值，<code>inplace</code> 参数决定是否在原 DataFrame 上进行操作。</p>
 <section id="基本使用方法" class="level2">
 <h2 class="anchored" data-anchor-id="基本使用方法">基本使用方法</h2>
-<div id="ee6ebca6" class="cell">
+<div id="ee6ebca6" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"A"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="st">"B"</span>: [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>], <span class="st">"C"</span>: [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]})</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始DataFrame:"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span>
@@ -395,7 +393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="指定替换值other参数" class="level2">
 <h2 class="anchored" data-anchor-id="指定替换值other参数">指定替换值（<code>other参数</code>）</h2>
-<div id="7b4a70a6" class="cell">
+<div id="7b4a70a6" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 不满足条件的替换为 -1</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> df.where(df <span class="op">&gt;</span> <span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始DataFrame:"</span>)</span>
@@ -526,7 +524,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="mask-方法" class="level1">
 <h1><code>mask</code> 方法</h1>
 <p><code>mask</code> 与 <code>where</code> 参数一致，但功能相反，它用于替换满足条件的值，而保留不满足条件的值。例如：</p>
-<div id="85be7996" class="cell">
+<div id="85be7996" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"A"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="st">"B"</span>: [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>], <span class="st">"C"</span>: [<span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>]})</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始DataFrame:"</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df)</span>
