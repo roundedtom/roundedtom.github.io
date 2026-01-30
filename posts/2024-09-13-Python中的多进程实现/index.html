@@ -9,7 +9,7 @@
 <meta name="author" content="Tom">
 <meta name="dcterms.date" content="2024-09-13">
 
-<title>Python中的多进程实现 – 球形汤姆</title>
+<title>Python中的多进程实现 – RoundedTom</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,16 +66,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../images/logo.jpg" rel="icon" type="image/jpeg">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2de15e0a3e69e63fa2e6c1690f944715.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9dc36a0e603d3a015773ceaaa646a6dc.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-81b453df06c4e609cf0cb80be257c83a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-5085dca5fdfa1717ec7e0be1e1eee1bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -115,10 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo.jpg" alt="" class="navbar-logo">
-    </a>
-    <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">球形汤姆</span>
+    <img src="../../images/logo.png" alt="RoundedTom Logo" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -132,6 +131,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">主页</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">关于</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../posts.html"> 
 <span class="menu-text">博客</span></a>
   </li>  
@@ -139,9 +142,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../../data.html"> 
 <span class="menu-text">数据</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../code.html"> 
-<span class="menu-text">代码</span></a>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -222,7 +228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>进程是一个程序在一个数据集中的一次动态执行过程，可以简单的理解为“正在执行的程序”，它是 CPU 资源分配和调度的独立单位。在 Windows 中可以通过任务管理器查看当下进程运行情况，比如我们打开文件资源管理器，就开了一个文件资源管理器进程（箭头1）。任务管理器显示了这个进程占用的 CPU、内存、网络等资源。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/task-manager.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><a href="./img/task-manager.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="图片1：任务管理器中的进程"><img src="./img/task-manager.png" class="img-fluid figure-img" style="width:100.0%" alt="图片1：任务管理器中的进程"></a></p>
 <figcaption>图片1：任务管理器中的进程</figcaption>
 </figure>
 </div>
@@ -231,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>线程是进程之后发展出来的概念，线程也叫轻量级进程，它是一个基本的 CPU 执行单元，也是程序执行过程中的最小单元。如果说进程是一个任务，线程可以理解为子任务。线程由线程 ID，程序计数器，寄存器集合和堆栈共同组成。每个进程内都有一个主执行线程，它无需由用户创建，而是由系统自动创建。用户根据需要在应用程序内创建其他线程，多个线程并发的运行于同一个进程中，共享进程内存。在 Windows 任务管理器中可以点击 details 查看线程。比如我们刚刚开启的文件资源管理器进程中，有 223 个线程在并发运行（下图箭头处）。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./img/threads.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><a href="./img/threads.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="图片2：任务管理器中的线程"><img src="./img/threads.png" class="img-fluid figure-img" style="width:100.0%" alt="图片2：任务管理器中的线程"></a></p>
 <figcaption>图片2：任务管理器中的线程</figcaption>
 </figure>
 </div>
@@ -982,19 +988,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">
-<p>Copyright 2024, 球形汤姆</p>
-</div>   
-    <div class="nav-footer-center">
-      &nbsp;
-    </div>
-    <div class="nav-footer-right">
-<p>Powered by Quarto!</p>
-</div>
-  </div>
-</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"fade","descPosition":"bottom","loop":false,"openEffect":"fade","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

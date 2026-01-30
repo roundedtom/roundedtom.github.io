@@ -9,7 +9,7 @@
 <meta name="author" content="Tom">
 <meta name="dcterms.date" content="2021-01-08">
 
-<title>从0到1的爬虫教程 – 球形汤姆</title>
+<title>从0到1的爬虫教程 – RoundedTom</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,16 +32,18 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../images/logo.jpg" rel="icon" type="image/jpeg">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2de15e0a3e69e63fa2e6c1690f944715.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9dc36a0e603d3a015773ceaaa646a6dc.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-a837bc88eec1b47f36fe92b2cdd7a729.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-5085dca5fdfa1717ec7e0be1e1eee1bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -81,10 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo.jpg" alt="" class="navbar-logo">
-    </a>
-    <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">球形汤姆</span>
+    <img src="../../images/logo.png" alt="RoundedTom Logo" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -98,6 +97,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">主页</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">关于</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../posts.html"> 
 <span class="menu-text">博客</span></a>
   </li>  
@@ -105,9 +108,12 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="../../data.html"> 
 <span class="menu-text">数据</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../code.html"> 
-<span class="menu-text">代码</span></a>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -185,14 +191,14 @@ ul.task-list li input[type="checkbox"] {
 <p>URL（Uniform Resource Locator，统一资源定位符）一般称为网页地址，即网络上某个资源的地址，比如 ”http://archive.ics.uci.edu/ml/index.php“，这是 UCI 机器学习数据集的网页地址。在浏览器的地址栏中输入这个地址并回车，我们会见到如下页面：</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./从0到1的爬虫教程/image-20220223142340797.png" class="img-fluid figure-img"></p>
+<p><a href="./从0到1的爬虫教程/image-20220223142340797.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="figure-1"><img src="./从0到1的爬虫教程/image-20220223142340797.png" class="img-fluid figure-img" alt="figure-1"></a></p>
 <figcaption>figure-1</figcaption>
 </figure>
 </div>
 <p>此时，我们获取了服务器端发送过来的数据。我们可以看一看这些数据，鼠标右键选择检查，进入开发者工具，点击 index.php，我们可以看到，这个数据是一个 document 类型的文件。点击 Preview，我们可以看到这个文件就是页面所展示的内容。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./从0到1的爬虫教程/image-20220223142641411.png" class="img-fluid figure-img"></p>
+<p><a href="./从0到1的爬虫教程/image-20220223142641411.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="figure-2"><img src="./从0到1的爬虫教程/image-20220223142641411.png" class="img-fluid figure-img" alt="figure-2"></a></p>
 <figcaption>figure-2</figcaption>
 </figure>
 </div>
@@ -258,35 +264,35 @@ ul.task-list li input[type="checkbox"] {
 <p>前面我们已经提到爬虫就是通过模拟浏览器，发送请求，接收响应数据。那么如何向目标服务器发送请求呢？Python 的第三方库 <a href="https://docs.python-requests.org/zh_CN/latest/">Requests</a> 为我们提供了良好的接口。下面的代码是向百度发送一个 Get 请求：</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./从0到1的爬虫教程/image-20220224184551180.png" class="img-fluid figure-img"></p>
+<p><a href="./从0到1的爬虫教程/image-20220224184551180.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="figure-3"><img src="./从0到1的爬虫教程/image-20220224184551180.png" class="img-fluid figure-img" alt="figure-3"></a></p>
 <figcaption>figure-3</figcaption>
 </figure>
 </div>
 <p>首先我们导入 requests 库，然后调用 get 方法发送请求，最后打印出字符串类型的响应内容（<code>print(res.text)</code>）。这里我们可以观察到打印出的内容里面还有乱码。这是因为在网络中传输的字符串都是 bytes 类型的，而 <code>res.text</code> 是 requests 模块按照 <a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1183255880134144">chardet</a> 模块推测出来的字符集进行解码的结果。我们可以打印出推测出来的字符集，如下图：</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./从0到1的爬虫教程/image-20220224190945441.png" class="img-fluid figure-img"></p>
+<p><a href="./从0到1的爬虫教程/image-20220224190945441.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="figure-4"><img src="./从0到1的爬虫教程/image-20220224190945441.png" class="img-fluid figure-img" alt="figure-4"></a></p>
 <figcaption>figure-4</figcaption>
 </figure>
 </div>
 <p>如上图所示，推测出来的字符集为“ISO-8859-1”。我们可以鼠标右键，选择检查，打开开发者工具，点击 Elements，键盘按下 Ctrl + f 搜索 charset，参考该字符集进行手动编码，如下图：</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./从0到1的爬虫教程/image-20220224191321545.png" class="img-fluid figure-img"></p>
+<p><a href="./从0到1的爬虫教程/image-20220224191321545.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="figure-5"><img src="./从0到1的爬虫教程/image-20220224191321545.png" class="img-fluid figure-img" alt="figure-5"></a></p>
 <figcaption>figure-5</figcaption>
 </figure>
 </div>
 <p>如上图所示，我们可以使用 utf8 字符集进行手动编码，如下图：</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./从0到1的爬虫教程/image-20220224191457808.png" class="img-fluid figure-img"></p>
+<p><a href="./从0到1的爬虫教程/image-20220224191457808.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="figure-6"><img src="./从0到1的爬虫教程/image-20220224191457808.png" class="img-fluid figure-img" alt="figure-6"></a></p>
 <figcaption>figure-6</figcaption>
 </figure>
 </div>
 <p>除了使用 <code>res.text</code> 并进行手动编码，我们也可以先获取 bytes 类型的数据再进行手动解码（decode），如下图：</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./从0到1的爬虫教程/image-20220224192146506.png" class="img-fluid figure-img"></p>
+<p><a href="./从0到1的爬虫教程/image-20220224192146506.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="figure-7"><img src="./从0到1的爬虫教程/image-20220224192146506.png" class="img-fluid figure-img" alt="figure-7"></a></p>
 <figcaption>figure-7</figcaption>
 </figure>
 </div>
@@ -719,19 +725,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
-    <div class="nav-footer-left">
-<p>Copyright 2024, 球形汤姆</p>
-</div>   
-    <div class="nav-footer-center">
-      &nbsp;
-    </div>
-    <div class="nav-footer-right">
-<p>Powered by Quarto!</p>
-</div>
-  </div>
-</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"fade","descPosition":"bottom","loop":false,"openEffect":"fade","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

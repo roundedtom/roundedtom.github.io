@@ -9,7 +9,7 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "关于我",
     "section": "",
     "text": "About this site"
   },
@@ -65,9 +65,9 @@
   {
     "objectID": "posts/2024-10-02-计算20万个样本的CAR/index.html",
     "href": "posts/2024-10-02-计算20万个样本的CAR/index.html",
-    "title": "计算20万个样本的CAR",
+    "title": "计算 20 万个样本的 CAR",
     "section": "",
-    "text": "计算 20 万个事件样本的 CAR，思路是将 20 万个事件样本切分成 1000 个 batch，然后采用多进程并行计算。计算过程使用到了之前博客介绍过的 eventstudy 脚本。完整代码如下：\n\nimport numpy as np\nimport pandas as pd\nimport eventstudy\nimport multiprocessing\nfrom tqdm import tqdm\n\n# 读取个股历史回报率数据\ndaily_stock_returns = pd.read_csv(\n    \"./result/日个股回报率.csv\", dtype={\"ticker\": str}\n)\n\n# 读取 ff 三因子数据\nfamafrench_factors = pd.read_csv(\n    \"./result/famafrench_factors.csv\"\n)\n\n# 读取事件样本数据\nsample_famafrench = pd.read_csv(\n    \"./result/sample_famafrench.csv\", dtype={\"ticker\": str}\n)\n\n# 切分 dataframe 函数\ndef get_batches(df: pd.DataFrame, num_splits: int) -&gt; list:\n    \"\"\"将一个 DataFrame 切分为给定数量的子 DataFrame\n    Args:\n        df (pd.DataFrame): 待切分 DataFrame\n        num_splits (int): 切分成多少个子 DataFrame \n        \n    Returns:\n        list: 子 DataFrame 列表\n    \"\"\" \n    batch_array_list = np.array_split(df.values, num_splits)\n    \n    return [pd.DataFrame(batch_array, columns=df.columns) for batch_array in batch_array_list]\n\nes_famafrench_list = [\n    eventstudy.EventStudy(\n        sample,\n        \"FamaFrench\",\n        famafrench_factors,\n        daily_stock_returns,\n        0,\n        2,\n        20,\n        220,)\n    for sample in get_batches(sample_famafrench, 1000)\n]\n\ndef process_es(es, progress_queue):\n    result = es.get_result(progress=False)\n    # 任务完成后向进度队列发送消息\n    progress_queue.put(1)\n    return result[\"sample_cars\"]\n\ndef track_progress(progress_queue, total_tasks):\n    with tqdm(total=total_tasks) as pbar:\n        for _ in range(total_tasks):\n            progress_queue.get()\n            # 手动更新进度条\n            pbar.update(1)\n\nif __name__ == \"__main__\":\n    # 创建一个队列\n    # multiprocessing.Manager().Queue() 队列可用于不同进程间的通信\n    manager = multiprocessing.Manager()\n    progress_queue = manager.Queue()\n    \n    # 获取任务数量\n    total_tasks = len(es_famafrench_list)\n    # 启动进度跟踪进程\n    progress_process = multiprocessing.Process(\n        target=track_progress, args=(progress_queue, total_tasks)\n    )\n    progress_process.start()\n    \n    with multiprocessing.Pool(processes=4) as pool:\n         # 使用 pool.apply_async 异步处理 DataFrame 列表中的每个 DataFrame\n        results = [\n            pool.apply_async(process_es, (es, progress_queue)) for es in es_famafrench_list\n        ]\n        # 获取每个异步任务的结果\n        results = [r.get() for r in results]\n    \n    # 等待进度跟踪进程完成\n    progress_process.join()\n    \n    final = pd.concat(results, axis=0)\n    final.to_csv(\"./result/car_famafrench_model.csv\")"
+    "text": "计算 20 万个事件样本的 CAR，思路是将 20 万个事件样本切分成 1000 个 batch，然后采用多进程并行计算。计算过程使用到了之前博客介绍过的 eventstudy 脚本。完整代码如下：\n\nimport numpy as np\nimport pandas as pd\nimport eventstudy\nimport multiprocessing\nfrom tqdm import tqdm\n\n# 读取个股历史回报率数据\ndaily_stock_returns = pd.read_csv(\"./result/日个股回报率.csv\", dtype={\"ticker\": str})\n\n# 读取 ff 三因子数据\nfamafrench_factors = pd.read_csv(\"./result/famafrench_factors.csv\")\n\n# 读取事件样本数据\nsample_famafrench = pd.read_csv(\"./result/sample_famafrench.csv\", dtype={\"ticker\": str})\n\n\n# 切分 dataframe 函数\ndef get_batches(df: pd.DataFrame, num_splits: int) -&gt; list:\n    \"\"\"将一个 DataFrame 切分为给定数量的子 DataFrame\n    Args:\n        df (pd.DataFrame): 待切分 DataFrame\n        num_splits (int): 切分成多少个子 DataFrame\n\n    Returns:\n        list: 子 DataFrame 列表\n    \"\"\"\n    batch_array_list = np.array_split(df.values, num_splits)\n\n    return [\n        pd.DataFrame(batch_array, columns=df.columns)\n        for batch_array in batch_array_list\n    ]\n\n\nes_famafrench_list = [\n    eventstudy.EventStudy(\n        sample,\n        \"FamaFrench\",\n        famafrench_factors,\n        daily_stock_returns,\n        0,\n        2,\n        20,\n        220,\n    )\n    for sample in get_batches(sample_famafrench, 1000)\n]\n\n\ndef process_es(es, progress_queue):\n    result = es.get_result(progress=False)\n    # 任务完成后向进度队列发送消息\n    progress_queue.put(1)\n    return result[\"sample_cars\"]\n\n\ndef track_progress(progress_queue, total_tasks):\n    with tqdm(total=total_tasks) as pbar:\n        for _ in range(total_tasks):\n            progress_queue.get()\n            # 手动更新进度条\n            pbar.update(1)\n\n\nif __name__ == \"__main__\":\n    # 创建一个队列\n    # multiprocessing.Manager().Queue() 队列可用于不同进程间的通信\n    manager = multiprocessing.Manager()\n    progress_queue = manager.Queue()\n\n    # 获取任务数量\n    total_tasks = len(es_famafrench_list)\n    # 启动进度跟踪进程\n    progress_process = multiprocessing.Process(\n        target=track_progress, args=(progress_queue, total_tasks)\n    )\n    progress_process.start()\n\n    with multiprocessing.Pool(processes=4) as pool:\n        # 使用 pool.apply_async 异步处理 DataFrame 列表中的每个 DataFrame\n        results = [\n            pool.apply_async(process_es, (es, progress_queue))\n            for es in es_famafrench_list\n        ]\n        # 获取每个异步任务的结果\n        results = [r.get() for r in results]\n\n    # 等待进度跟踪进程完成\n    progress_process.join()\n\n    final = pd.concat(results, axis=0)\n    final.to_csv(\"./result/car_famafrench_model.csv\")"
   },
   {
     "objectID": "posts/2023-01-27-爬虫踩坑-ConnectionResetError-10054/index.html",
@@ -347,68 +347,68 @@
     "href": "posts/2021-05-22-matplotlib绘图工作流/index.html#坐标轴",
     "title": "Matplotlib绘图工作流",
     "section": "坐标轴",
-    "text": "坐标轴\nmatplotlib 的 Axes 是绘图的入口。一旦在图上放置了一个 Axes，就可以使用许多方法向Axes 添加数据。一个 Axes 通常具有一对 Axis Artists，它们定义了数据坐标系，并包括添加注释（如 x 轴和 y 轴标签、标题和图例）的方法。\n\nfig, ax = plt.subplots(figsize=(16, 8), layout='constrained')\nnp.random.seed(19680801)\nt = np.arange(200)\nx = np.cumsum(np.random.randn(200))\ny = np.cumsum(np.random.randn(200))\n\nlinesx = ax.plot(t, x, label='Random walk x')\nlinesy = ax.plot(t, y, label='Random walk y')\n\n# 设置 x 轴标签\nax.set_xlabel('Time [s]')\n# 设置 y 轴标签\nax.set_ylabel('Distance [km]')\n# 设置标题\nax.set_title('Random walk example')\nax.legend()\nplt.show()\n\n\n\n\n\n\n\n\n也可以使用 set_xlim 和 set_ylim 方法设置坐标轴的范围，可以使用 set_xscale 和 set_yscale 设置坐标轴的比例尺度。\n\nfig, ax = plt.subplots(figsize=(16, 8), layout='constrained')\nnp.random.seed(19680801)\nt = np.arange(200)\nx = 2**np.cumsum(np.random.randn(200))\nlinesx = ax.plot(t, x)\nax.set_yscale('log')\nax.set_xlim([20, 180])\nplt.show()\n\n\n\n\n\n\n\n\nAxes 类还提供了处理坐标轴刻度及其标签的辅助方法。其中最直接的是 set_xticks 和 set_yticks，它们可以手动设置刻度的位置，以及可选地设置它们的标签。可以使用minorticks_on 或 minorticks_off 来切换次要刻度。\n\nfig, ax = plt.subplots(figsize=(16,8), layout='constrained')\n\nxx = np.arange(0, 2*np.pi, 0.01)\nax.plot(xx, np.sin(xx))\n\nax2 = ax.twinx() \n\n# 设置刻度和标签\nax2.set_yticks([0., .5*np.pi, np.pi, 1.5*np.pi, 2*np.pi],\n               labels=[\"$0$\", r\"$\\frac{1}{2}\\pi$\",\n                       r\"$\\pi$\", r\"$\\frac{3}{2}\\pi$\", r\"$2\\pi$\"])\n# 开启次要刻度\nplt.minorticks_on()\nplt.show()\n\n\n\n\n\n\n\n\n也可以使用 tick_params 调整 Axes 刻度和刻度标签：\n\nfig, ax = plt.subplots(figsize=(16, 8))\nax.plot(np.arange(10))\nax.tick_params(top=True, labeltop=True, color='red', axis='x',\n               labelcolor='green')"
+    "text": "坐标轴\nmatplotlib 的 Axes 是绘图的入口。一旦在图上放置了一个 Axes，就可以使用许多方法向Axes 添加数据。一个 Axes 通常具有一对 Axis Artists，它们定义了数据坐标系，并包括添加注释（如 x 轴和 y 轴标签、标题和图例）的方法。\n\nfig, ax = plt.subplots(figsize=(16, 8), layout=\"constrained\")\nnp.random.seed(19680801)\nt = np.arange(200)\nx = np.cumsum(np.random.randn(200))\ny = np.cumsum(np.random.randn(200))\n\nlinesx = ax.plot(t, x, label=\"Random walk x\")\nlinesy = ax.plot(t, y, label=\"Random walk y\")\n\n# 设置 x 轴标签\nax.set_xlabel(\"Time [s]\")\n# 设置 y 轴标签\nax.set_ylabel(\"Distance [km]\")\n# 设置标题\nax.set_title(\"Random walk example\")\nax.legend()\nplt.show()\n\n\n\n\n\n\n\n\n也可以使用 set_xlim 和 set_ylim 方法设置坐标轴的范围，可以使用 set_xscale 和 set_yscale 设置坐标轴的比例尺度。\n\nfig, ax = plt.subplots(figsize=(16, 8), layout=\"constrained\")\nnp.random.seed(19680801)\nt = np.arange(200)\nx = 2 ** np.cumsum(np.random.randn(200))\nlinesx = ax.plot(t, x)\nax.set_yscale(\"log\")\nax.set_xlim([20, 180])\nplt.show()\n\n\n\n\n\n\n\n\nAxes 类还提供了处理坐标轴刻度及其标签的辅助方法。其中最直接的是 set_xticks 和 set_yticks，它们可以手动设置刻度的位置，以及可选地设置它们的标签。可以使用minorticks_on 或 minorticks_off 来切换次要刻度。\n\nfig, ax = plt.subplots(figsize=(16, 8), layout=\"constrained\")\n\nxx = np.arange(0, 2 * np.pi, 0.01)\nax.plot(xx, np.sin(xx))\n\nax2 = ax.twinx()\n\n# 设置刻度和标签\nax2.set_yticks(\n    [0.0, 0.5 * np.pi, np.pi, 1.5 * np.pi, 2 * np.pi],\n    labels=[\"$0$\", r\"$\\frac{1}{2}\\pi$\", r\"$\\pi$\", r\"$\\frac{3}{2}\\pi$\", r\"$2\\pi$\"],\n)\n# 开启次要刻度\nplt.minorticks_on()\nplt.show()\n\n\n\n\n\n\n\n\n也可以使用 tick_params 调整 Axes 刻度和刻度标签：\n\nfig, ax = plt.subplots(figsize=(16, 8))\nax.plot(np.arange(10))\nax.tick_params(top=True, labeltop=True, color=\"red\", axis=\"x\", labelcolor=\"green\")"
   },
   {
     "objectID": "posts/2021-05-22-matplotlib绘图工作流/index.html#线",
     "href": "posts/2021-05-22-matplotlib绘图工作流/index.html#线",
     "title": "Matplotlib绘图工作流",
     "section": "线",
-    "text": "线\nmatplotlib 中的线是一个 line2D 对象，它有很多属性，我们可以通过对属性进行修改实现对线的美化和定制。这里，列出一些比较常用的属性：\n\ncolor 或者 c：线的颜色；\nalpha：透明度；\nlinewidth：线的宽度；\nlinestyle 或者 ls；\n\n- 或者 solid：实线；\n-- 或者 dashed：短划线；\n-. 或者 dashdot：点划线；\n: 或者 dotted：点虚线；\n\nmarker 或则 m：\n\n.：点\no：圆圈\n^：上三角形\n+：加号\nx：X\ns：正方形\n*：五角星\n\n\n下面，我们在代码中来看一下各种属性的使用：\n\n# create some toy data\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\nfig, ax = plt.subplots(figsize=(16,8), dpi=100)\n\nax.plot(np.cumsum(data1), color='black', linewidth='3', linestyle='-', marker='o', alpha=0.5) \nax.plot(np.cumsum(data2), color='red', linestyle='--', marker='^')\nax.plot(np.cumsum(data3), color='green', linestyle='-.', marker='+')\nax.plot(np.cumsum(data4), color='orange', linestyle=':', marker='x')\n\n\n\n\n\n\n\n\n我们也可以使用对应的方法来设置或者修改属性值。ax.plot() 方法返回一个 line2D 对象列表，我们可以在对应的 line2D 对象上调用方法。比如，我们可以使用 set_linestyle() 方法修改 linestyle 属性，可以使用 set_marker() 方法修改 marker 属性。\n\nfig, ax = plt.subplots(figsize=(16, 8), dpi=100)\n\nl, = ax.plot(np.cumsum(data1))\nl.set_linestyle('--')\nl.set_marker('x')\n\n\n\n\n\n\n\n\n\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\n\nfig, ax = plt.subplots(figsize=(16, 8))\nx = np.arange(len(data1))\nax.plot(x, np.cumsum(data1), color='blue', linewidth=3, linestyle='--')\nl= ax.plot(x, np.cumsum(data2), color='orange', linewidth=2, linestyle=':')\n# l.set_linestyle(':')"
+    "text": "线\nmatplotlib 中的线是一个 line2D 对象，它有很多属性，我们可以通过对属性进行修改实现对线的美化和定制。这里，列出一些比较常用的属性：\n\ncolor 或者 c：线的颜色；\nalpha：透明度；\nlinewidth：线的宽度；\nlinestyle 或者 ls；\n\n- 或者 solid：实线；\n-- 或者 dashed：短划线；\n-. 或者 dashdot：点划线；\n: 或者 dotted：点虚线；\n\nmarker 或则 m：\n\n.：点\no：圆圈\n^：上三角形\n+：加号\nx：X\ns：正方形\n*：五角星\n\n\n下面，我们在代码中来看一下各种属性的使用：\n\n# create some toy data\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\nfig, ax = plt.subplots(figsize=(16, 8), dpi=100)\n\nax.plot(\n    np.cumsum(data1), color=\"black\", linewidth=\"3\", linestyle=\"-\", marker=\"o\", alpha=0.5\n)\nax.plot(np.cumsum(data2), color=\"red\", linestyle=\"--\", marker=\"^\")\nax.plot(np.cumsum(data3), color=\"green\", linestyle=\"-.\", marker=\"+\")\nax.plot(np.cumsum(data4), color=\"orange\", linestyle=\":\", marker=\"x\")\n\n\n\n\n\n\n\n\n我们也可以使用对应的方法来设置或者修改属性值。ax.plot() 方法返回一个 line2D 对象列表，我们可以在对应的 line2D 对象上调用方法。比如，我们可以使用 set_linestyle() 方法修改 linestyle 属性，可以使用 set_marker() 方法修改 marker 属性。\n\nfig, ax = plt.subplots(figsize=(16, 8), dpi=100)\n\n(l,) = ax.plot(np.cumsum(data1))\nl.set_linestyle(\"--\")\nl.set_marker(\"x\")\n\n\n\n\n\n\n\n\n\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\n\nfig, ax = plt.subplots(figsize=(16, 8))\nx = np.arange(len(data1))\nax.plot(x, np.cumsum(data1), color=\"blue\", linewidth=3, linestyle=\"--\")\nl = ax.plot(x, np.cumsum(data2), color=\"orange\", linewidth=2, linestyle=\":\")\n# l.set_linestyle(':')"
   },
   {
     "objectID": "posts/2021-05-22-matplotlib绘图工作流/index.html#文字",
     "href": "posts/2021-05-22-matplotlib绘图工作流/index.html#文字",
     "title": "Matplotlib绘图工作流",
     "section": "文字",
-    "text": "文字\nmatplotlib 中的文字是一个 matplotlib.text.Text 对象，利用相关的属性我们可以控制文字显示的样式，包括文字位置、显示的字体、字体大小、颜色等等。\n\nalpha：透明度\nfontfamily：FONTNAME, ‘serif’, ‘sans-serif’, ‘cursive’, ‘fantasy’, ‘monospace’\nfontsize：float or ‘xx-small’, ‘x-small’, ‘small’, ‘medium’, ‘large’, ‘x-large’, ‘xx-large’\nfontweight：a numeric value in range 0-1000, ‘ultralight’, ‘light’, ‘normal’, ‘regular’, ‘book’, ‘medium’, ‘roman’, ‘semibold’, ‘demibold’, ‘demi’, ‘bold’, ‘heavy’, ‘extra bold’, ‘black’\nfontstyle：‘normal’, ‘italic’, ‘oblique’\n\n这里放上官方文档的例子：\n\nfig = plt.figure(figsize=(16,8))\nax = fig.add_subplot()\nfig.subplots_adjust(top=0.85)\n\n# Set titles for the figure and the subplot respectively\nfig.suptitle('bold figure suptitle', fontsize=14, fontweight='bold')\nax.set_title('axes title')\n\nax.set_xlabel('xlabel')\nax.set_ylabel('ylabel')\n\n# Set both x- and y-axis limits to [0, 10] instead of default [0, 1]\nax.axis([0, 10, 0, 10])\n\nax.text(3, 8, 'boxed italics text in data coords', style='italic',\n        bbox={'facecolor': 'red', 'alpha': 0.5, 'pad': 10})\n\nax.text(2, 6, r'an equation: $E=mc^2$', fontsize=15)\n\nax.text(3, 2, 'Unicode: Institut für Festkörperphysik')\n\nax.text(0.95, 0.01, 'colored text in axes coords',\n        verticalalignment='bottom', horizontalalignment='right',\n        transform=ax.transAxes,\n        color='green', fontsize=15)\n\nax.plot([2], [1], 'o')\nax.annotate('annotate', xy=(2, 1), xytext=(3, 4),\n            arrowprops=dict(facecolor='black', shrink=0.05))\n\nplt.show()"
+    "text": "文字\nmatplotlib 中的文字是一个 matplotlib.text.Text 对象，利用相关的属性我们可以控制文字显示的样式，包括文字位置、显示的字体、字体大小、颜色等等。\n\nalpha：透明度\nfontfamily：FONTNAME, ‘serif’, ‘sans-serif’, ‘cursive’, ‘fantasy’, ‘monospace’\nfontsize：float or ‘xx-small’, ‘x-small’, ‘small’, ‘medium’, ‘large’, ‘x-large’, ‘xx-large’\nfontweight：a numeric value in range 0-1000, ‘ultralight’, ‘light’, ‘normal’, ‘regular’, ‘book’, ‘medium’, ‘roman’, ‘semibold’, ‘demibold’, ‘demi’, ‘bold’, ‘heavy’, ‘extra bold’, ‘black’\nfontstyle：‘normal’, ‘italic’, ‘oblique’\n\n这里放上官方文档的例子：\n\nfig = plt.figure(figsize=(16, 8))\nax = fig.add_subplot()\nfig.subplots_adjust(top=0.85)\n\n# Set titles for the figure and the subplot respectively\nfig.suptitle(\"bold figure suptitle\", fontsize=14, fontweight=\"bold\")\nax.set_title(\"axes title\")\n\nax.set_xlabel(\"xlabel\")\nax.set_ylabel(\"ylabel\")\n\n# Set both x- and y-axis limits to [0, 10] instead of default [0, 1]\nax.axis([0, 10, 0, 10])\n\nax.text(\n    3,\n    8,\n    \"boxed italics text in data coords\",\n    style=\"italic\",\n    bbox={\"facecolor\": \"red\", \"alpha\": 0.5, \"pad\": 10},\n)\n\nax.text(2, 6, r\"an equation: $E=mc^2$\", fontsize=15)\n\nax.text(3, 2, \"Unicode: Institut für Festkörperphysik\")\n\nax.text(\n    0.95,\n    0.01,\n    \"colored text in axes coords\",\n    verticalalignment=\"bottom\",\n    horizontalalignment=\"right\",\n    transform=ax.transAxes,\n    color=\"green\",\n    fontsize=15,\n)\n\nax.plot([2], [1], \"o\")\nax.annotate(\n    \"annotate\",\n    xy=(2, 1),\n    xytext=(3, 4),\n    arrowprops=dict(facecolor=\"black\", shrink=0.05),\n)\n\nplt.show()"
   },
   {
     "objectID": "posts/2021-05-22-matplotlib绘图工作流/index.html#图例",
     "href": "posts/2021-05-22-matplotlib绘图工作流/index.html#图例",
     "title": "Matplotlib绘图工作流",
     "section": "图例",
-    "text": "图例\nAxes.legend(*args, **kwargs)\n\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\nfig, ax = plt.subplots(figsize=(16,8), dpi=100)\n\nax.plot(np.cumsum(data1), color='black', linewidth='3', linestyle='-', marker='o', label='data1') \nax.plot(np.cumsum(data2), color='red', linestyle='--', marker='^', label='data2')\nax.plot(np.cumsum(data3), color='green', linestyle='-.', marker='+', label='data3')\nax.plot(np.cumsum(data4), color='orange', linestyle=':', marker='x', label='data4')\n\nax.legend(loc='best', frameon=False)\nplt.show()"
+    "text": "图例\nAxes.legend(*args, **kwargs)\n\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\nfig, ax = plt.subplots(figsize=(16, 8), dpi=100)\n\nax.plot(\n    np.cumsum(data1),\n    color=\"black\",\n    linewidth=\"3\",\n    linestyle=\"-\",\n    marker=\"o\",\n    label=\"data1\",\n)\nax.plot(np.cumsum(data2), color=\"red\", linestyle=\"--\", marker=\"^\", label=\"data2\")\nax.plot(np.cumsum(data3), color=\"green\", linestyle=\"-.\", marker=\"+\", label=\"data3\")\nax.plot(np.cumsum(data4), color=\"orange\", linestyle=\":\", marker=\"x\", label=\"data4\")\n\nax.legend(loc=\"best\", frameon=False)\nplt.show()"
   },
   {
     "objectID": "posts/2021-05-22-matplotlib绘图工作流/index.html#spines",
     "href": "posts/2021-05-22-matplotlib绘图工作流/index.html#spines",
     "title": "Matplotlib绘图工作流",
     "section": "Spines",
-    "text": "Spines\n\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\nfig, ax = plt.subplots(figsize=(16,8), dpi=100)\n\nax.plot(np.cumsum(data1), color='black', linewidth='3', linestyle='-', marker='o', label='data1') \nax.plot(np.cumsum(data2), color='red', linestyle='--', marker='^', label='data2')\nax.plot(np.cumsum(data3), color='green', linestyle='-.', marker='+', label='data3')\nax.plot(np.cumsum(data4), color='orange', linestyle=':', marker='x', label='data4')\n\nax.legend(loc='best', frameon=False)\n\n# Remove the plot frame lines. They are unnecessary chartjunk.\nax.spines[\"top\"].set_visible(False)\nax.spines[\"right\"].set_visible(False)\n\nplt.show()"
+    "text": "Spines\n\ndata1, data2, data3, data4 = np.random.randn(4, 100)\n\nfig, ax = plt.subplots(figsize=(16, 8), dpi=100)\n\nax.plot(\n    np.cumsum(data1),\n    color=\"black\",\n    linewidth=\"3\",\n    linestyle=\"-\",\n    marker=\"o\",\n    label=\"data1\",\n)\nax.plot(np.cumsum(data2), color=\"red\", linestyle=\"--\", marker=\"^\", label=\"data2\")\nax.plot(np.cumsum(data3), color=\"green\", linestyle=\"-.\", marker=\"+\", label=\"data3\")\nax.plot(np.cumsum(data4), color=\"orange\", linestyle=\":\", marker=\"x\", label=\"data4\")\n\nax.legend(loc=\"best\", frameon=False)\n\n# Remove the plot frame lines. They are unnecessary chartjunk.\nax.spines[\"top\"].set_visible(False)\nax.spines[\"right\"].set_visible(False)\n\nplt.show()"
   },
   {
     "objectID": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html",
     "href": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html",
-    "title": "where和mask：Pandas中强大的条件替换工具",
+    "title": "where 和 mask：Pandas 中强大的条件替换工具",
     "section": "",
     "text": "在数据清洗中常常碰到需要根据某些条件对已有数据进行更新的情况，比如下面的例子中，需要根据修改后的论文题目对已有的论文数据进行更新。\nimport pandas as pd\nimport numpy as np\n\ntitle = pd.DataFrame(\n    {\n        \"学号\": [123, 234, 345, 456],\n        \"论文题目\": [\"A\", \"B\", \"C\", \"D\"],\n        \"修改后的题目\": [\"E\", np.nan, np.nan, \"F\"],\n    },\n)\ntitle\n\n\n\n\n\n\n\n\n学号\n论文题目\n修改后的题目\n\n\n\n\n0\n123\nA\nE\n\n\n1\n234\nB\nNaN\n\n\n2\n345\nC\nNaN\n\n\n3\n456\nD\nF\nPandas 提供了一个 where 方法，可以根据条件对 DataFrame 中的值进行更新。对于需要更新的行，可以使用 where 方法来指定条件，并将满足条件的行更新为新的值。对于上面的例子：\ntitle\n\n\n\n\n\n\n\n\n学号\n论文题目\n修改后的题目\n\n\n\n\n0\n123\nA\nE\n\n\n1\n234\nB\nNaN\n\n\n2\n345\nC\nNaN\n\n\n3\n456\nD\nF\ntitle.loc[:, [\"论文题目\"]].where(\n    title.loc[:, \"修改后的题目\"].isna(), title.loc[:, \"修改后的题目\"], axis=0\n)\n\n\n\n\n\n\n\n\n论文题目\n\n\n\n\n0\nE\n\n\n1\nB\n\n\n2\nC\n\n\n3\nF\n以上示例中 title.loc[:, \"修改后的题目\"].isna() 返回一个布尔 Series，表示哪些行的“修改后的题目”列是缺失值，即论文题目没有修改。where 方法会保留满足条件的值，将不满足条件的值进行更新。即将论文题目修改过的（“修改后的题目”为非空的）更新为“修改后的题目”。"
   },
   {
     "objectID": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#基本使用方法",
     "href": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#基本使用方法",
-    "title": "where和mask：Pandas中强大的条件替换工具",
+    "title": "where 和 mask：Pandas 中强大的条件替换工具",
     "section": "基本使用方法",
     "text": "基本使用方法\n\ndf = pd.DataFrame({\"A\": [1, 2, 3], \"B\": [4, 5, 6], \"C\": [7, 8, 9]})\nprint(\"原始DataFrame:\")\nprint(df)\n\n# 保留满足条件的值，不满足的替换为 NaN\nres = df.where(df &gt; 2)\nprint(\"\\n保留大于2的值:\")\nprint(res)\n\n原始DataFrame:\n   A  B  C\n0  1  4  7\n1  2  5  8\n2  3  6  9\n\n保留大于2的值:\n     A  B  C\n0  NaN  4  7\n1  NaN  5  8\n2  3.0  6  9"
   },
   {
     "objectID": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#指定替换值other参数",
     "href": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#指定替换值other参数",
-    "title": "where和mask：Pandas中强大的条件替换工具",
+    "title": "where 和 mask：Pandas 中强大的条件替换工具",
     "section": "指定替换值（other参数）",
     "text": "指定替换值（other参数）\n\n# 不满足条件的替换为 -1\nres = df.where(df &gt; 2, -1)\nprint(\"原始DataFrame:\")\nprint(df)\nprint(\"\\n小于2的值替换值为-1:\")\nprint(res)\n\n原始DataFrame:\n   A  B  C\n0  1  4  7\n1  2  5  8\n2  3  6  9\n\n小于2的值替换值为-1:\n   A  B  C\n0 -1  4  7\n1 -1  5  8\n2  3  6  9\n\n\n\n# 也可以使用另一个 DataFrame 作为替换值\nother_df = pd.DataFrame({\"A\": [-1, -1, -1], \"B\": [-2, -2, -2], \"C\": [-3, -3, -3]})\nres = df.where(df &gt; 2, other_df)\nprint(\"\\n使用另一个DataFrame作为替换值:\")\nprint(res)\n\n\n使用另一个DataFrame作为替换值:\n   A  B  C\n0 -1  4  7\n1 -1  5  8\n2  3  6  9"
   },
   {
     "objectID": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#使用函数作为判断条件",
     "href": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#使用函数作为判断条件",
-    "title": "where和mask：Pandas中强大的条件替换工具",
+    "title": "where 和 mask：Pandas 中强大的条件替换工具",
     "section": "使用函数作为判断条件",
     "text": "使用函数作为判断条件\n\n# 使用lambda函数作为条件\nres = df.where(lambda x: x % 2 == 0, -1)\nprint(\"\\n使用函数作为条件:\")\nprint(res)\n\n\n使用函数作为条件:\n   A  B  C\n0 -1  4 -1\n1  2 -1  8\n2 -1  6 -1"
   },
   {
     "objectID": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#按列应用不同条件",
     "href": "posts/2025-05-25-Pandas中强大的条件替换工具/index.html#按列应用不同条件",
-    "title": "where和mask：Pandas中强大的条件替换工具",
+    "title": "where 和 mask：Pandas 中强大的条件替换工具",
     "section": "按列应用不同条件",
     "text": "按列应用不同条件\n\nconditions\n\n\n\n\n\n\n\n\nA\nB\nC\n\n\n\n\n0\nFalse\nFalse\nTrue\n\n\n1\nTrue\nTrue\nFalse\n\n\n2\nTrue\nTrue\nFalse\n\n\n\n\n\n\n\n\n# 对不同的列应用不同的条件\nconditions = pd.DataFrame({\"A\": df[\"A\"] &gt; 1, \"B\": df[\"B\"] &gt; 4, \"C\": df[\"C\"] &lt; 8})\nres = df.where(conditions, -1)\nprint(\"原始DataFrame:\")\nprint(df)\nprint(\"\\n条件DataFrame:\")\nprint(conditions)\nprint(\"\\n按列应用不同条件:\")\nprint(res)\n\n原始DataFrame:\n   A  B  C\n0  1  4  7\n1  2  5  8\n2  3  6  9\n\n条件DataFrame:\n       A      B      C\n0  False  False   True\n1   True   True  False\n2   True   True  False\n\n按列应用不同条件:\n   A  B  C\n0 -1 -1  7\n1  2  5 -1\n2  3  6 -1"
   },
@@ -639,84 +639,84 @@
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "",
     "text": "这篇博客记录了 Ubuntu 18.04 的安装、配置与美化过程。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#引导盘",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#引导盘",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "引导盘",
     "text": "引导盘\n\n下载 Ununtu 18.04 的镜像文件，将U盘格式化为 FAT32，然后解压操作系统的镜像文件至U盘根目录，完成刻录。\n下载 Ubuntu 18.04 的镜像文件，使用 Rufus 进行刻录。（使用默认设置即可）"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#关闭-windows-的快速启动",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#关闭-windows-的快速启动",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "关闭 Windows 的快速启动",
     "text": "关闭 Windows 的快速启动\n进入控制面板 -&gt; 电源选项 -&gt; 选择关闭电源按钮功能 -&gt; 更改当前不可用设置：关闭启用快速启动，保存设置。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#安装系统",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#安装系统",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "安装系统",
     "text": "安装系统\n重启计算机，在开机画面出现之前，狂按 f12 进入 bios 启动界面，选择从U盘启动，选择 install Ubuntu。\n一些注意事项：\n\n安装时选择最小安装；\n安装过程中选择使用语言时选择英语，便于在命令行中使用 cd 命令；\n选择区域和城市：Asia/Shanghai。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#更换软件源",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#更换软件源",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "更换软件源",
     "text": "更换软件源\nUnuntu 18.04 默认使用的是国外的软件源，因为使得我们在下载和更新软件时速度较慢，这里我们替换为国内的阿里云软件源：\n点击 Software&Updates -&gt; Ununtu Software -&gt; 点击 download from 右边的下拉框，选择 Other -&gt; 在弹出的界面中选择阿里云软件源。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#全面更新",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#全面更新",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "全面更新",
     "text": "全面更新\n在进一步操作之前，我们先把已经安装的软件包都升级到最新版，在终端输入：\nsudo apt update\nsudp apt upgrade\n点击 settings -&gt; language -&gt; Manage Installed Language，完成语言列表的更新，然后注销重启。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#显卡配置",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#显卡配置",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "显卡配置",
     "text": "显卡配置\n如果电脑带 Nvidia 独立显卡，点击 Software&Updates -&gt; Additional Drivers 里选择对应的 N 卡私有的驱动程序并应用更改。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#更换终端类型",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#更换终端类型",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "更换终端类型",
     "text": "更换终端类型\n更换默认终端为fish[https://launchpad.net/~fish-shell/+archive/ubuntu/release-3]。\n在终端输入以下命令：\nsudo apt-add-repository ppa:fish-shell/release-3\nsudo apt-get update\nsudo apt-get install fish"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#安装-gnome-tweak-tool",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#安装-gnome-tweak-tool",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "安装 Gnome-tweak-tool",
     "text": "安装 Gnome-tweak-tool\nUbuntu 18.04 默认使用的桌面为 gnome3。打开终端执行：\nsudo apt-get install gnome-tweak-tool"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#user-theme-插件安装",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#user-theme-插件安装",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "User theme 插件安装",
     "text": "User theme 插件安装\n使 shell 主题可以使用桌面主题。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#改变桌面主题与图标主题",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#改变桌面主题与图标主题",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "改变桌面主题与图标主题",
     "text": "改变桌面主题与图标主题\n\n桌面主题\n图标主题\n壁纸\n\n进入 Github 下载源文件，解压到目录并进入，右键点击空白处选择在终端中打开，执行安装。待安装完成后在 Gnome-tweak-tool 里选择桌面主题与图标主题。"
   },
   {
     "objectID": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#安装搜狗输入法",
     "href": "posts/2019-04-09-Ubuntu1804安装与配置/index.html#安装搜狗输入法",
-    "title": "Ubuntu18.04安装与配置",
+    "title": "Ubuntu18.04 安装与配置",
     "section": "安装搜狗输入法",
     "text": "安装搜狗输入法\n搜狗输入法依托fcitx输入法框架，因此我们首先安装 fcitx 框架。打开终端执行：\nsudo apt install fcitx -y\n然后进入搜狗输入法官网下载搜狗输入法的 deb 安装包。安装搜狗输入法。\n打开 gnome-tweaks，在开机启动推荐中添加 fcitx。"
   },
@@ -1010,8 +1010,8 @@
   {
     "objectID": "posts.html",
     "href": "posts.html",
-    "title": "球形汤姆",
+    "title": "RoundedTom",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nwhere和mask：Pandas中强大的条件替换工具\n\n\n\n\n\nwhere 和 mask 提供类似 if-else 的替换功能，可以方便的在 DataFrame 中处理缺失值和异常值。\n\n\n\n\n\n2025-05-25\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n供应链共同审计的样本处理\n\n\n\n\n\n\n\n\n\n\n\n2025-01-04\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n计算20万个样本的CAR\n\n\n\n\n\n\n\n\n\n\n\n2024-10-02\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPython中的多进程实现\n\n\n\n\n\n\n\n\n\n\n\n2024-09-13\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas Tips：切分DataFrame\n\n\n\n\n\n\n\n\n\n\n\n2024-09-12\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPython中的生成器表达式与生成器\n\n\n\n\n\n\n\n\n\n\n\n2024-09-11\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n使用Glob模块快速查找文件\n\n\n\n\n\n\n\n\n\n\n\n2024-09-07\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n熵值法的原理及Python实现\n\n\n\n\n\n介绍熵值法背后的原理，利用熵值法测度综合指标的基本步骤以及熵值法的Python实现。\n\n\n\n\n\n2024-08-14\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nWSL2+OhMyZsh+VSCode开发环境搭建\n\n\n\n\n\n这篇博客记录在 WSL2 中搭建开发环境，包括 Git、Zsh 配置和 Python 版本管理。\n\n\n\n\n\n2024-02-05\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n一键计算CAR\n\n\n\n\n\n一个累计异常收益率的计算脚本，支持三因子模型和市场模型，自动导出描述性统计量，绘制 ACCR 。\n\n\n\n\n\n2024-02-05\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas备忘录\n\n\n\n\n\n记录数据分析中常用的 Pandas 函数和一些实用技巧。\n\n\n\n\n\n2024-01-16\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nMatplotlib科研绘图案例集合\n\n\n\n\n\n记录论文写作中常用的 Matplotlib 可视化案例。\n\n\n\n\n\n2024-01-08\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n多变量线性相关性可视化方法\n\n\n\n\n\n记录多变量线性相关性可视化的方法，以及一个可以返回相关系数和显著性检验结果的自定义函数。\n\n\n\n\n\n2023-12-31\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n独立、均值独立与线性不相关\n\n\n\n\n\n独立、均值独立与线性不相关之间的区别和联系。\n\n\n\n\n\n2023-12-29\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nNumpy中的random模块详解\n\n\n\n\n\n使用Numpy中的random模块生成随机数有何优势，Generator类如何使用，以及常用的概率分布的实现方法。\n\n\n\n\n\n2023-12-23\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nQuarto使用笔记\n\n\n\n\n\n记录使用Quarto建立网站的过程，以及使用Quarto的小技巧。\n\n\n\n\n\n2023-11-09\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPygraphviz安装记录\n\n\n\n\n\n\n\n\n\n\n\n2023-11-09\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n决策树算法\n\n\n\n\n\n\n\n\n\n\n\n2023-10-17\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n详解Matplotlib中的figure对象\n\n\n\n\n\n\n\n\n\n\n\n2023-10-14\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas Tips: 使用merge实现关系型合并\n\n\n\n\n\n\n\n\n\n\n\n2023-08-03\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas Tips: 使用query实现优雅的查询\n\n\n\n\n\n\n\n\n\n\n\n2023-08-01\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n在Pandas中如何实现复杂的筛选和查询\n\n\n\n\n\n\n\n\n\n\n\n2023-04-11\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-爬取巨潮资讯公告PDF文件\n\n\n\n\n\n\n\n\n\n\n\n2023-04-05\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n三门问题，直觉究竟去了哪里？\n\n\n\n\n\n\n\n\n\n\n\n2023-03-15\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-CAR计算与显著性检验\n\n\n\n\n\n\n\n\n\n\n\n2023-02-02\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-数据清洗Part2\n\n\n\n\n\n\n\n\n\n\n\n2023-02-01\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-数据清洗Part1\n\n\n\n\n\n\n\n\n\n\n\n2023-01-31\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-公告爬取\n\n\n\n\n\n\n\n\n\n\n\n2023-01-30\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-导论\n\n\n\n\n\n这个系列博客以区块链技术投资公告效应分析为例，从巨潮资讯公告数据采集开始，一直到累计异常收益率的显著性检验，保姆级，手把手教你用 Python 实现事件研究法。\n\n\n\n\n\n2023-01-28\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n爬虫踩坑-ConnectionResetError(100504)\n\n\n\n\n\n\n\n\n\n\n\n2023-01-27\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n在循环中使用else语句\n\n\n\n\n\n\n\n\n\n\n\n2023-01-15\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n爬取新浪财经ESG评级指数\n\n\n\n\n\n\n\n\n\n\n\n2023-01-13\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nMatplotlib常用绘图\n\n\n\n\n\n\n\n\n\n\n\n2022-09-15\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPlotting with Pandas\n\n\n\n\n\n\n\n\n\n\n\n2022-05-01\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n如何使用 Nikola 搭建个人博客\n\n\n\n\n\n\n\n\n\n\n\n2022-04-29\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nNumpy Notes: Python data analysis\n\n\n\n\n\n\n\n\n\n\n\n2021-09-20\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nMatplotlib绘图工作流\n\n\n\n\n\n\n\n\n\n\n\n2021-05-22\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n从0到1的爬虫教程\n\n\n\n\n\n\n\n\n\n\n\n2021-01-08\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nGolang学习笔记\n\n\n\n\n\n\n\n\n\n\n\n2020-02-03\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nUbuntu18.04安装与配置\n\n\n\n\n\n\n\n\n\n\n\n2019-04-19\n\n\nTom\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nwhere 和 mask：Pandas 中强大的条件替换工具\n\n\n\n\n\nwhere 和 mask 提供类似 if-else 的替换功能，可以方便的在 DataFrame 中处理缺失值和异常值。\n\n\n\n\n\n2025-05-25\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n供应链共同审计的样本处理\n\n\n\n\n\n\n\n\n\n\n\n2025-01-04\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n计算 20 万个样本的 CAR\n\n\n\n\n\n\n\n\n\n\n\n2024-10-02\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPython中的多进程实现\n\n\n\n\n\n\n\n\n\n\n\n2024-09-13\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas Tips：切分DataFrame\n\n\n\n\n\n\n\n\n\n\n\n2024-09-12\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPython中的生成器表达式与生成器\n\n\n\n\n\n\n\n\n\n\n\n2024-09-11\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n使用Glob模块快速查找文件\n\n\n\n\n\n\n\n\n\n\n\n2024-09-07\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n熵值法的原理及Python实现\n\n\n\n\n\n介绍熵值法背后的原理，利用熵值法测度综合指标的基本步骤以及熵值法的Python实现。\n\n\n\n\n\n2024-08-14\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nWSL2+OhMyZsh+VSCode开发环境搭建\n\n\n\n\n\n这篇博客记录在 WSL2 中搭建开发环境，包括 Git、Zsh 配置和 Python 版本管理。\n\n\n\n\n\n2024-02-05\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n一键计算CAR\n\n\n\n\n\n一个累计异常收益率的计算脚本，支持三因子模型和市场模型，自动导出描述性统计量，绘制 ACCR 。\n\n\n\n\n\n2024-02-05\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas备忘录\n\n\n\n\n\n记录数据分析中常用的 Pandas 函数和一些实用技巧。\n\n\n\n\n\n2024-01-16\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nMatplotlib科研绘图案例集合\n\n\n\n\n\n记录论文写作中常用的 Matplotlib 可视化案例。\n\n\n\n\n\n2024-01-08\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n多变量线性相关性可视化方法\n\n\n\n\n\n记录多变量线性相关性可视化的方法，以及一个可以返回相关系数和显著性检验结果的自定义函数。\n\n\n\n\n\n2023-12-31\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n独立、均值独立与线性不相关\n\n\n\n\n\n独立、均值独立与线性不相关之间的区别和联系。\n\n\n\n\n\n2023-12-29\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nNumpy中的random模块详解\n\n\n\n\n\n使用Numpy中的random模块生成随机数有何优势，Generator类如何使用，以及常用的概率分布的实现方法。\n\n\n\n\n\n2023-12-23\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nQuarto使用笔记\n\n\n\n\n\n记录使用Quarto建立网站的过程，以及使用Quarto的小技巧。\n\n\n\n\n\n2023-11-09\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPygraphviz安装记录\n\n\n\n\n\n\n\n\n\n\n\n2023-11-09\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n决策树算法\n\n\n\n\n\n\n\n\n\n\n\n2023-10-17\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n详解Matplotlib中的figure对象\n\n\n\n\n\n\n\n\n\n\n\n2023-10-14\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas Tips: 使用merge实现关系型合并\n\n\n\n\n\n\n\n\n\n\n\n2023-08-03\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPandas Tips: 使用query实现优雅的查询\n\n\n\n\n\n\n\n\n\n\n\n2023-08-01\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n在Pandas中如何实现复杂的筛选和查询\n\n\n\n\n\n\n\n\n\n\n\n2023-04-11\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-爬取巨潮资讯公告PDF文件\n\n\n\n\n\n\n\n\n\n\n\n2023-04-05\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n三门问题，直觉究竟去了哪里？\n\n\n\n\n\n\n\n\n\n\n\n2023-03-15\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-CAR计算与显著性检验\n\n\n\n\n\n\n\n\n\n\n\n2023-02-02\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-数据清洗Part2\n\n\n\n\n\n\n\n\n\n\n\n2023-02-01\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-数据清洗Part1\n\n\n\n\n\n\n\n\n\n\n\n2023-01-31\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-公告爬取\n\n\n\n\n\n\n\n\n\n\n\n2023-01-30\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n手把手教你做事件研究-导论\n\n\n\n\n\n这个系列博客以区块链技术投资公告效应分析为例，从巨潮资讯公告数据采集开始，一直到累计异常收益率的显著性检验，保姆级，手把手教你用 Python 实现事件研究法。\n\n\n\n\n\n2023-01-28\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n爬虫踩坑-ConnectionResetError(100504)\n\n\n\n\n\n\n\n\n\n\n\n2023-01-27\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n在循环中使用else语句\n\n\n\n\n\n\n\n\n\n\n\n2023-01-15\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n爬取新浪财经ESG评级指数\n\n\n\n\n\n\n\n\n\n\n\n2023-01-13\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nMatplotlib常用绘图\n\n\n\n\n\n\n\n\n\n\n\n2022-09-15\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nPlotting with Pandas\n\n\n\n\n\n\n\n\n\n\n\n2022-05-01\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n如何使用 Nikola 搭建个人博客\n\n\n\n\n\n\n\n\n\n\n\n2022-04-29\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nNumpy Notes: Python data analysis\n\n\n\n\n\n\n\n\n\n\n\n2021-09-20\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nMatplotlib绘图工作流\n\n\n\n\n\n\n\n\n\n\n\n2021-05-22\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\n从0到1的爬虫教程\n\n\n\n\n\n\n\n\n\n\n\n2021-01-08\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nGolang学习笔记\n\n\n\n\n\n\n\n\n\n\n\n2020-02-03\n\n\nTom\n\n\n\n\n\n\n\n\n\n\n\n\nUbuntu18.04 安装与配置\n\n\n\n\n\n\n\n\n\n\n\n2019-04-19\n\n\nTom\n\n\n\n\n\n\nNo matching items"
   }
 ]

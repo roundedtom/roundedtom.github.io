@@ -1,0 +1,551 @@
+/* ============================================
+   Huxblog Style for Quarto
+   极简 · 专注 · 精致代码展示
+   ============================================ */
+
+/* ===== 1. CSS变量与基础重置 ===== */
+:root {
+  /* 主色调 - Huxblog风格 */
+  --black: #121212;
+  --white: #ffffff;
+  --gray-light: #f8f9fa;
+  --gray: #e9ecef;
+  --gray-medium: #6c757d;
+  --gray-dark: #343a40;
+  
+  /* 强调色 */
+  --accent: #0366d6;  /* GitHub蓝 */
+  --accent-hover: #0550ae;
+  
+  /* 代码相关 */
+  --code-bg: #f6f8fa;
+  --code-border: #e1e4e8;
+  
+  /* 间距系统 */
+  --spacing-xs: 0.25rem;   /* 4px */
+  --spacing-sm: 0.5rem;    /* 8px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 2rem;      /* 32px */
+  --spacing-xl: 4rem;      /* 64px */
+  
+  /* 排版 */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+               "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  
+  /* 容器宽度 */
+  --content-width: 768px;
+  --wide-content-width: 1024px;
+}
+
+/* 暗色模式 */
+[data-dark-mode="true"],
+@media (prefers-color-scheme: dark) {
+  :root {
+    --black: #ffffff;
+    --white: #121212;
+    --gray-light: #1a1a1a;
+    --gray: #2d2d2d;
+    --gray-medium: #a0a0a0;
+    --gray-dark: #e9ecef;
+    --code-bg: #0d1117;
+    --code-border: #30363d;
+    --accent: #58a6ff;
+    --accent-hover: #79c0ff;
+  }
+}
+
+/* 基础重置 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  color: var(--black);
+  background-color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===== 2. 布局容器 ===== */
+.container {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.container-wide {
+  max-width: var(--wide-content-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* ===== 3. 超简洁导航栏 ===== */
+/* Huxblog风格的导航几乎是隐形的 */
+.navbar {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: var(--spacing-lg) 0 var(--spacing-md) 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--black) !important;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  padding: 0 !important;
+}
+
+.navbar-brand:hover {
+  color: var(--accent) !important;
+}
+
+.navbar-nav {
+  margin-left: auto !important;
+}
+
+.navbar-nav .nav-link {
+  color: var(--gray-medium) !important;
+  font-weight: 400;
+  padding: var(--spacing-sm) var(--spacing-md) !important;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--black) !important;
+}
+
+.navbar-nav .nav-link.active {
+  color: var(--black) !important;
+  font-weight: 500;
+}
+
+/* 移动端导航适配 */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    margin-top: var(--spacing-md);
+  }
+  .navbar-nav .nav-link {
+    padding: var(--spacing-xs) 0 !important;
+  }
+}
+
+/* ===== 4. 首页文章列表样式 ===== */
+/* 类似Huxblog的时间线式列表 */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-xl) 0;
+}
+
+.post-item {
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--gray);
+  padding-bottom: var(--spacing-lg);
+}
+
+.post-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.post-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: var(--spacing-sm);
+}
+
+.post-title a {
+  color: var(--black);
+  text-decoration: none;
+}
+
+.post-title a:hover {
+  color: var(--accent);
+}
+
+.post-meta {
+  color: var(--gray-medium);
+  font-size: 0.9rem;
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.post-meta .date {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.post-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.post-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gray-medium);
+  background: var(--gray-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+.post-tag:hover {
+  background: var(--gray);
+  color: var(--black);
+}
+
+.post-excerpt {
+  color: var(--gray-dark);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-top: var(--spacing-md);
+}
+
+/* ===== 5. 文章内容样式 ===== */
+/* Huxblog的核心：完美的阅读体验 */
+.article-container {
+  max-width: var(--content-width);
+  margin: var(--spacing-xl) auto;
+  padding: 0 var(--spacing-md);
+}
+
+.article-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.article-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-md);
+  letter-spacing: -0.5px;
+}
+
+.article-meta {
+  color: var(--gray-medium);
+  font-size: 0.95rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--gray);
+}
+
+/* 文章正文样式 */
+.article-content {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--black);
+}
+
+.article-content h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+  padding-top: var(--spacing-md);
+  line-height: 1.3;
+}
+
+.article-content h3 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+  line-height: 1.4;
+}
+
+.article-content h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+  color: var(--gray-dark);
+}
+
+.article-content p {
+  margin-bottom: var(--spacing-md);
+}
+
+.article-content ul,
+.article-content ol {
+  margin-bottom: var(--spacing-md);
+  padding-left: var(--spacing-lg);
+}
+
+.article-content li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.article-content blockquote {
+  border-left: 4px solid var(--accent);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin: var(--spacing-md) 0 var(--spacing-md) var(--spacing-md);
+  background: var(--gray-light);
+  font-style: italic;
+  color: var(--gray-dark);
+}
+
+.article-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== 6. Huxblog风格代码块 ===== */
+/* 这是Huxblog最精华的部分 */
+pre {
+  background-color: var(--code-bg) !important;
+  border: 1px solid var(--code-border) !important;
+  border-radius: 6px !important;
+  padding: var(--spacing-md) !important;
+  margin: var(--spacing-md) 0 var(--spacing-lg) 0 !important;
+  overflow: auto !important;
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+}
+
+pre code {
+  font-family: var(--font-mono) !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  line-height: inherit !important;
+  color: inherit !important;
+}
+
+code:not(pre code) {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--accent);
+  background: var(--gray-light);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+/* 代码块标题 */
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gray-medium);
+  margin-top: var(--spacing-lg);
+}
+
+.code-header + pre {
+  margin-top: 0 !important;
+  border-radius: 0 0 6px 6px !important;
+}
+
+/* ===== 7. 图片与媒体样式 ===== */
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--spacing-lg) auto;
+  border-radius: 4px;
+}
+
+.article-content figure {
+  margin: var(--spacing-lg) 0;
+}
+
+.article-content figcaption {
+  text-align: center;
+  color: var(--gray-medium);
+  font-size: 0.9rem;
+  margin-top: var(--spacing-sm);
+  font-style: italic;
+}
+
+/* ===== 8. 表格样式 ===== */
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--spacing-md) 0 var(--spacing-lg) 0;
+  font-size: 0.95rem;
+}
+
+.article-content th {
+  background: var(--gray-light);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 2px solid var(--gray);
+}
+
+.article-content td {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--gray);
+}
+
+.article-content tr:hover {
+  background: var(--gray-light);
+}
+
+/* ===== 9. 链接样式 ===== */
+.article-content a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.article-content a:hover {
+  border-bottom: 1px solid var(--accent);
+}
+
+/* ===== 10. 页脚样式 ===== */
+.footer {
+  text-align: center;
+  padding: var(--spacing-xl) 0 var(--spacing-lg) 0;
+  margin-top: var(--spacing-xl);
+  color: var(--gray-medium);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--gray);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.footer-links a {
+  color: var(--gray-medium);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--black);
+}
+
+/* ===== 11. 响应式设计 ===== */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+  
+  .container,
+  .article-container {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .article-title {
+    font-size: 2rem;
+  }
+  
+  .post-title {
+    font-size: 1.5rem;
+  }
+  
+  .article-content {
+    font-size: 1.05rem;
+  }
+  
+  .article-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .article-content h3 {
+    font-size: 1.25rem;
+  }
+  
+  pre {
+    padding: var(--spacing-sm) !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .article-title {
+    font-size: 1.75rem;
+  }
+  
+  .post-title {
+    font-size: 1.375rem;
+  }
+  
+  .article-meta {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+
+/* ===== 12. 特殊效果 ===== */
+/* 阅读进度指示器 */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--gray);
+  z-index: 1000;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 0.1s ease;
+}
+
+.reading-progress-bar {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+}
+
+/* 平滑滚动锚点 */
+:target {
+  scroll-margin-top: var(--spacing-lg);
+}
+
+/* 打印样式 */
+@media print {
+  .navbar,
+  .footer {
+    display: none;
+  }
+  
+  .article-content {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  .article-content a {
+    color: var(--black);
+    text-decoration: underline;
+  }
+}
