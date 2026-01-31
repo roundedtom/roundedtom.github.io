@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/2026-01-31-因果推断视角下的数据来源与样本选择/index.html",
       "/posts/2025-05-25-Pandas中强大的条件替换工具/index.html",
       "/posts/2025-01-04-供应链共同审计的样本处理/index.html",
       "/posts/2024-10-02-计算20万个样本的CAR/index.html",
@@ -37,10 +38,8 @@
       "/posts/2022-09-15-matplotlib-常用绘图/index.html",
       "/posts/2022-05-01-Plotting-with-Pandas/index.html",
       "/posts/2022-04-29-Blog-with-Nikola-and-WSL2/index.html",
-      "/posts/2021-09-20-Numpy-notes-Python-data-analysis/index.html",
       "/posts/2021-05-22-matplotlib绘图工作流/index.html",
       "/posts/2021-01-08-从0到1的爬虫教程/index.html",
-      "/posts/2020-02-03-golang-learning-notes/index.html",
       "/posts/2019-04-09-Ubuntu1804安装与配置/index.html"
     ]
   }

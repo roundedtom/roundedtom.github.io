@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.34">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,8 +23,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -35,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -59,25 +60,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-9dc36a0e603d3a015773ceaaa646a6dc.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-4b8fee90b4ca5db06b77f8c4e0b0d179.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5085dca5fdfa1717ec7e0be1e1eee1bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-0c228919a73c3b0e906be318c64e0141.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
-  "copy-button": false,
+  "copy-button": true,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
@@ -87,7 +90,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "/",
     "s"
   ],
-  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -102,14 +104,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
+<meta property="og:title" content="Pandas Tips: 使用query实现优雅的查询 – RoundedTom">
+<meta property="og:description" content="专注于数据科学与深度学习的个人空间">
+<meta property="og:image" content="https://roundedtom.github.io/posts/2023-08-01-Pandas-Tips-使用query实现优雅的查询/query.png">
+<meta property="og:site_name" content="RoundedTom">
+<meta property="og:image:height" content="161">
+<meta property="og:image:width" content="313">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -117,7 +125,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/logo.png" alt="RoundedTom Logo" class="navbar-logo">
+    <img src="../../images/logo.png" alt="RoundedTom Logo" class="navbar-logo light-content">
+    <img src="../../images/logo.png" alt="RoundedTom Logo" class="navbar-logo dark-content">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -202,17 +211,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>这篇博客介绍 Pandas <code>query</code> 函数的使用。</p>
 <p><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html"><code>DataFrame.query(expr, *, inplace=False, **kwargs)</code></a> 函数使用布尔表达式对列进行查询，可以简化我们使用 <code>loc</code> 进行查询的写法。</p>
 <div id="cell-2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> akshare <span class="im">as</span> ak</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-3" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> ak.stock_zh_a_spot_em()</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> ak.stock_zh_a_spot_em()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -241,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>1</td>
 <td>301299</td>
 <td>卓创资讯</td>
@@ -265,7 +274,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>50.31</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>2</td>
 <td>300380</td>
 <td>安硕信息</td>
@@ -289,7 +298,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>34.01</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>3</td>
 <td>301316</td>
 <td>慧博云通</td>
@@ -313,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>84.62</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>4</td>
 <td>300803</td>
 <td>指南针</td>
@@ -337,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>59.62</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>5</td>
 <td>830799</td>
 <td>艾融软件</td>
@@ -369,12 +378,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>如上所示，data 数据集是沪深京 A 股行情数据。如果我们要查询股票代码为 300380 的股票，使用 <code>loc</code> 方法我们应该利用逻辑运算传入一个布尔表达式：</p>
 <div id="cell-5" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data.loc[data.代码 <span class="op">==</span> <span class="st">"300380"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data.loc[data.代码 <span class="op">==</span> <span class="st">"300380"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -403,7 +412,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>2</td>
 <td>300380</td>
 <td>安硕信息</td>
@@ -435,12 +444,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>使用 <code>query</code>，我们可以这样写：</p>
 <div id="cell-7" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"代码 == '300380'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"代码 == '300380'"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -469,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>2</td>
 <td>300380</td>
 <td>安硕信息</td>
@@ -502,12 +511,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>query</code> 函数接受一个查询字符串，然后利用 <code>eval()</code> 函数对该字符串进行计算，获得一个布尔表达式，再利用布尔表达式实现查询。</p>
 <p><code>query</code> 本质与 <code>loc</code> 相同，但写法上更清晰、简洁了。同样，<code>query</code> 也接受包含复杂逻辑运算的查询字符串，比如筛选市净率大于 10 ，同时换手率大于 5%的股票：</p>
 <div id="cell-9" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"市净率 &gt; 10 and 换手率 &gt; 5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"市净率 &gt; 10 and 换手率 &gt; 5"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -536,7 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>3</td>
 <td>301316</td>
 <td>慧博云通</td>
@@ -560,7 +569,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>84.62</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>4</td>
 <td>300803</td>
 <td>指南针</td>
@@ -584,7 +593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>59.62</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">41</td>
+<th data-quarto-table-cell-role="th">41</th>
 <td>42</td>
 <td>300085</td>
 <td>银之杰</td>
@@ -608,7 +617,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>62.90</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">57</td>
+<th data-quarto-table-cell-role="th">57</th>
 <td>58</td>
 <td>300169</td>
 <td>天晟新材</td>
@@ -632,7 +641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>119.61</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">73</td>
+<th data-quarto-table-cell-role="th">73</th>
 <td>74</td>
 <td>601519</td>
 <td>大智慧</td>
@@ -656,7 +665,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>70.43</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">107</td>
+<th data-quarto-table-cell-role="th">107</th>
 <td>108</td>
 <td>603000</td>
 <td>人民网</td>
@@ -680,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>99.46</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">165</td>
+<th data-quarto-table-cell-role="th">165</th>
 <td>166</td>
 <td>300033</td>
 <td>同花顺</td>
@@ -704,7 +713,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>110.55</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">195</td>
+<th data-quarto-table-cell-role="th">195</th>
 <td>196</td>
 <td>002703</td>
 <td>浙江世宝</td>
@@ -728,7 +737,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>97.20</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">200</td>
+<th data-quarto-table-cell-role="th">200</th>
 <td>201</td>
 <td>002316</td>
 <td>亚联发展</td>
@@ -752,7 +761,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>67.24</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">216</td>
+<th data-quarto-table-cell-role="th">216</th>
 <td>217</td>
 <td>300116</td>
 <td>保力新</td>
@@ -776,7 +785,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>12.80</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">392</td>
+<th data-quarto-table-cell-role="th">392</th>
 <td>393</td>
 <td>300364</td>
 <td>中文在线</td>
@@ -800,7 +809,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>60.69</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">610</td>
+<th data-quarto-table-cell-role="th">610</th>
 <td>611</td>
 <td>300264</td>
 <td>佳创视讯</td>
@@ -824,7 +833,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>12.94</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">787</td>
+<th data-quarto-table-cell-role="th">787</th>
 <td>788</td>
 <td>002647</td>
 <td>仁东控股</td>
@@ -848,7 +857,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-4.01</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1297</td>
+<th data-quarto-table-cell-role="th">1297</th>
 <td>1298</td>
 <td>002269</td>
 <td>美邦服饰</td>
@@ -872,7 +881,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>0.00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1378</td>
+<th data-quarto-table-cell-role="th">1378</th>
 <td>1379</td>
 <td>000908</td>
 <td>景峰医药</td>
@@ -896,7 +905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>3.14</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1467</td>
+<th data-quarto-table-cell-role="th">1467</th>
 <td>1468</td>
 <td>688525</td>
 <td>佰维存储</td>
@@ -920,7 +929,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>324.84</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1721</td>
+<th data-quarto-table-cell-role="th">1721</th>
 <td>1722</td>
 <td>000721</td>
 <td>西安饮食</td>
@@ -944,7 +953,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-14.22</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2056</td>
+<th data-quarto-table-cell-role="th">2056</th>
 <td>2057</td>
 <td>001337</td>
 <td>四川黄金</td>
@@ -968,7 +977,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>388.39</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">3063</td>
+<th data-quarto-table-cell-role="th">3063</th>
 <td>3064</td>
 <td>002229</td>
 <td>鸿博股份</td>
@@ -992,7 +1001,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>465.41</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3347</td>
+<th data-quarto-table-cell-role="th">3347</th>
 <td>3348</td>
 <td>000638</td>
 <td>万方发展</td>
@@ -1016,7 +1025,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-2.12</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4294</td>
+<th data-quarto-table-cell-role="th">4294</th>
 <td>4295</td>
 <td>301205</td>
 <td>联特科技</td>
@@ -1040,7 +1049,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>471.68</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5165</td>
+<th data-quarto-table-cell-role="th">5165</th>
 <td>5166</td>
 <td>002188</td>
 <td>中天服务</td>
@@ -1064,7 +1073,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-1.82</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5320</td>
+<th data-quarto-table-cell-role="th">5320</th>
 <td>5321</td>
 <td>000980</td>
 <td>众泰汽车</td>
@@ -1088,7 +1097,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.57</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5356</td>
+<th data-quarto-table-cell-role="th">5356</th>
 <td>5357</td>
 <td>600322</td>
 <td>天房发展</td>
@@ -1112,7 +1121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>13.72</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5482</td>
+<th data-quarto-table-cell-role="th">5482</th>
 <td>5483</td>
 <td>000890</td>
 <td>法尔胜</td>
@@ -1144,14 +1153,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>query</code> 也支持传入变量，使用 <code>@</code> 传入：</p>
 <div id="cell-11" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pbr <span class="op">=</span> <span class="dv">10</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pbr <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tr <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"市净率 &gt; @pbr &amp; 换手率 &gt; @tr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"市净率 &gt; @pbr &amp; 换手率 &gt; @tr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1180,7 +1189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>3</td>
 <td>301316</td>
 <td>慧博云通</td>
@@ -1204,7 +1213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>84.62</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>4</td>
 <td>300803</td>
 <td>指南针</td>
@@ -1228,7 +1237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>59.62</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">41</td>
+<th data-quarto-table-cell-role="th">41</th>
 <td>42</td>
 <td>300085</td>
 <td>银之杰</td>
@@ -1252,7 +1261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>62.90</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">57</td>
+<th data-quarto-table-cell-role="th">57</th>
 <td>58</td>
 <td>300169</td>
 <td>天晟新材</td>
@@ -1276,7 +1285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>119.61</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">73</td>
+<th data-quarto-table-cell-role="th">73</th>
 <td>74</td>
 <td>601519</td>
 <td>大智慧</td>
@@ -1300,7 +1309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>70.43</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">107</td>
+<th data-quarto-table-cell-role="th">107</th>
 <td>108</td>
 <td>603000</td>
 <td>人民网</td>
@@ -1324,7 +1333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>99.46</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">165</td>
+<th data-quarto-table-cell-role="th">165</th>
 <td>166</td>
 <td>300033</td>
 <td>同花顺</td>
@@ -1348,7 +1357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>110.55</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">195</td>
+<th data-quarto-table-cell-role="th">195</th>
 <td>196</td>
 <td>002703</td>
 <td>浙江世宝</td>
@@ -1372,7 +1381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>97.20</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">200</td>
+<th data-quarto-table-cell-role="th">200</th>
 <td>201</td>
 <td>002316</td>
 <td>亚联发展</td>
@@ -1396,7 +1405,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>67.24</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">216</td>
+<th data-quarto-table-cell-role="th">216</th>
 <td>217</td>
 <td>300116</td>
 <td>保力新</td>
@@ -1420,7 +1429,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>12.80</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">392</td>
+<th data-quarto-table-cell-role="th">392</th>
 <td>393</td>
 <td>300364</td>
 <td>中文在线</td>
@@ -1444,7 +1453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>60.69</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">610</td>
+<th data-quarto-table-cell-role="th">610</th>
 <td>611</td>
 <td>300264</td>
 <td>佳创视讯</td>
@@ -1468,7 +1477,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>12.94</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">787</td>
+<th data-quarto-table-cell-role="th">787</th>
 <td>788</td>
 <td>002647</td>
 <td>仁东控股</td>
@@ -1492,7 +1501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-4.01</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1297</td>
+<th data-quarto-table-cell-role="th">1297</th>
 <td>1298</td>
 <td>002269</td>
 <td>美邦服饰</td>
@@ -1516,7 +1525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>0.00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1378</td>
+<th data-quarto-table-cell-role="th">1378</th>
 <td>1379</td>
 <td>000908</td>
 <td>景峰医药</td>
@@ -1540,7 +1549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>3.14</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1467</td>
+<th data-quarto-table-cell-role="th">1467</th>
 <td>1468</td>
 <td>688525</td>
 <td>佰维存储</td>
@@ -1564,7 +1573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>324.84</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1721</td>
+<th data-quarto-table-cell-role="th">1721</th>
 <td>1722</td>
 <td>000721</td>
 <td>西安饮食</td>
@@ -1588,7 +1597,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-14.22</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2056</td>
+<th data-quarto-table-cell-role="th">2056</th>
 <td>2057</td>
 <td>001337</td>
 <td>四川黄金</td>
@@ -1612,7 +1621,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>388.39</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">3063</td>
+<th data-quarto-table-cell-role="th">3063</th>
 <td>3064</td>
 <td>002229</td>
 <td>鸿博股份</td>
@@ -1636,7 +1645,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>465.41</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3347</td>
+<th data-quarto-table-cell-role="th">3347</th>
 <td>3348</td>
 <td>000638</td>
 <td>万方发展</td>
@@ -1660,7 +1669,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-2.12</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4294</td>
+<th data-quarto-table-cell-role="th">4294</th>
 <td>4295</td>
 <td>301205</td>
 <td>联特科技</td>
@@ -1684,7 +1693,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>471.68</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5165</td>
+<th data-quarto-table-cell-role="th">5165</th>
 <td>5166</td>
 <td>002188</td>
 <td>中天服务</td>
@@ -1708,7 +1717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-1.82</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5320</td>
+<th data-quarto-table-cell-role="th">5320</th>
 <td>5321</td>
 <td>000980</td>
 <td>众泰汽车</td>
@@ -1732,7 +1741,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.57</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5356</td>
+<th data-quarto-table-cell-role="th">5356</th>
 <td>5357</td>
 <td>600322</td>
 <td>天房发展</td>
@@ -1756,7 +1765,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>13.72</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5482</td>
+<th data-quarto-table-cell-role="th">5482</th>
 <td>5483</td>
 <td>000890</td>
 <td>法尔胜</td>
@@ -1788,12 +1797,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>需要注意的是，对于非有效的 Python 变量名，可以用反引号（``）来使用。比如，如果查询列名为 Python 关键字，列名以数字开头等等：</p>
 <div id="cell-13" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"`5分钟涨跌` &gt; 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"`5分钟涨跌` &gt; 2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1822,7 +1831,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">21</td>
+<th data-quarto-table-cell-role="th">21</th>
 <td>22</td>
 <td>002670</td>
 <td>国盛金控</td>
@@ -1846,7 +1855,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>46.69</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">173</td>
+<th data-quarto-table-cell-role="th">173</th>
 <td>174</td>
 <td>000609</td>
 <td>中迪投资</td>
@@ -1870,7 +1879,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-6.92</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">273</td>
+<th data-quarto-table-cell-role="th">273</th>
 <td>274</td>
 <td>001227</td>
 <td>兰州银行</td>
@@ -1894,7 +1903,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-9.86</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">669</td>
+<th data-quarto-table-cell-role="th">669</th>
 <td>670</td>
 <td>603536</td>
 <td>惠发食品</td>
@@ -1918,7 +1927,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>23.81</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2123</td>
+<th data-quarto-table-cell-role="th">2123</th>
 <td>2124</td>
 <td>301505</td>
 <td>苏州规划</td>
@@ -1950,18 +1959,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>此外，根据官方文档，DataFrame 实例的 <code>DataFrame.index</code> 和 <code>DataFrame.columns</code> 属性也被放置在查询命名空间中，因此我们可以把表的索引当作列进行查询。如果索引命名了，可以使用索引的名称在查询中标识它，如果没有命名可以使用 <code>index</code>。比如，我们查询 data 数据集中索引为 0 的数据：</p>
 <div id="cell-15" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data.index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data.index</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>RangeIndex(start=0, stop=5491, step=1)</code></pre>
 </div>
 </div>
 <div id="cell-16" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"index == 0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"index == 0"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1990,7 +1999,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>1</td>
 <td>301299</td>
 <td>卓创资讯</td>
@@ -2022,12 +2031,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>列名的命名空间下的方法也可以在查询字符串中使用。比如，我们查询股票名称中包含银行的股票：</p>
 <div id="cell-18" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"@data.名称.str.contains('银行')"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data.query(<span class="st">"@data.名称.str.contains('银行')"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -2056,7 +2065,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">140</td>
+<th data-quarto-table-cell-role="th">140</th>
 <td>141</td>
 <td>601528</td>
 <td>瑞丰银行</td>
@@ -2080,7 +2089,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>29.11</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">273</td>
+<th data-quarto-table-cell-role="th">273</th>
 <td>274</td>
 <td>001227</td>
 <td>兰州银行</td>
@@ -2104,7 +2113,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-9.86</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">533</td>
+<th data-quarto-table-cell-role="th">533</th>
 <td>534</td>
 <td>601577</td>
 <td>长沙银行</td>
@@ -2128,7 +2137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>31.05</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">642</td>
+<th data-quarto-table-cell-role="th">642</th>
 <td>643</td>
 <td>601860</td>
 <td>紫金银行</td>
@@ -2152,7 +2161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>22.09</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">754</td>
+<th data-quarto-table-cell-role="th">754</th>
 <td>755</td>
 <td>601658</td>
 <td>邮储银行</td>
@@ -2176,7 +2185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>16.28</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1002</td>
+<th data-quarto-table-cell-role="th">1002</th>
 <td>1003</td>
 <td>601998</td>
 <td>中信银行</td>
@@ -2200,7 +2209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>27.96</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1006</td>
+<th data-quarto-table-cell-role="th">1006</th>
 <td>1007</td>
 <td>600036</td>
 <td>招商银行</td>
@@ -2224,7 +2233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-1.04</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1219</td>
+<th data-quarto-table-cell-role="th">1219</th>
 <td>1220</td>
 <td>601916</td>
 <td>浙商银行</td>
@@ -2248,7 +2257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>8.17</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1223</td>
+<th data-quarto-table-cell-role="th">1223</th>
 <td>1224</td>
 <td>603323</td>
 <td>苏农银行</td>
@@ -2272,7 +2281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>2.88</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1291</td>
+<th data-quarto-table-cell-role="th">1291</th>
 <td>1292</td>
 <td>600928</td>
 <td>西安银行</td>
@@ -2296,7 +2305,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>19.35</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1298</td>
+<th data-quarto-table-cell-role="th">1298</th>
 <td>1299</td>
 <td>002807</td>
 <td>江阴银行</td>
@@ -2320,7 +2329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.86</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1320</td>
+<th data-quarto-table-cell-role="th">1320</th>
 <td>1321</td>
 <td>002966</td>
 <td>苏州银行</td>
@@ -2344,7 +2353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-2.95</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1330</td>
+<th data-quarto-table-cell-role="th">1330</th>
 <td>1331</td>
 <td>601128</td>
 <td>常熟银行</td>
@@ -2368,7 +2377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-0.27</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1333</td>
+<th data-quarto-table-cell-role="th">1333</th>
 <td>1334</td>
 <td>601665</td>
 <td>齐鲁银行</td>
@@ -2392,7 +2401,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>5.03</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1335</td>
+<th data-quarto-table-cell-role="th">1335</th>
 <td>1336</td>
 <td>601818</td>
 <td>光大银行</td>
@@ -2416,7 +2425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>9.03</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1409</td>
+<th data-quarto-table-cell-role="th">1409</th>
 <td>1410</td>
 <td>002142</td>
 <td>宁波银行</td>
@@ -2440,7 +2449,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-11.24</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1435</td>
+<th data-quarto-table-cell-role="th">1435</th>
 <td>1436</td>
 <td>601997</td>
 <td>贵阳银行</td>
@@ -2464,7 +2473,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>11.37</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1458</td>
+<th data-quarto-table-cell-role="th">1458</th>
 <td>1459</td>
 <td>601166</td>
 <td>兴业银行</td>
@@ -2488,7 +2497,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>1.52</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1465</td>
+<th data-quarto-table-cell-role="th">1465</th>
 <td>1466</td>
 <td>002936</td>
 <td>郑州银行</td>
@@ -2512,7 +2521,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>11.68</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1609</td>
+<th data-quarto-table-cell-role="th">1609</th>
 <td>1610</td>
 <td>600908</td>
 <td>无锡银行</td>
@@ -2536,7 +2545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>12.23</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1616</td>
+<th data-quarto-table-cell-role="th">1616</th>
 <td>1617</td>
 <td>601187</td>
 <td>厦门银行</td>
@@ -2560,7 +2569,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>5.88</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1628</td>
+<th data-quarto-table-cell-role="th">1628</th>
 <td>1629</td>
 <td>600015</td>
 <td>华夏银行</td>
@@ -2584,7 +2593,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>21.00</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1656</td>
+<th data-quarto-table-cell-role="th">1656</th>
 <td>1657</td>
 <td>600000</td>
 <td>浦发银行</td>
@@ -2608,7 +2617,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>9.34</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1763</td>
+<th data-quarto-table-cell-role="th">1763</th>
 <td>1764</td>
 <td>601009</td>
 <td>南京银行</td>
@@ -2632,7 +2641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-12.74</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1779</td>
+<th data-quarto-table-cell-role="th">1779</th>
 <td>1780</td>
 <td>002948</td>
 <td>青岛银行</td>
@@ -2656,7 +2665,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>9.69</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1784</td>
+<th data-quarto-table-cell-role="th">1784</th>
 <td>1785</td>
 <td>601288</td>
 <td>农业银行</td>
@@ -2680,7 +2689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>32.71</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1873</td>
+<th data-quarto-table-cell-role="th">1873</th>
 <td>1874</td>
 <td>600016</td>
 <td>民生银行</td>
@@ -2704,7 +2713,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>24.07</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1881</td>
+<th data-quarto-table-cell-role="th">1881</th>
 <td>1882</td>
 <td>601939</td>
 <td>建设银行</td>
@@ -2728,7 +2737,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>15.65</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1897</td>
+<th data-quarto-table-cell-role="th">1897</th>
 <td>1898</td>
 <td>601229</td>
 <td>上海银行</td>
@@ -2752,7 +2761,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>12.34</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1901</td>
+<th data-quarto-table-cell-role="th">1901</th>
 <td>1902</td>
 <td>601963</td>
 <td>重庆银行</td>
@@ -2776,7 +2785,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>30.20</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1982</td>
+<th data-quarto-table-cell-role="th">1982</th>
 <td>1983</td>
 <td>601169</td>
 <td>北京银行</td>
@@ -2800,7 +2809,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>16.50</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2028</td>
+<th data-quarto-table-cell-role="th">2028</th>
 <td>2029</td>
 <td>000001</td>
 <td>平安银行</td>
@@ -2824,7 +2833,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-3.88</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2276</td>
+<th data-quarto-table-cell-role="th">2276</th>
 <td>2277</td>
 <td>601988</td>
 <td>中国银行</td>
@@ -2848,7 +2857,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>32.42</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2351</td>
+<th data-quarto-table-cell-role="th">2351</th>
 <td>2352</td>
 <td>601398</td>
 <td>工商银行</td>
@@ -2872,7 +2881,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>17.08</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2426</td>
+<th data-quarto-table-cell-role="th">2426</th>
 <td>2427</td>
 <td>601328</td>
 <td>交通银行</td>
@@ -2896,7 +2905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>30.89</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2496</td>
+<th data-quarto-table-cell-role="th">2496</th>
 <td>2497</td>
 <td>600919</td>
 <td>江苏银行</td>
@@ -2920,7 +2929,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>6.76</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2580</td>
+<th data-quarto-table-cell-role="th">2580</th>
 <td>2581</td>
 <td>600926</td>
 <td>杭州银行</td>
@@ -2944,7 +2953,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>-4.81</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3346</td>
+<th data-quarto-table-cell-role="th">3346</th>
 <td>3347</td>
 <td>601838</td>
 <td>成都银行</td>
@@ -2979,236 +2988,243 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
       }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
         }
       }
       return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/roundedtom\.github\.io\/");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
     }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/roundedtom\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
         }
-        return container.innerHTML
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -3216,184 +3232,189 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="light">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "roundedtom/roundedtom.github.io";
+    script.dataset.repoId = "R_kgDOMuPWog";
+    script.dataset.category = "Announcements";
+    script.dataset.categoryId = "DIC_kwDOMuPWos4C1pdO";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "zh-CN";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
   }
-});
+  loadGiscus();
 </script>
 </div> <!-- /content -->
 
